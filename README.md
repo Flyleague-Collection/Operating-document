@@ -17,7 +17,7 @@
 
 ### A. 总则
 
-1. [文件发行格式](./General/)
+1. [标准文件发行格式](./General/Standar_ file_format.md)
 
 ### B. 管制员训练部
 
