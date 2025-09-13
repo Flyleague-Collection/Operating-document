@@ -5,7 +5,7 @@
 - 管制员考核大纲
 - ....
 
-具体内容请查阅[目录](#目录)，也可直接访问[Operating-document](https://flyleague-collection.github.io/Operating-document/)网站版
+具体内容请查阅[目录](./table_of_contents.md)，也可直接访问[Operating-document](https://flyleague-collection.github.io/Operating-document/)网站版
 
 ---
 
@@ -13,17 +13,9 @@
 
 
 
-## 目录
+## 文档入口
 
-### A. 总则
-
-1. [标准文件发行格式](./General/Standar_ file_format.md)
-
-### B. 管制员训练部
-
-
-
-### C. 飞行员训练部
+本系列文档的入口统一是[目录](./table_of_contents.md)
 
 
 
