@@ -9,8 +9,7 @@
 
 ---
 
-[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg?style=for-the-badge)](https://creativecommons.org/licenses/by-nc-sa/4.0)
-![Markdown](https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=Markdown&logoColor=ffffff)
+[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg?style=for-the-badge)](https://creativecommons.org/licenses/by-nc-sa/4.0)![Markdown](https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=Markdown&logoColor=ffffff)
 ![Release](https://img.shields.io/github/release/Flyleague-Collection/Operating-document?style=for-the-badge)![Issues](https://img.shields.io/github/issues/Flyleague-Collection/Operating-document?color=F48D73&style=for-the-badge)![Fork](https://img.shields.io/github/forks/Flyleague-Collection/Operating-document.svg?style=for-the-badge&label=Fork&maxAge=2592000)![Star](https://img.shields.io/github/stars/Flyleague-Collection/Operating-document.svg?style=for-the-badge&label=Star&maxAge=2592000)
 
 
