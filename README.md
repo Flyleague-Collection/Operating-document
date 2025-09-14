@@ -23,4 +23,11 @@
 
 ## 许可证
 
-本项目基于 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh) 协议进行许可。
+本项目基于 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh) 协议进行许可
+
+
+
+## 行为准则
+
+在[CODE_OF_CONDUCT.md](https://github.com/Flyleague-Collection/SimpleFSD/blob/main/CODE_OF_CONDUCT.md)中查阅，请注意这里是COC是指Github社区的行为准则，而不同于[目录](./table_of_contents.md)内的用于模拟飞行的COC
+
