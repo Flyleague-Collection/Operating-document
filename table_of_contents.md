@@ -3,7 +3,7 @@
 ## 第一章 总则
 
 1. [标准文件发行格式](./General/Standar_ file_format.md)
-1. [行为准则（Code_of_Conduct）](./General/Code_of_Conduct.md)
+1. [行为准则（Code_of_Conduct）](./General/COC.md)
 
 
 
