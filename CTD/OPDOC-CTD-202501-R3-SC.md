@@ -1,8 +1,8 @@
-# 管制员考核大纲
+# 管制员培训大纲
 
-发行日期：2025年9月14日
+发行日期：2025年10月2日
 
-文件编号：OPDOC-CTD-202501-R2-SC
+文件编号：OPDOC-CTD-202501-R3-SC
 
 
 
@@ -25,11 +25,12 @@
 
 ## 修订记录
 
-| 版本 | 时间       | 编者                   | 描述                           |
-| ---- | ---------- | ---------------------- | ------------------------------ |
-| 0.1  | 2025.05.22 | 2352                   | 初版                           |
-| 1.0  | 2025.07.09 | 2352、Yiheng Gui(5516) | 重构、增加内容                 |
-| 2.0  | 2025.09.14 | Yiheng Gui(5516)       | 重构、增加至Operating-document |
+| 版本 | 时间       | 描述                                       | 编者                       |
+| ---- | ---------- | ------------------------------------------ | -------------------------- |
+| R0   | 2025.05.22 | 初版                                       | 2352                       |
+| R1   | 2025.07.09 | 重构<br />增加内容                         | 2352<br />Yiheng Gui(5516) |
+| R2   | 2025.09.14 | 重构<br />增加至Operating-document         | Yiheng Gui(5516)           |
+| R3   | 2025.10.02 | 取消连飞小时数要求<br />增加教员、教师部分 | Yiheng Gui(5516)           |
 
 
 
@@ -65,7 +66,7 @@
 
 2.5 先观摩和学习：新人管制员，在初次来到此区域前，必须进行观摩或学习该区域的规定等。
 
-2.6 正确的呼号连接：当观察员的形式连接服务器时，必须以“呼号_OBS”的形式进行连接，例如：5516_OBS。职员在表明身份后，可以其他名称连接，例如：OPDOCCTD、5516_SUP、OPDOC1A等。
+2.6 正确的呼号连接：当观察员的形式连接服务器时，必须以“呼号_OBS”的形式进行连接，例如：5516_OBS。职员在表明身份后，可以其他名称连接，例如：5516_SUP等。
 
 2.7 管制员不得多开：任何管制员上线的管制席位仅在同一时间段使用1个机组或管制连接，例如：同时以管制员的1个连接和同时以机组的1个连接，这是不允许的。但同时以OBS的1个连接和同时以机组的1个连接，这是合规的。
 
@@ -159,22 +160,22 @@
 
 #### 5.1 管制权限对照表
 
-| 权限中文名               | 英语全称                      | 缩写                                             | 管制范围                                           | 备注         |
-| ------------------------ | ----------------------------- | ------------------------------------------------ | -------------------------------------------------- | ------------ |
-| 观察员                   | Observer                      | OBS                                              |                                                    | 仅能进行观察 |
-| 塔台管制员<br />（见习） | Student 1 Under Mentoring     | S1 UM、S1 见习                                   | GND/DEL<br />Ground/Delivery<br />（地面/放行）    |              |
-| 塔台管制员<br />（正式） | Student 1                     | S1                                               | GND/DEL<br />Ground/Delivery<br />（地面/放行）    |              |
-| 塔台管制员<br />（资深） | Student 2                     | S2                                               | TWR<br />Tower<br />（塔台）                       |              |
-| 非雷达管制员             | Tier 2                        | T2                                               | Procedural<br />Tower<br />（塔台）                |              |
-| 进近管制员<br />（见习） | Student 3 Under Mentoring     | S3 UM、S3 见习                                   | TMA<br />Termina Control Area<br />（终端）        |              |
-| 进近管制员<br />（正式） | Student 3                     | S3                                               | TMA<br />Termina Control Area<br />（终端）        |              |
-| 区域管制员<br />（见习） | Control 1<br/>Under Mentoring | C1 UM、C1 见习                                   | ACC<br />Area Control Centre<br />（区域管制中心） |              |
-| 区域管制员<br />（正式） | Control 1                     | C1                                               | ACC<br />Area Control Centre<br />（区域管制中心） |              |
-| 区域管制员<br />（弃用） | Control 2<br/>（弃用）        | C2<br/>（弃用）                                  |                                                    | 弃用         |
-| 区域管制员<br />（资深） | Control 3                     | ACC<br/>Area Control centre<br/>（区域管制中心） |                                                    |              |
-| 塔台教员                 | Instructor 1                  | I1                                               |                                                    |              |
-| 进近教员                 | Instructor 2                  | I2                                               |                                                    |              |
-| 区域教员                 | Instructor 3                  | I3                                               |                                                    |              |
+| 权限中文名               | 英语全称                      | 缩写            | 管制范围                                           | 备注         |
+| ------------------------ | ----------------------------- | --------------- | -------------------------------------------------- | ------------ |
+| 观察员                   | Observer                      | OBS             |                                                    | 仅能进行观察 |
+| 塔台管制员<br />（见习） | Student 1 Under Mentoring     | S1 UM、S1 见习  | GND/DEL<br />Ground/Delivery<br />（地面/放行）    |              |
+| 塔台管制员<br />（正式） | Student 1                     | S1              | GND/DEL<br />Ground/Delivery<br />（地面/放行）    |              |
+| 塔台管制员<br />（资深） | Student 2                     | S2              | TWR<br />Tower<br />（塔台）                       |              |
+| 非雷达管制员             | Tier 2                        | T2              | Procedural<br />Tower<br />（塔台）                |              |
+| 进近管制员<br />（见习） | Student 3 Under Mentoring     | S3 UM、S3 见习  | TMA<br />Termina Control Area<br />（终端）        |              |
+| 进近管制员<br />（正式） | Student 3                     | S3              | TMA<br />Termina Control Area<br />（终端）        |              |
+| 区域管制员<br />（见习） | Control 1<br/>Under Mentoring | C1 UM、C1 见习  | ACC<br />Area Control Centre<br />（区域管制中心） |              |
+| 区域管制员<br />（正式） | Control 1                     | C1              | ACC<br />Area Control Centre<br />（区域管制中心） |              |
+| 区域管制员<br />（弃用） | Control 2<br/>（弃用）        | C2<br/>（弃用） |                                                    | 弃用         |
+| 区域管制员<br />（资深） | Control 3                     | C3              | ACC<br/>Area Control Centre<br/>（区域管制中心）   |              |
+| 塔台教员                 | Instructor 1                  | I1              |                                                    |              |
+| 进近教员                 | Instructor 2                  | I2              |                                                    |              |
+| 区域教员                 | Instructor 3                  | I3              |                                                    |              |
 
 
 
@@ -201,7 +202,7 @@
 #### 准入条件
 
 - 拥有对管制工作的热爱
-- 注册满48小时、连飞时长 > 4小时（或满足Vatsim小时数 > 50小时）
+- 注册满48小时
 - 机组的中英文陆空能力
 - 了解管制员的规章制度
 - 简单的Metar报文解读能力
@@ -243,7 +244,7 @@
 #### S1 Under Mentoring Sweatbox 考核标准
 
 - 陆空对话高效、科学
-- 放行效率不低于15 架/小时（7.5 架/半小时）
+- 放行效率不低于15架/小时（7.5 架/半小时）
 - 机组计划及时检查出错误
 - 滑行机组不出现对头、危险接近等情况
 - 良好的职业操守
@@ -254,7 +255,7 @@
 #### S1 Under Mentoring 授予标准
 
 - 通过理论考核
-- 参与至少3 场Sweatbox 训练
+- 参与至少3场Sweatbox 训练
 - 通过Sweatbox 训练
 
 注：Student 1 Under Mentoring 权限不需要在线训练。
@@ -470,7 +471,7 @@ Sweatbox文本应含有进离场航空器，10~12架次。
 
 #### Sweatbox 训练
 
-区域Sweatbox训练次数为**1~5次**
+区域Sweatbox训练次数为**1~5次**。
 
 - 移交的时机处理
 
@@ -490,7 +491,7 @@ Sweatbox文本应含有进离场航空器，10~12架次。
 
 ### Control 1 Under Mentoring
 
-#### C1 Under Mentoring Sweatbox考核标准
+#### C1 Under Mentoring Sweatbox 考核标准
 
 Sweatbox文本应含有对向含有潜在冲突的航空器，**10~12架次。**
 
@@ -560,9 +561,88 @@ Sweatbox文本应含有对向含有潜在冲突的航空器，**10~12架次。**
 
 ## 第六章 管制教员
 
----
+### 总则
 
-未完待续
+#### 准入条件
+
+- 获得“Control 3 区域管制员（资深）”管制权限
+- 管制时长 > 150小时
+- 熟练掌握考核大纲
+- 能够胜任各项培训任务
+- 为人正直有耐心
+
+ 
+
+### Instructor 1 考核标准
+
+- 给与学员足够的指导
+- 指出学员存在的问题
+- 熟练运用EuroScope的Start Sweatbox模式
+- 能够为学员进行一场模拟机训练
+- 熟练塔台知识点
+
+
+
+### Instructor 2 考核标准
+
+- 给与学员足够的指导
+- 指出学员存在的问题
+- 熟练运用EuroScope的Start Sweatbox模式
+- 能够为学员进行一场模拟机训练
+- 熟练进近知识点
+
+
+
+### Instructor 3 考核标准
+
+- 给与学员足够的指导
+- 指出学员存在的问题
+- 熟练运用EuroScope的Start Sweatbox模式
+- 能够为学员进行一场模拟机训练
+- 熟练区域知识点
+
+
+
+## 第七章 管制教师
+
+### 总则
+
+#### 准入条件
+
+- 获得“Student 2 塔台管制员（资深）”管制权限
+- 熟练掌握考核大纲
+- 能够胜任各项培训任务
+- 为人正直有耐心
+
+
+
+### Tower Mentor 考核标准
+
+- 给与学员足够的指导
+- 指出学员存在的问题
+- 熟练运用EuroScope的Start Sweatbox模式
+- 能够为学员进行一场模拟机训练
+- 熟练塔台知识点
+
+
+
+### Approach Mentor 考核标准
+
+- 给与学员足够的指导
+- 指出学员存在的问题
+- 熟练运用EuroScope的Start Sweatbox模式
+- 能够为学员进行一场模拟机训练
+- 熟练进近知识点
+
+
+
+### Centre Mentor 考核标准
+
+- 给与学员足够的指导
+- 指出学员存在的问题
+- 熟练运用EuroScope的Start Sweatbox模式
+- 能够为学员进行一场模拟机训练
+- 熟练区域知识点
 
 
 
