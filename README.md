@@ -30,11 +30,13 @@ PTD - 飞行员训练部，通常放于培训飞行员所用到的材料等
 
 
 
-## 试用的平台？
+## 适用的平台？
 
 目前我们已经将这套方案启用于“APOCFLY 天启模拟飞行平台”上，您可以扫描下列二维码或[点此](https://qm.qq.com/q/5qyq2c4n9m)加群。
 
-<img src="./assets/qrcode_1759422014906.jpg" alt="qrcode_1759422014906" style="zoom:25%;" />
+[<img src="./assets/qrcode_1759422014906.jpg" alt="qrcode_1759422014906" style="zoom:25%;" />](https://qm.qq.com/q/5qyq2c4n9m)
+
+
 
 
 
