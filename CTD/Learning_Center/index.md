@@ -16,7 +16,7 @@
 
 塔台管制：
 
-- [陆空对话（空中交通无线电通话用语）](./Radiotelephony_Communications_for_Air_Traffic_Services/index.md)
+- [陆空对话（空中交通无线电通话用语）](/Radiotelephony_Communications_for_Air_Traffic_Services/index.md)
 - Metar报文解读
 - eAIP航图解读
 - RVSM飞行高度层
