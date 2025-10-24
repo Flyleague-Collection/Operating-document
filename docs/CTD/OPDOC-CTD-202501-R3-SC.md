@@ -648,10 +648,10 @@ Sweatbox文本应含有对向含有潜在冲突的航空器，**10~12架次。**
 
 ## 参考资料
 
-[1] [Globa- Controller Administration Policy (GCAP)](https://cdn.vatsim.net/policy-documents/GCAP_v1.1_Release.pdf)
+[1] [VATSIM.Globa- Controller Administration Policy (GCAP)](https://cdn.vatsim.net/policy-documents/GCAP_v1.1_Release.pdf)
 
-[2] [Vatsim特殊席位表](https://vats.im/designated-positions)
+[2] [VATSIM.Vatsim特殊席位表](https://vats.im/designated-positions)
 
-[3] [进近管制员百度百科](https://baike.baidu.com/item/进近管制员/15416825)
+[3] [百度百科.进近管制员](https://baike.baidu.com/item/进近管制员/15416825)
 
-[4] [VATPRC管制员课程](https://moodle.vatprc.net/course/index.php)
+[4] [VATPRC.管制员课程](https://moodle.vatprc.net/course/index.php)

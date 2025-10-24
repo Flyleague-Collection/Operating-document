@@ -1,0 +1,91 @@
+site_name: APOCFLY模拟飞行·文档站
+site_url: https://www.apocfly.com
+repo_url: https://github.com/Flyleague-Collection/Operating-document
+repo_name: Flyleague-Collection/Operating-document
+edit_uri: edit/main/docs/
+
+theme:
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/pencil 
+    view: material/eye
+  features:
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    - navigation.tracking
+    # - navigation.tabs
+    # - navigation.tabs.sticky
+    # - navigation.sections
+    - navigation.expand
+    - navigation.path
+    # - navigation.prune
+    # - navigation.indexes
+    # - toc.follow
+    # - toc.integrate
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - search.share
+    - navigation.footer
+    - content.action.edit
+  favicon: images/favicon.png
+  name: material
+  language: zh
+  font:
+    text: Roboto
+    code: Roboto Mono
+  logo: assets/Logo.png
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/link
+        name: Switch to light mode
+        
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to dark mode
+
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch-off
+        name: Switch to system preference
+extra:
+  generator: true
+  homepage: https://www.apocfly.com
+  version:
+    provider: mike
+    default: stable
+    alias: true
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Flyleague-Collection/Operating-document
+  scope: /
+
+# nav:
+  # - 
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      enable_creation_date: true
+  - git-committers:
+      repository: Flyleague-Collection/Operating-document
+      branch: main
+  # - projects
+  # - optimize
+  # - offline
+
+    
+  # - social
+  # - blog
+  # - tags
+  
+copyright: Copyright &copy; 2025 Yiheng Master Gui. All rights reserved. <br> CC BY-NC-SA 4.0 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0" target="_blank" rel="noopener noreferrer">https://creativecommons.org/licenses/by-nc-sa/4.0</a>. <br>

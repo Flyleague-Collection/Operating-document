@@ -18,17 +18,6 @@
 
 
 
-## 使用Python库
-
-```python
-pip install mkdocs
-pip install mkdocs-git-revision-date-localized-plugin
-pip install mkdocs-git-committers-plugin-2
-pip install mkdocs-git-authors-plugin
-```
-
-
-
 ## 文件分类的说明？
 
 本文档站有许多分文件夹，以下将讲述他们的用途：

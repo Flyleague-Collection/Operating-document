@@ -30,7 +30,7 @@ Radiotelephony Communications for Air Traffic Services
 
 ## 三、总则
 
-> [!Note]
+> [!NOTE]
 >
 > 注：
 >
@@ -87,7 +87,7 @@ Radiotelephony Communications for Air Traffic Services
 
 
 
-> [!Note]
+> [!NOTE]
 >
 > 注：航空器驾驶员应以完整呼号终止复诵。
 >
@@ -253,7 +253,7 @@ Radiotelephony Communications for Air Traffic Services
 
 英语读法：LKO，读作：LIMA KILO OSCAR（逐一读出字母）
 
-> [!Note]
+> [!NOTE]
 >
 > 注：在进离程序中，VOR和NDB也使用如上读法，例如：VYK-01A（大王庄洞幺ALPHA、VYK-ZE-RO WUN ALPHA）
 >
@@ -320,7 +320,7 @@ A320，读作：A-320；
 
 B738，读作：B738 或 B737 - 800。
 
-> [!Note]
+> [!NOTE]
 >
 > 注：“-”在航空领域通常读作“减”，而并非“杠”。
 
@@ -336,7 +336,7 @@ B738，读作：B738 或 B737 - 800。
 
 航空器驾驶员驾驶着塞斯纳飞机制造商，注册号为：G-ABCD时，有以下两种方式：
 
-> [!Note]
+> [!NOTE]
 >
 > 注：飞机制造商的名称可读可不读，下同。
 
@@ -353,7 +353,7 @@ B738，读作：B738 或 B737 - 800。
 
   - 航空器注册号的第一个字母加至少最后2个字母：C G-CD，读作：[塞斯纳（Cessna）] GOLF CHARLIE DELTA
 
-> [!Note]
+> [!NOTE]
 >
 > 注：只有管制单位缩减了呼号后，航空器才可使用缩减后的呼号。
 
@@ -376,7 +376,7 @@ B738，读作：B738 或 B737 - 800。
 
   - 航空器经营人的无线电呼号+航空器的注册号中和至少最后两个字母：CCA CD，读作：国际/国航（Air China）CHARLIE DELTA
 
-> [!Note]
+> [!NOTE]
 >
 > 注：采用飞机航班号的读法无省略。
 
@@ -390,4 +390,4 @@ B738，读作：B738 或 B737 - 800。
 
 ## 参考资料
 
-[1] [空中交通无线电通话用语（第四次征求意见版V79）](./References/空中交通无线电通话用语（第四次征求意见版V79）.pdf)
+[1] [CAAC.空中交通无线电通话用语（第四次征求意见版V79）](./References/空中交通无线电通话用语（第四次征求意见版V79）.pdf)
