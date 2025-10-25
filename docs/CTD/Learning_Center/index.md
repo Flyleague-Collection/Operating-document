@@ -2,7 +2,7 @@
 
 ## 一、简介
 
-本学习中心是与 [管制员考核大纲](/CTD/OPDOC-CTD-202501-R3-SC) 配套的一个学习理论知识的地方，也是任何管制员的必经之路，在完成每一章的学习后，我们会有一个考试，这是为了检测你的理论知识是否符合大纲的要求，也就是符合该席位上管的要求。
+本学习中心是与 [管制员考核大纲](../OPDOC-CTD-202501-R3-SC.md) 配套的一个学习理论知识的地方，也是任何管制员的必经之路，在完成每一章的学习后，我们会有一个考试，这是为了检测你的理论知识是否符合大纲的要求，也就是符合该席位上管的要求。
 
 任何Sweatbox训练的前提都是理论，如果一个管制员的理论知识不够熟练，那么再次前提下继续Sweatbox训练都将是徒劳的，没有用的。
 
@@ -16,10 +16,10 @@
 
 塔台管制：
 
-- [陆空对话（空中交通无线电通话用语）](/CTD/Learning_Center/Radiotelephony_Communications_for_Air_Traffic_Services)
+- [陆空对话（空中交通无线电通话用语）](Radiotelephony_Communications_for_Air_Traffic_Services.md)
 - Metar报文解读
 - eAIP航图解读
-- [RVSM飞行高度层](/CTD/Learning_Center/RVSM_flight_level)
+- [RVSM飞行高度层](RVSM_flight_level.md)
 - 飞行情报区
 - 空域
 - 班机航路的使用和查询
@@ -67,4 +67,4 @@
 
 ## 三、参考资料
 
-[1] [管制员考核大纲](/CTD/OPDOC-CTD-202501-R3-SC)
+[1] [管制员考核大纲](../OPDOC-CTD-202501-R3-SC.md)

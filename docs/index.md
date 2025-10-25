@@ -50,5 +50,5 @@ Copyright © 2025 Yiheng Master Gui. All rights reserved.
 
 ## 社区行为准则
 
-在[CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)中查阅，请注意这里是COC是指Github社区的行为准则，而不同于模拟飞行的COC。
+在[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)中查阅，请注意这里是COC是指Github社区的行为准则，而不同于模拟飞行的COC。
 

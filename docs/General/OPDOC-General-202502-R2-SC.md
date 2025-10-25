@@ -159,6 +159,6 @@
 
 ## 参考资料
 
-[1] [VATSIM 行为守则 中文翻译](https://community.vatprc.net/t/topic/9688)
+[1] [VATSIM.行为守则 中文翻译](https://community.vatprc.net/t/topic/9688)
 
-[2] [VATSIM Code of Conduct 英文原版](https://vatsim.net/docs/policy/code-of-conduct)
+[2] [VATSIM.Code of Conduct 英文原版](https://vatsim.net/docs/policy/code-of-conduct)

@@ -22,7 +22,7 @@ RVSM Metric Flight Level
 
 ## RVSM 飞行高度层示意图
 
-<img src="/CTD/Learning_Center/assets/Schematic_diagram_of_RVSM_flight_level.png" alt="Schematic_diagram_of_RVSM_flight_level" style="zoom:25%;" />
+<img src="./assets/Schematic_diagram_of_RVSM_flight_level.png" alt="Schematic_diagram_of_RVSM_flight_level" style="zoom:25%;" />
 
 
 
@@ -34,7 +34,7 @@ RVSM Metric Flight Level
 
 在RVSM 空域中的所有航空器必须遵守“东单西双”原则，即为： 
 
-![Schematic_diagram_of_west and_east.png](Schematic_diagram_of_west and_east.png)
+<img src="./assets/Schematic_diagram_of_west_and_east.png" alt="Schematic_diagram_of_west_and_east" style="zoom:25%;" />
 
 向东飞行（0°~179°）的航空器使用单数飞行高度层飞行，向西飞行（180°~359°）的航空器使用单数飞行高度层飞行。
 
