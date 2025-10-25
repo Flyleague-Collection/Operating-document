@@ -5,6 +5,7 @@ repo_name: Flyleague-Collection/Operating-document
 edit_uri: edit/main/docs/
 
 theme:
+  custom_dir: overrides
   icon:
     repo: fontawesome/brands/github
     edit: material/pencil 
