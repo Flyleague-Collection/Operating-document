@@ -1,42 +1,36 @@
-# 运行文档 Operating-document
+## 🚀 **欢迎来到 APOCFLY 文档站！**
 
-[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg?style=for-the-badge)](https://creativecommons.org/licenses/by-nc-sa/4.0) ![Markdown](https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=Markdown&logoColor=ffffff)
-
-本项目是一个以Markdown语言以及文档站组成的一个模拟飞行平台运营所集成的所有文档，这包括：
-
-- 行为准则
-- 管制员考核大纲
-- ......
+> 这里不是普通的说明书，而是 **“把整片天空装进口袋”** 的魔法卷轴！
 
 
 
-## 您可以？
+### ✨ 你能在这里找到什么？
 
-- 将本仓库Fork下来，再用Github page将此项目运营在github服务器上
-- 将本仓库Fork下来，和我们一起对其进行编写！
-- 也可以将此项目部署在本地服务器上
-
-
-
-## 文件分类的说明？
-
-本文档站有许多分文件夹，以下将讲述他们的用途：
-
-```markdown
-General - 总则，通常放于适用于任何用户的文件
-CTD - 管制员训练部，通常放于培训管制员所用到的材料等
-PTD - 飞行员训练部，通常放于培训飞行员所用到的材料等
-```
+| 章节           | 一句话剧透                                        |
+| :------------- | :------------------------------------------------ |
+| **快速起飞**   | 3 分钟完成冷舱→离地，像叫外卖一样简单             |
+| **联飞管制**   | 告别“谁撞了我”——标准陆空通话复制粘贴即用          |
+| **开发者小灶** | 开放 API 、涂装 SDK，把脑洞写成代码就能让飞机上天 |
 
 
 
-## 适用的平台？
+### 🌈 文档站双件套
 
-目前我们已经将这套方案启用于“APOCFLY 天启模拟飞行平台”上，您可以扫描下列二维码或[点此](https://qm.qq.com/q/5qyq2c4n9m)加群。
+1. 🔍 **搜索框** = 黑匣子，丢关键词就能捞出官方答案
+2. 🗂️ **左侧目录** = 航图，点到哪飞哪，绝不偏航
 
-[<img src="./assets/qrcode_1759422014906.jpg" alt="qrcode_1759422014906" style="zoom:25%;" />](https://qm.qq.com/q/5qyq2c4n9m)
 
 
+### 📑网页书签
+
+| 名称               | 服务器地址                                                   |
+| ------------------ | ------------------------------------------------------------ |
+| TeamSpeak          | [ts.apocfly.com](ts3server://ts.apocfly.com)                 |
+| EuroScope / Swift  | fsd.apocfly.com                                              |
+| Chrome等网络浏览器 | [www.apocfly.com](https://www.apocfly.com/)                  |
+| 文档站             | [docs.apocfly.com](https://docs.apocfly.com)                 |
+| 模飞资源网盘       | [https://file.apocfly.com/apocfly](https://file.apocfly.com/apocfly) |
+| Github             | [https://github.com/Flyleague-Collection](https://github.com/Flyleague-Collection) |
 
 
 
@@ -51,4 +45,3 @@ Copyright © 2025 Yiheng Master Gui. All rights reserved.
 ## 社区行为准则
 
 在[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)中查阅，请注意这里是COC是指Github社区的行为准则，而不同于模拟飞行的COC。
-

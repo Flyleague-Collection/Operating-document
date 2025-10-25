@@ -4,4 +4,4 @@
 
 ---
 
-- [管制员培训中心·学习中心](Learning_Center/index.md)
+- [Operating-document.管制员培训中心·学习中心](Learning_Center/index.md)

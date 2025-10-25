@@ -68,8 +68,19 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/Flyleague-Collection/Operating-document
+    - icon: fontawesome/brands/bilibili
+      link: https://space.bilibili.com/3494374067407653
+    - icon: fontawesome/brands/tiktok
+      link: https://v.douyin.com/97uoxOsUrcA
+    - icon: fontawesome/brands/qq
+      link: https://qm.qq.com/q/5qyq2c4n9m
+    
   scope: /
 
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
 # nav:
   # - 
 
