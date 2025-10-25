@@ -35,12 +35,11 @@ Radiotelephony Communications for Air Traffic Services
 	注：
 	
 	1. 本手册用语中带*号部分为航空器驾驶员或车辆驾驶员使用的语言。
-	
-	1. 本手册用语通话结构中“…”内的内容不可改动。
-	2. 本手册用语通话结构中（ ）内的内容可以酌情替换或省略，例如高度层、地点或时间等。
-	3. 本手册用语通话结构中的“X”可以代表任何数字。
-	4. 本手册中的“高度（level）”如果没有特别注明均为泛指，可代表各种高度。
-	5. 本手册中使用“应”的地方是既有规章、标准中载明需要遵守的或强制执行的，不能擅自偏离。
+	2. 本手册用语通话结构中“…”内的内容不可改动。
+	3. 本手册用语通话结构中（ ）内的内容可以酌情替换或省略，例如高度层、地点或时间等。
+	4. 本手册用语通话结构中的“X”可以代表任何数字。
+	5. 本手册中的“高度（level）”如果没有特别注明均为泛指，可代表各种高度。
+	6. 本手册中使用“应”的地方是既有规章、标准中载明需要遵守的或强制执行的，不能擅自偏离。
 
 
 
@@ -255,9 +254,9 @@ Radiotelephony Communications for Air Traffic Services
 
 !!! note
 
-	
+
 	注：在进离程序中，VOR和NDB也使用如上读法，例如：VYK-01A（大王庄洞幺ALPHA、VYK-ZE-RO WUN ALPHA）
-	
+
 
 
 
@@ -389,6 +388,113 @@ B738，读作：B738 或 B737 - 800。
 
 
 
+#### 管制单位呼号的读法：
+
+| 管制单位或服务                                        | 汉语简称 | 后缀英语简称 |
+| ----------------------------------------------------- | -------- | ------------ |
+| 区域管制中心 （Area control center）                  | 区域     | CONTROL      |
+| 进近管制 （Approach control）                         | 进近     | APPROACH     |
+| 离场雷达管制 （Approach control radar departure）     | 离场     | DEPARTURE    |
+| 机场管制 （Aerodrome control）                        | 塔台     | TOWER        |
+| 地面活动管制 （Surface movement control）             | 地面     | GROUND       |
+| 放行许可发布 （Clearance delivery）                   | 放行     | DELIVERY     |
+| 机坪管制/管理服务（Apron control/management service） | 机坪     | APRON        |
+| 飞行服务/航空情报服务（Flight information service）   | 飞服     | INFORMATION  |
+| 航空电台 （Aeronautical station）                     | 电台     | RADIO        |
+| 五边监控席 （Final approach radar monitoring）        | 五边     | FINAL        |
+
+
+
+### 常用句式：
+
+##### 证实哪位叫：
+
+“哪个呼叫”+管制单位，“重复一遍你的呼号”
+
+ “STATION CALLING” + (ATC unit), “SAY AGAIN YOUR CALL SIGN”
+
+##### 保持联系：
+
+- 我将与你保持联系。
+
+  I will keep you advised.
+
+- 与我（我们）保持联系。
+
+  Keep me (us) advised.
+
+##### 无线电测试：
+
+- 你听我几个？
+  HOW DO YOU READ?
+- “听你”+数字+“个”
+  “I READ YOU (or READABILITY)” + number
+
+| 信号质量                                         | 汉语读法 | 英语读法 |
+| ------------------------------------------------ | -------- | -------- |
+| 不清楚（1） Unreadable                           | 一个     | WUN      |
+| 可断续听到（2） Readable now and then            | 两个     | TOO      |
+| 能听清但很困难（3） Readable but with difficulty | 三个     | TREE     |
+| 清楚（4） Readable                               | 四个     | FOW-er   |
+| 非常清晰（5） Perfectly readable                 | 五个     | FIFE     |
+
+!!! note
+	
+
+	注：此表应是每一位飞行员、管制员需记忆的内容
+
+##### 移交及转换频率：
+
+- 航空器呼号+“联系”+管制单位呼号+频率
+
+  aircraft call sign + “CONTACT” + ATC call sign + (“ON”) + frequency
+
+- “在”+时间+“联系”+单位呼号+频率；
+
+  “AT” + time + “CONTACT” + ATC call sign + (“ON”) + frequency
+
+- “过”+地点+“联系”+单位呼号+频率；
+
+  “OVER” + location + “CONTACT” + ATC call sign + (“ON”) + frequency
+
+- “如果联系不上”+管制指令
+
+  “IF NOT CONTACT” + ATC instructions
+
+- 航空器呼号+“转频到”+单位呼号+频率数值+“守听”
+
+  aircraft call sign + “STAND BY FOR” + ATC call sign + (“ON”) + frequency
+
+- 管制单位呼号+航空器呼号+“申请转换频率”+频率数值
+
+  ATC call sign + aircraft call sign + “REQUEST CHANGE TO” + frequency
+
+- 航空器呼号+（管制单位呼号）+“同意转换频率”
+
+  aircraft call sign + (ATC call sign) + “FREQUENCY CHANGE APPROVED”
+
+- 航空器呼号+（管制单位呼号）+“当前频率保持长守
+
+  aircraft call sign + (ATC call sign) + “REMAIN THIS FREQUENCY”
+
+- 航空器呼号+管制单位呼号+“守听”+（管制单位呼号）+频率数值
+
+  aircraft call sign + ATC call sign+ “MONITOR” + (ATC call sign) + frequency
+
+
+
+### 基本通话用语：
+
+!!! info
+	
+	注：
+	
+	在以下内容中，一句话同样含义的话通常有多种表达句式。在此，我们受限于篇幅限制，我们没有办法一一列举出来。如果在本章节以外的用语，需判断正确时，请翻阅以下链接中的文件：<br> 1. [CAAC.空中交通无线电通话用语（第四次征求意见版V79）](./References/空中交通无线电通话用语（第四次征求意见版V79）.pdf)；<br> 2. [CAAC.MH/T 4014-2003.空中交通无线电通话用语](https://www.caac.gov.cn/XXGK/XXGK/BZGF/HYBZ/201511/P020170804579259214829.pdf)；
+
+未完待续
+
 ## 参考资料
 
 [1] [CAAC.空中交通无线电通话用语（第四次征求意见版V79）](./References/空中交通无线电通话用语（第四次征求意见版V79）.pdf)
+
+[2] [CAAC.MH/T 4014-2003.空中交通无线电通话用语](https://www.caac.gov.cn/XXGK/XXGK/BZGF/HYBZ/201511/P020170804579259214829.pdf)

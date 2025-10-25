@@ -1,8 +1,10 @@
+# 主页
+
 ## 🚀 **欢迎来到 APOCFLY 文档站！**
 
+<img src="./assets/Logo.png" alt="Logo" style="zoom:25%;" />
+
 > 这里不是普通的说明书，而是 **“把整片天空装进口袋”** 的魔法卷轴！
-
-
 
 ### ✨ 你能在这里找到什么？
 
@@ -27,10 +29,10 @@
 | ------------------ | ------------------------------------------------------------ |
 | TeamSpeak          | [ts.apocfly.com](ts3server://ts.apocfly.com)                 |
 | EuroScope / Swift  | fsd.apocfly.com                                              |
-| Chrome等网络浏览器 | [www.apocfly.com](https://www.apocfly.com/)                  |
+| Chrome等网络浏览器 | [www.apocfly.com](https://www.apocfly.com)                   |
 | 文档站             | [docs.apocfly.com](https://docs.apocfly.com)                 |
-| 模飞资源网盘       | [https://file.apocfly.com/apocfly](https://file.apocfly.com/apocfly) |
-| Github             | [https://github.com/Flyleague-Collection](https://github.com/Flyleague-Collection) |
+| 模飞资源网盘       | [file.apocfly.com/apocfly](https://file.apocfly.com/apocfly) |
+| Github             | [github.com/Flyleague-Collection](https://github.com/Flyleague-Collection) |
 
 
 

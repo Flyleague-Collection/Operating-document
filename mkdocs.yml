@@ -11,6 +11,7 @@ theme:
     edit: material/pencil 
     view: material/eye
   features:
+    - navigation.path
     - navigation.instant
     - navigation.instant.prefetch
     - navigation.instant.progress
@@ -19,7 +20,6 @@ theme:
     # - navigation.tabs.sticky
     # - navigation.sections
     - navigation.expand
-    - navigation.path
     # - navigation.prune
     # - navigation.indexes
     # - toc.follow
@@ -91,6 +91,7 @@ plugins:
   - git-committers:
       repository: Flyleague-Collection/Operating-document
       branch: main
+      token: !!python/object/apply:os.getenv ["MKDOCS_GIT_COMMITTERS_APIKEY"]
   # - projects
   # - optimize
   # - offline
