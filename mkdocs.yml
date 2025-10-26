@@ -91,9 +91,9 @@ plugins:
       repository: Flyleague-Collection/Operating-document
       branch: main
       token: !!python/object/apply:os.getenv ["MKDOCS_GIT_COMMITTERS_APIKEY"]
-  - info
+  # - info
   # - privacy
-  - tags
+  # - tags
 
   # - blog
 
