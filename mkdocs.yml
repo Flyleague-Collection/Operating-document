@@ -91,15 +91,20 @@ plugins:
   - git-committers:
       repository: Flyleague-Collection/Operating-document
       branch: main
-      # token: !!python/object/apply:os.getenv ["MKDOCS_GIT_COMMITTERS_APIKEY"]
-      token: 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
+      token: !!python/object/apply:os.getenv ["MKDOCS_GIT_COMMITTERS_APIKEY"]
+  - info
+  # - privacy
+  - tags
+
+  # - blog
+
+      # token: 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
   # - projects
   # - optimize
   # - offline
 
     
   # - social
-  # - blog
   # - tags
   
 copyright: Copyright &copy; 2025 Yiheng Master Gui. All rights reserved. <br> CC BY-NC-SA 4.0 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0" target="_blank" rel="noopener noreferrer">https://creativecommons.org/licenses/by-nc-sa/4.0</a>. <br>
