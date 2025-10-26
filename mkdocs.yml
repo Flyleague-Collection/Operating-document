@@ -91,7 +91,8 @@ plugins:
   - git-committers:
       repository: Flyleague-Collection/Operating-document
       branch: main
-      token: !!python/object/apply:os.getenv ["MKDOCS_GIT_COMMITTERS_APIKEY"]
+      # token: !!python/object/apply:os.getenv ["MKDOCS_GIT_COMMITTERS_APIKEY"]
+      token: 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
   # - projects
   # - optimize
   # - offline
