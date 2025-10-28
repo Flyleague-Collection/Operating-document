@@ -28,8 +28,10 @@ jobs:
           restore-keys: |
             mkdocs-material-
       - run: pip install mkdocs-material
+      - run: pip install --upgrade --force-reinstall mkdocs-material  # 更新mkdocs
       - run: pip install mkdocs-git-revision-date-localized-plugin
       - run: pip install mkdocs-git-committers-plugin-2
       - run: pip install mkdocs-git-authors-plugin
+      - run: pip install pygments
 
       - run: mkdocs gh-deploy --force

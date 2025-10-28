@@ -1,5 +1,6 @@
 site_name: APOCFLY模拟飞行·文档站
 site_url: https://www.apocfly.com
+site_description: Use Markdown language to finish the Operating document.
 repo_url: https://github.com/Flyleague-Collection/Operating-document
 repo_name: Flyleague-Collection/Operating-document
 edit_uri: edit/main/docs/
@@ -17,10 +18,10 @@ theme:
     - navigation.tracking
     # - navigation.tabs
     # - navigation.tabs.sticky
-    # - navigation.sections
+    - navigation.sections
     - navigation.expand
-    # - navigation.prune
-    # - navigation.indexes
+    - navigation.prune
+    # - navigation.indexes  # 开启DIY导航栏
     # - toc.follow
     # - toc.integrate
     - navigation.top
@@ -29,6 +30,11 @@ theme:
     - search.share
     - navigation.footer
     - content.action.edit
+    # code
+    - content.code.select
+    - content.code.copy
+    - content.code.annotate
+
   favicon: images/favicon.png
   name: material
   language: zh
@@ -60,10 +66,10 @@ theme:
 extra:
   generator: true
   homepage: https://www.apocfly.com
-  version:
-    provider: mike
-    default: stable
-    alias: true
+  # version:
+    # provider: mike
+    # default: stable
+    # alias: true
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/Flyleague-Collection/Operating-document
@@ -77,11 +83,29 @@ extra:
   scope: /
 
 markdown_extensions:
+  - md_in_html
+  # - attr_list
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+
 # nav:
-  # - 
+  # - 开发:
+    # - 
+  # - 主页: 
+  #   - index.md
+  # - 许可证: 
+  #   - license.md
+
+
 
 plugins:
   - search
@@ -95,7 +119,7 @@ plugins:
   # - privacy
   # - tags
 
-  # - blog
+  # - blog  # 播客 插件(可能导致兼容性错误)
 
       # token: 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
   # - projects

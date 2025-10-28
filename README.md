@@ -22,13 +22,15 @@
 ## 使用Python库
 
 ```python
-mkdocs                                    1.6.1
+mkdocs-material                           9.6.22
 mkdocs-get-deps                           0.2.0
 mkdocs-git-authors-plugin                 0.10.0
 mkdocs-git-committers-plugin-2            2.5.0
 mkdocs-git-revision-date-localized-plugin 1.4.7
 mkdocs-material                           9.6.8
 mkdocs-material-extensions                1.3.1
+pygments                                  2.19.1
+mike                                      2.1.3  # 弃用
 ```
 
 
@@ -42,13 +44,14 @@ mkdocs-material-extensions                1.3.1
 2. 分别使用pip安装以下：
 
    ```python
-   pip install mkdocs
+   pip install mkdocs-material
    pip install mkdocs-get-deps
    pip install mkdocs-git-authors-plugin
    pip install mkdocs-git-committers-plugin-2
    pip install mkdocs-git-revision-date-localized-plugin
    pip install mkdocs-material
    pip install mkdocs-material-extensions
+   pip install pygments
    ```
 
 3. 将本项目Clone下来
@@ -59,6 +62,24 @@ mkdocs-material-extensions                1.3.1
 4. 进入项目根目录，输入`mkdocs serve`
 
 5. 进行编写
+
+
+
+## 使用mike(弃用)
+
+### 发布新版本
+
+```powershell
+mike deploy --push --update-aliases 0.1 latest
+```
+
+
+
+### 设置默认版本
+
+```powershell
+mike set-default --push latest
+```
 
 
 
