@@ -10,28 +10,26 @@
       
       
       
-        <link rel="canonical" href="https://www.apocfly.com/General/OPDOC-General-202502-R2-SC/">
+        <link rel="canonical" href="https://www.apocfly.com/Programming/FSD/configuration/metar/metar_source/">
       
       
-        <link rel="prev" href="../OPDOC-General-202501-R3-SC/">
+        <link rel="prev" href="../metar_raw_example/">
       
       
-        <link rel="next" href="../../Programming/">
       
-      
-      <link rel="icon" href="../../images/favicon.png">
+      <link rel="icon" href="../../../../../images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
     
     
       
-        <title>行为准则 - APOCFLY模拟飞行·文档站</title>
+        <title>Metar报文源配置 - APOCFLY模拟飞行·文档站</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.84d31ad4.min.css">
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.84d31ad4.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -76,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#metar" class="md-skip">
           跳转至
         </a>
       
@@ -94,7 +92,7 @@
   <nav class="md-header__inner md-grid" aria-label="页眉">
     <a href="https://www.apocfly.com" title="APOCFLY模拟飞行·文档站" class="md-header__button md-logo" aria-label="APOCFLY模拟飞行·文档站" data-md-component="logo">
       
-  <img src="../../assets/Logo.png" alt="logo">
+  <img src="../../../../../assets/Logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -111,7 +109,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              行为准则
+              Metar报文源配置
             
           </span>
         </div>
@@ -246,7 +244,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="https://www.apocfly.com" title="APOCFLY模拟飞行·文档站" class="md-nav__button md-logo" aria-label="APOCFLY模拟飞行·文档站" data-md-component="logo">
       
-  <img src="../../assets/Logo.png" alt="logo">
+  <img src="../../../../../assets/Logo.png" alt="logo">
 
     </a>
     APOCFLY模拟飞行·文档站
@@ -273,7 +271,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../../../.." class="md-nav__link">
         
   
   
@@ -295,7 +293,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../CODE_OF_CONDUCT/" class="md-nav__link">
+      <a href="../../../../../CODE_OF_CONDUCT/" class="md-nav__link">
         
   
   
@@ -317,7 +315,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../LICENSE/" class="md-nav__link">
+      <a href="../../../../../LICENSE/" class="md-nav__link">
         
   
   
@@ -386,7 +384,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../CTD/" class="md-nav__link">
+      <a href="../../../../../CTD/" class="md-nav__link">
         
   
   
@@ -409,7 +407,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../CTD/OPDOC-CTD-202501-R3-SC/" class="md-nav__link">
+      <a href="../../../../../CTD/OPDOC-CTD-202501-R3-SC/" class="md-nav__link">
         
   
   
@@ -449,7 +447,7 @@
   
   
   
-    <a href="../../CTD/Learning_Center/" class="md-nav__link">
+    <a href="../../../../../CTD/Learning_Center/" class="md-nav__link">
       
   
   
@@ -465,234 +463,6 @@
     </a>
   
 
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-    
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-    
-    
-      
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    General
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5">
-            <span class="md-nav__icon md-icon"></span>
-            General
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    第一部分 总则 General
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../OPDOC-General-202501-R3-SC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    标准文件发行格式
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    行为准则
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  
-  <span class="md-ellipsis">
-    行为准则
-    
-  </span>
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="目录">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      目录
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      前言
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      修订记录
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      第一章 定义
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      第二章 总则
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      第三章 飞行员行为准则
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      第四章 管制员行为准则
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
-    <span class="md-ellipsis">
-      参考资料
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -730,7 +500,130 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    General
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            General
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../General/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第一部分 总则 General
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../General/OPDOC-General-202501-R3-SC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    标准文件发行格式
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../General/OPDOC-General-202502-R2-SC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    行为准则
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
@@ -746,7 +639,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Programming
@@ -760,7 +653,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Programming/" class="md-nav__link">
+      <a href="../../../../" class="md-nav__link">
         
   
   
@@ -780,6 +673,8 @@
                 
   
   
+    
+  
   
   
     
@@ -789,19 +684,17 @@
       
     
     
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-      
-    
-    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
-      
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" checked>
         
-  
-  
-  
-    <a href="../../Programming/FSD/" class="md-nav__link">
-      
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
   
   
   <span class="md-ellipsis">
@@ -810,12 +703,380 @@
   </span>
   
 
-      
-        <span class="md-nav__icon md-icon"></span>
-      
-    </a>
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            FSD
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SimpleFSD
+    
+  </span>
   
 
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    快速开始
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6_2_3" id="__nav_6_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Configuration
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../command_line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    命令行参数
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    配置文件介绍
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../environment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    环境变量
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2_3_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6_2_3_4" id="__nav_6_2_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Metar
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_2_3_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6_2_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Metar
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metar_html_example/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Metar报文源示例(html)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metar_json_example/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Metar报文源示例(json)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metar_raw_example/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Metar报文源示例(raw)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Metar报文源配置
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Metar报文源配置
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#metar_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metar报文源配置示例
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
       
     </li>
   
@@ -856,63 +1117,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#metar_1" class="md-nav__link">
     <span class="md-ellipsis">
-      前言
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      修订记录
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      第一章 定义
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      第二章 总则
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      第三章 飞行员行为准则
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      第四章 管制员行为准则
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
-    <span class="md-ellipsis">
-      参考资料
+      Metar报文源配置示例
     </span>
   </a>
   
@@ -934,7 +1141,7 @@
 
 
   
-    <a href="https://github.com/Flyleague-Collection/Operating-document/edit/main/docs/General/OPDOC-General-202502-R2-SC.md" title="编辑此页" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/Flyleague-Collection/Operating-document/edit/main/docs/Programming/FSD/configuration/metar/metar_source.md" title="编辑此页" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
     </a>
@@ -942,164 +1149,44 @@
   
 
 
-<h1 id="_1">行为准则</h1>
-<p>发行日期：2025年9月21日</p>
-<p>文件编号：OPDOC-General-202502-R2-SC</p>
-<h2 id="_2">前言</h2>
-<p>(有意留空)</p>
-<h2 id="_3">修订记录</h2>
+<h1 id="metar">Metar报文源配置</h1>
 <table>
 <thead>
 <tr>
-<th>版本</th>
-<th>时间</th>
-<th>描述</th>
-<th>编者</th>
+<th style="text-align: left;">配置项</th>
+<th style="text-align: left;">说明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>R1</td>
-<td>2025.09.21</td>
-<td>初版</td>
-<td>Yiheng Gui(5516)</td>
+<td style="text-align: left;">url</td>
+<td style="text-align: left;">查询地址, %s会被替换为机场ICAO码</td>
 </tr>
 <tr>
-<td>R2</td>
-<td>2025.10.01</td>
-<td>更改排版，无重大更改</td>
-<td>Yiheng Gui(5516)</td>
+<td style="text-align: left;">return_type</td>
+<td style="text-align: left;">url返回类型, 返回值分为raw, html, json三种</td>
+</tr>
+<tr>
+<td style="text-align: left;">reverse</td>
+<td style="text-align: left;">数据排列方式</td>
+</tr>
+<tr>
+<td style="text-align: left;">multiline</td>
+<td style="text-align: left;">数据分行方式</td>
+</tr>
+<tr>
+<td style="text-align: left;">selector</td>
+<td style="text-align: left;">数据选择器, 仅返回类型为html或json时生效</td>
 </tr>
 </tbody>
 </table>
-<h2 id="_4">第一章 定义</h2>
-<p>1 机师/飞行员(Pilot) - 在网络上以Swift连接且驾驶航空器的人员。</p>
-<p>2 管制员(Controller) - 在网络上以EuroScope连接且为航空器驾驶员提供服务的人员。</p>
-<p>3 向下兼容(Topdown)  -  一种管制的运行模式。提倡在尽可能的情况下其用该模式以覆盖多机场的管制。</p>
-<p>4 学员(Under Mentoring)  -  正在学习管制的人员。</p>
-<p>5 教员(Instructor)  -  教授学员的人员，且可以负责考核的人员。</p>
-<p>6 教师(Mentor)  -  教授学员的人员，但不可以负责考核的人员。</p>
-<p>7 客座(Transfer and Visiting Controller)  -  通过一种方式，使得别的平台的管制能够以<strong>简单</strong>的方式加入（需符合2.14的有关规定）。</p>
-<p>8 平移(Translation) - 通过一种方式，使别的平台的管制能够以<strong>更简单</strong>的方式加入，且负责后续权限晋升的培训工作。平台暂不接受此运行模式。</p>
-<p>9 成员/会员(Member) - 即将/已经持有一个可在网络上连线的账户的人员。</p>
-<p>10 网络(Network) - 在官方认证的、有明显标识的，可供成员连接的。既，视作网络。</p>
-<h2 id="_5">第二章 总则</h2>
-<p>2.1 尊重每一个人：如果该成员对飞行员或任何平台成员有不尊重或不文明的行为，就可能根据其严重程度，终止本次网络连接、甚至进行适当的封禁。</p>
-<p>2.2 适用基本常识：阅读和使用本手册里各种规则时，请记住，在本手册中，基本常识永远适用。</p>
-<p>2.3 人人平等：在网络中，每个人都是平等的，任何成员不得试图使用任何手段躲避原有的限制、惩罚等。</p>
-<p>2.4 每人一个：每位成员最多只能持有一个账号，不可以注册多个账号，且不得使用他人账号登录，即使对方允许。</p>
-<p>2.5 不得租借账号：成员持有的账号具有唯一性，不得进行租借。</p>
-<p>2.6 使用合格的软件：</p>
-<p>成员仅能使用以下软件连接至网络：</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>服务器地址</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>TeamSpeak</td>
-<td>ts.apocfly.com</td>
-</tr>
-<tr>
-<td>EuroScope</td>
-<td>fsd.apocfly.com</td>
-</tr>
-<tr>
-<td>Swift</td>
-<td>fsd.apocfly.com</td>
-</tr>
-<tr>
-<td>Chrome等网络浏览器</td>
-<td><a href="https://www.apocfly.com/">www.apocfly.com</a></td>
-</tr>
-</tbody>
-</table>
-<p>2.7 不得多开：任何管制员上线的会员仅允许在同一时间段，使用1个作为机组或管制的连接，例如：同时以管制员的1个连接和同时以机组的1个连接，这是不允许的；同时以两个管制员身份连接也是不允许的。但同时以OBS的1个连接和同时以机组的1个连接，这是合规的。</p>
-<p>2.8 不得挂机：任何成员连接至网络不得在有管制空域中进行挂机。</p>
-<p>2.9 合理的名称：在使用客户端连接至网络时，会出现"Realname"的填写框，需使用：注册CID、注册昵称、注册邮箱中任意一个（QQ号因在注册时不强制填写，故不作为身份的识别，不能在此处填写）。</p>
-<p>2.10 不得冒充：任何成员不得冒充网络上任何成员，如：网络上的超级管理员（SUP）、亦或者是管制等。</p>
-<p>2.11 倡导使用语音：我们倡导语音作为首选的通讯方式。也可使用文字进行通讯，可能会存在通讯消息传输的快慢。但，不存在等级差距，管制员应当同时提供两种管制方式，按需使用。</p>
-<p>2.12 遵循公职人员的要求：每个成员在连接至服务器后，如遇公职人员发出任何指令，必须遵守。如不遵守，将会被移除与网络的连接。当管制员和公职人员指令冲突时，优先遵循公职人员指令。</p>
-<p>2.13 先到先得：每位成员在连接至网络后，采用“先到先得”的方式对有限的资源进行分配，譬如：一个管制席位、一个机位等。</p>
-<h2 id="_6">第三章 飞行员行为准则</h2>
-<p>3.1 确保能掌握飞行器：我们虽鼓励新手参与连飞。但，如管制员认为当前空域繁忙且飞行员不能掌握飞机器的基本操作，可提出将飞行员暂时从网络中断开的方案。</p>
-<p>3.2 听从管制员指挥：在网络上连线，既代表想要接受管制服务，如不听从、不接受管制员指挥，将会移除与网络的连接。</p>
-<p>3.3 共同承担：平台允许双人机组，既多位飞行员同时以一个身份连接至服务器。但，如果在执行航班过程中出现违规的行为，处罚将共同承担。</p>
-<p>3.4 使用真实天气：我们推荐每一位飞行员使用真实的天气，且管制员将会根据此提供管制服务。</p>
-<p>3.5 及时更新导航数据：我们推荐每一位飞行员使用最新的导航数据，且管制员将会根据此提供管制服务。</p>
-<p>3.6 不得在热区进行连线：热区指：跑道、滑行道等，初次连接时可能会对他人产生影响的区域。极少数会发生在空中断线并重连，在此连接时应确保不会干扰他人正常飞行。</p>
-<p>3.7 提交飞行计划：在网络中，飞行员应尽可能的提供飞行计划以便其他机组/管制员查看。</p>
-<p>3.8 守听频道：在暂时无管制员上线的情况下，应尽可能的守听122.800MHz频道。</p>
-<p>3.9 不得在未经许可的情况下倍速/暂停：除非机组申请管制员明确同意的情况下，成员不得在模拟器上开启倍速或暂停。</p>
-<h2 id="_7">第四章 管制员行为准则</h2>
-<p>4.1 准时参与：请教员/学员准时参与互相约定的时间，若临时有事，需提前告知。</p>
-<p>4.2 提前作出准备：不要在面试、考核等活动开始后才翻阅理论资料。</p>
-<p>4.3 先观摩和学习：新人管制员，在初次来到此区域前，必须进行观摩或学习该区域的规定等。</p>
-<p>4.4 正确的呼号连接：当观察员的形式连接服务器时，必须以“呼号_OBS”的形式进行连接，例如：5516_OBS。职员在表明身份后，可以其他名称连接，例如：5516_SUP等。</p>
-<p>4.5 正确的席位名称：管制员仅允许以“呼号_席位代号”的形式连接，且仅允许连接以下席位：</p>
+<p>?&gt; 报文源配置错误可能会导致无法正确获取metar信息</p>
+<h2 id="metar_1">Metar报文源配置示例</h2>
 <ul>
-<li>DEL - 放行</li>
-<li>A_GND – 机坪（<strong>可用</strong>“RMP”替代、不负责放行）</li>
-<li>GND - 地面</li>
-<li>TWR - 塔台</li>
-<li>APP - 进近</li>
-<li>CTR - 区域</li>
-<li>FSS - 飞行服务站</li>
+<li><a href="/configuration/metar/metar_raw_example.md">RawMetar源示例</a></li>
+<li><a href="/configuration/metar/metar_html_example.md">HtmlMetar源示例</a></li>
+<li><a href="/configuration/metar/metar_json_example.md">JsonMetar源示例</a></li>
 </ul>
-<p>4.6 遵循视程距离规定：</p>
-<p>连接到网络上的每一位成员，席位的视程距离如下：</p>
-<table>
-<thead>
-<tr>
-<th>席位</th>
-<th>距离</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>OBS</td>
-<td>≤ 300 nm</td>
-</tr>
-<tr>
-<td>DEL/GND/RMP</td>
-<td>≤ 20 nm</td>
-</tr>
-<tr>
-<td>TWR</td>
-<td>≤ 50 nm</td>
-</tr>
-<tr>
-<td>APP/DEP</td>
-<td>≤ 150 nm</td>
-</tr>
-<tr>
-<td>CTR</td>
-<td>≤ 600 nm</td>
-</tr>
-<tr>
-<td>FSS</td>
-<td>≤ 1500 nm</td>
-</tr>
-</tbody>
-</table>
-<p>4.7 先到先得：管制员连接时遵循“先到先得”原则，席位预定同理。由于不能上相同的席位。因此，若上一位管制在到达预定时间后还在“霸占席位”，不作出任何换班/交接等行为，则必须在5分钟内交接并断开连接。</p>
-<p>4.8 遵守规定：每一位在网络上以“管制员”身份连接的用户，必须遵守各规则以及程序。</p>
-<p>4.9 客座但不负责后续培训：在其他平台接受训练的管制员，若以客座管制员方式加入平台，则后续管制员培训不由本平台进行。</p>
-<p>4.10 仅运行以下客座：</p>
-<p>仅允许以下模拟飞行平台的<strong>在职</strong>管制员通过客座管制员的身份加入本平台：</p>
-<ul>
-<li>Vatprc（其他Vatsim分部的管制，视情况客座）</li>
-<li>Skyline</li>
-<li>Xflysim</li>
-<li>Chinaflier</li>
-<li>Sino</li>
-</ul>
-<h2 id="_8">参考资料</h2>
-<p>[1] <a href="https://community.vatprc.net/t/topic/9688">VATSIM.行为守则 中文翻译</a></p>
-<p>[2] <a href="https://vatsim.net/docs/policy/code-of-conduct">VATSIM.Code of Conduct 英文原版</a></p>
 
 
 
@@ -1122,7 +1209,7 @@
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年10月26日 10:40:17 UTC">2025年10月26日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年10月28日 11:03:35 UTC">2025年10月28日</span>
   </span>
 
     
@@ -1132,7 +1219,7 @@
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年9月14日 04:16:58 UTC">2025年9月14日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年10月28日 11:03:35 UTC">2025年10月28日</span>
   </span>
 
     
@@ -1149,16 +1236,6 @@
 
     
     <nav>
-      
-        <a href="https://github.com/DamnQuan" class="md-author" title="@DamnQuan">
-          
-          <img src="https://avatars.githubusercontent.com/u/131784446?v=4&size=72" alt="DamnQuan">
-        </a>
-      
-        <a href="https://github.com/web-flow" class="md-author" title="@web-flow">
-          
-          <img src="https://avatars.githubusercontent.com/u/19864447?v=4&size=72" alt="web-flow">
-        </a>
       
         <a href="https://github.com/supermastergui" class="md-author" title="@supermastergui">
           
@@ -1200,7 +1277,7 @@
       <nav class="md-footer__inner md-grid" aria-label="页脚" >
         
           
-          <a href="../OPDOC-General-202501-R3-SC/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 标准文件发行格式">
+          <a href="../metar_raw_example/" class="md-footer__link md-footer__link--prev" aria-label="上一页: Metar报文源示例(raw)">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1210,27 +1287,11 @@
                 上一页
               </span>
               <div class="md-ellipsis">
-                标准文件发行格式
+                Metar报文源示例(raw)
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../../Programming/" class="md-footer__link md-footer__link--next" aria-label="下一页: 附录 技术专题">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                下一页
-              </span>
-              <div class="md-ellipsis">
-                附录 技术专题
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
         
       </nav>
     
@@ -1314,10 +1375,10 @@
     
     
       
-      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.prune", "navigation.top", "search.suggest", "search.highlight", "search.share", "navigation.footer", "content.action.edit", "content.code.select", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../../../../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.prune", "navigation.top", "search.suggest", "search.highlight", "search.share", "navigation.footer", "content.action.edit", "content.code.select", "content.code.copy", "content.code.annotate"], "search": "../../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      <script src="../../../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
     
   </body>
