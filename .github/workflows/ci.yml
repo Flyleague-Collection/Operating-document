@@ -27,15 +27,21 @@ jobs:
           path: ~/.cache 
           restore-keys: |
             mkdocs-material-
-      
+              
       - run: pip install mkdocs-material
-      - run: pip install --upgrade --force-reinstall mkdocs-material  # 更新mkdocs
+      - run: pip install --upgrade --force-reinstall mkdocs-material
       - run: pip install mkdocs-git-revision-date-localized-plugin
       - run: pip install mkdocs-git-committers-plugin-2
       - run: pip install mkdocs-git-authors-plugin
       - run: pip install pygments
 
-      - run: mkdocs gh-deploy --force
+      # 构建站点
+      - run: mkdocs build
       
-      - name: Create CNAME file
-        run: echo "docs.master-gui.cn" > CNAME
+      # 在构建后的站点目录中创建 CNAME
+      - name: Create CNAME file in site directory
+        run: echo "docs.master-gui.cn" > site/CNAME
+      
+      # 使用 ghp-import 部署（替代 mkdocs gh-deploy）
+      - run: pip install ghp-import
+      - run: ghp-import -n -p -f site
