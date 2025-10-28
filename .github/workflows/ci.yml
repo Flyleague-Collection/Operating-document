@@ -27,9 +27,6 @@ jobs:
           path: ~/.cache 
           restore-keys: |
             mkdocs-material-
-              
-      - name: Create CNAME file
-        run: echo "docs.master-gui.cn" > CNAME
       
       - run: pip install mkdocs-material
       - run: pip install --upgrade --force-reinstall mkdocs-material  # 更新mkdocs
@@ -39,3 +36,6 @@ jobs:
       - run: pip install pygments
 
       - run: mkdocs gh-deploy --force
+      
+      - name: Create CNAME file
+        run: echo "docs.master-gui.cn" > CNAME
