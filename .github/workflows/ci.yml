@@ -34,14 +34,37 @@ jobs:
       - run: pip install mkdocs-git-committers-plugin-2
       - run: pip install mkdocs-git-authors-plugin
       - run: pip install pygments
+      - run: pip install ghp-import
 
-      # 构建站点
+      # 构建站点（不含CNAME）
       - run: mkdocs build
       
-      # 在构建后的站点目录中创建 CNAME
+      # 将不含CNAME的构建结果推送到build分支
+      - name: Deploy to build branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan build
+          git rm -rf .
+          cp -r site/. .
+          rm -rf site
+          git add .
+          git commit -m "Deploy build without CNAME - $(date)"
+          git push origin build --force
+
+      # 回到原始代码
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 重新构建站点并添加CNAME
+      - run: mkdocs build
       - name: Create CNAME file in site directory
         run: echo "docs.master-gui.cn" > site/CNAME
       
-      # 使用 ghp-import 部署（替代 mkdocs gh-deploy）
-      - run: pip install ghp-import
-      - run: ghp-import -n -p -f site
+      # 将有CNAME的构建结果推送到gh-pages分支
+      - name: Deploy to gh-pages branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          ghp-import -n -p -f site
