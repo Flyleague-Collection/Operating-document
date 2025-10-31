@@ -30,7 +30,6 @@ mkdocs-git-revision-date-localized-plugin 1.4.7
 mkdocs-material                           9.6.8
 mkdocs-material-extensions                1.3.1
 pygments                                  2.19.1
-mike                                      2.1.3  # 弃用
 ```
 
 
@@ -39,48 +38,38 @@ mike                                      2.1.3  # 弃用
 
 #### 使用`mkdocs`进行部署
 
-1. 确保有python环境(>=3.2.6)
+1. 确保有python环境(>=3.12)
+   
+2. 克隆本项目到本地
+    ```shell
+    git clone https://github.com/Flyleague-Collection/Operating-document.git
+    ```
 
-2. 分别使用pip安装以下：
+3. 创建虚拟环境  
+   你也可以使用conda或者pdm之类的包管理软件, 这里我们使用python原生的venv做示范
+    ```shell
+    python -m venv ./.venv
+    ```
 
-   ```python
-   pip install mkdocs-material
-   pip install mkdocs-get-deps
-   pip install mkdocs-git-authors-plugin
-   pip install mkdocs-git-committers-plugin-2
-   pip install mkdocs-git-revision-date-localized-plugin
-   pip install mkdocs-material
-   pip install mkdocs-material-extensions
-   pip install pygments
-   ```
+4. 激活虚拟环境
+    ```shell
+    ; cmd
+    .\.venv\Scripts\activate.bat
+    ; powershell
+    .\.venv\Scripts\activate
+    ```
 
-3. 将本项目Clone下来
+5. 安装所需的库
+    ```shell
+    pip install -r requirements.txt
+    ```
 
-   - 使用git进行克隆，打开powershell，输入`git clone https://github.com/Flyleague-Collection/Operating-document.git`
-   - 使用网页浏览器进行下载，[https://github.com/Flyleague-Collection/Operating-document/archive/refs/heads/main.zip](https://github.com/Flyleague-Collection/Operating-document/archive/refs/heads/main.zip)
+6. 运行开发服务器
+    ```shell
+    mkdocs serve
+    ```
 
-4. 进入项目根目录，输入`mkdocs serve`
-
-5. 进行编写
-
-
-
-## 使用mike(弃用)
-
-### 发布新版本
-
-```powershell
-mike deploy --push --update-aliases 0.1 latest
-```
-
-
-
-### 设置默认版本
-
-```powershell
-mike set-default --push latest
-```
-
+7. 进行编写
 
 
 ## 文件分类的说明

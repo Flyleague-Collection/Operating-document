@@ -1,2 +1,5 @@
 site/*
-.cache/plugin/privacy/
+__pycache__
+.cache/
+.venv/
+.pdm-python/
