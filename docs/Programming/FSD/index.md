@@ -6,7 +6,7 @@
     尽请谅解！我们已尽力修复
     Thx for you understand.
 
-感谢 @ half-nothing 编写的文档！
+感谢 @ [half-nothing](https://github.com/half-nothing) 编写的文档！
 
 ### *本项目正在快速迭代中, API接口可能不稳定, 请及时查阅最新的API文档*
 
