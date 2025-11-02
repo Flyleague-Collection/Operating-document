@@ -92,9 +92,9 @@ PTD - 飞行员训练部，通常放于培训飞行员所用到的材料等
 
 ## 许可证
 
-本项目基于 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh) 协议进行许可。
+本站的全部文字在 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh-hans" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0(知识共享 署名-相同方式共享 4.0协议)</a> 之条款下提供，附加条款亦可能应用。
 
-Copyright © 2025 Yiheng Master Gui. All rights reserved.
+Yiheng Master Gui 保留所有未明示授予的权利。
 
 
 
