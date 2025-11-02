@@ -1,4 +1,4 @@
-name: Build Document 
+name: Build and Deploy Document
 on:
   push:
     branches:
@@ -9,24 +9,27 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
 jobs:
-  deploy:
+  # 主要构建任务
+  build:
     runs-on: ubuntu-latest
+    outputs:
+      site_ready: ${{ steps.build-info.outputs.site_ready }}
+      commit_hash: ${{ steps.build-info.outputs.commit_hash }}
+      build_data: ${{ steps.build-info.outputs.build_data }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Configure Git Credentials
-        run: |
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-
       - name: Setup Python Environment
         uses: actions/setup-python@v6
         with:
           python-version: 3.12
-          cache: 'pip' 
+          cache: 'pip'
         
       - name: Install Dependency
         run: pip install -r requirements.txt
@@ -49,44 +52,202 @@ jobs:
           echo "python_version=$PYTHON_VERSION" >> $GITHUB_OUTPUT
           echo "build_date=$BUILD_DATE" >> $GITHUB_OUTPUT
           echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          echo "site_ready=true" >> $GITHUB_OUTPUT
+          
+          # 创建构建数据JSON
+          BUILD_DATA=$(jq -n \
+            --arg ch "$COMMIT_HASH" \
+            --arg chl "$COMMIT_HASH_LONG" \
+            --arg cm "$COMMIT_MESSAGE" \
+            --arg mv "$MKDOCS_VERSION" \
+            --arg pv "$PYTHON_VERSION" \
+            --arg bd "$BUILD_DATE" \
+            --arg bn "$BRANCH_NAME" \
+            '{commit_hash: $ch, commit_hash_long: $chl, commit_message: $cm, mkdocs_version: $mv, python_version: $pv, build_date: $bd, branch_name: $bn}')
+          echo "build_data=$BUILD_DATA" >> $GITHUB_OUTPUT
 
       - name: Build Document
         run: mkdocs build
-      
-      - name: Deploy to build branch
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout --orphan build
-          git rm -rf .
-          cp -r site/. .
-          rm -rf site
-          git add .
-          git commit -m "Build: ${{ steps.build-info.outputs.commit_hash }} from ${{ steps.build-info.outputs.branch_name }}
 
-          MkDocs: ${{ steps.build-info.outputs.mkdocs_version }}
-          Python: ${{ steps.build-info.outputs.python_version }}
-          Source: ${{ steps.build-info.outputs.commit_message }}
-          Date: ${{ steps.build-info.outputs.build_date }}"
-          git push origin build --force
+      - name: Create CNAME file
+        run: echo "docs.master-gui.cn" > site/CNAME
+
+      - name: Upload site artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-build
+          path: site/
+          retention-days: 1
+
+  # 部署到 build 分支（可选）
+  deploy-build:
+    runs-on: ubuntu-latest
+    needs: build
+    if: always()
+    steps:
+      - name: Check if build succeeded
+        if: needs.build.result == 'success'
+        run: echo "Build succeeded, proceeding with build branch deployment"
+        
+      - name: Check if build failed
+        if: needs.build.result != 'success'
+        run: |
+          echo "Build failed, skipping build branch deployment"
+          exit 0
 
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - run: mkdocs build
-      - name: Create CNAME file in site directory
-        run: echo "docs.master-gui.cn" > site/CNAME
-      
-      - name: Deploy to gh-pages branch
+      - name: Download site artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site-build
+          path: site
+
+      - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          ghp-import -n -p -f -m "Deploy: ${{ steps.build-info.outputs.commit_hash }} to production
 
-          MkDocs: ${{ steps.build-info.outputs.mkdocs_version }}
-          Python: ${{ steps.build-info.outputs.python_version }}  
-          Source: '${{ steps.build-info.outputs.commit_message }}'
-          Build: ${{ steps.build-info.outputs.build_date }}
-          Environment: Production
+      - name: Deploy to build branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git checkout --orphan build || git checkout build
+          git rm -rf . || true
+          cp -r site/. .
+          rm -rf site
+          git add .
+          
+          BUILD_DATA='${{ needs.build.outputs.build_data }}'
+          COMMIT_MESSAGE=$(echo "$BUILD_DATA" | jq -r '.commit_message')
+          COMMIT_HASH=$(echo "$BUILD_DATA" | jq -r '.commit_hash')
+          MKDOCS_VERSION=$(echo "$BUILD_DATA" | jq -r '.mkdocs_version')
+          PYTHON_VERSION=$(echo "$BUILD_DATA" | jq -r '.python_version')
+          BUILD_DATE=$(echo "$BUILD_DATA" | jq -r '.build_date')
+          BRANCH_NAME=$(echo "$BUILD_DATA" | jq -r '.branch_name')
+          
+          git commit -m "Build: $COMMIT_HASH from $BRANCH_NAME
+
+          MkDocs: $MKDOCS_VERSION
+          Python: $PYTHON_VERSION
+          Source: $COMMIT_MESSAGE
+          Date: $BUILD_DATE"
+          
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git build --force
+
+  # 部署到 GitHub Pages（主要部署）
+  deploy-pages:
+    runs-on: ubuntu-latest
+    needs: build
+    if: always()
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Check if build succeeded
+        if: needs.build.result == 'success'
+        run: echo "Build succeeded, proceeding with Pages deployment"
+        
+      - name: Check if build failed
+        if: needs.build.result != 'success'
+        run: |
+          echo "Build failed, skipping Pages deployment"
+          exit 0
+
+      - name: Download site artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site-build
+          path: site
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  # 备用部署方案（使用 ghp-import）
+  deploy-backup:
+    runs-on: ubuntu-latest
+    needs: [build, deploy-pages]
+    if: failure() && needs.build.result == 'success' && (needs.deploy-pages.result == 'failure' || needs.deploy-pages.result == 'skipped')
+    steps:
+      - name: Fallback deployment
+        run: echo "Primary deployment failed, initiating fallback deployment"
+        
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download site artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site-build
+          path: site
+
+      - name: Install ghp-import
+        run: pip install ghp-import
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Deploy via ghp-import
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BUILD_DATA='${{ needs.build.outputs.build_data }}'
+          COMMIT_HASH=$(echo "$BUILD_DATA" | jq -r '.commit_hash')
+          COMMIT_MESSAGE=$(echo "$BUILD_DATA" | jq -r '.commit_message')
+          MKDOCS_VERSION=$(echo "$BUILD_DATA" | jq -r '.mkdocs_version')
+          PYTHON_VERSION=$(echo "$BUILD_DATA" | jq -r '.python_version')
+          BUILD_DATE=$(echo "$BUILD_DATA" | jq -r '.build_date')
+          
+          ghp-import -n -p -f -m "Deploy: $COMMIT_HASH to production (Fallback)
+
+          MkDocs: $MKDOCS_VERSION
+          Python: $PYTHON_VERSION
+          Source: '$COMMIT_MESSAGE'
+          Build: $BUILD_DATE
+          Environment: Production (Fallback)
           Custom Domain: docs.master-gui.cn" site
+
+  # 状态报告
+  report:
+    runs-on: ubuntu-latest
+    needs: [build, deploy-build, deploy-pages, deploy-backup]
+    if: always()
+    steps:
+      - name: Deployment Status Report
+        run: |
+          echo "=== Deployment Status Report ==="
+          echo "Build: ${{ needs.build.result }}"
+          echo "Build Branch: ${{ needs.deploy-build.result }}"
+          echo "GitHub Pages: ${{ needs.deploy-pages.result }}"
+          echo "Backup Deployment: ${{ needs.deploy-backup.result }}"
+          
+          if [[ "${{ needs.build.result }}" == "success" ]]; then
+            if [[ "${{ needs.deploy-pages.result }}" == "success" || "${{ needs.deploy-backup.result }}" == "success" ]]; then
+              echo "✅ Overall: SUCCESS - Site is deployed"
+              exit 0
+            else
+              echo "❌ Overall: FAILED - No successful deployment"
+              exit 1
+            fi
+          else
+            echo "❌ Overall: FAILED - Build failed"
+            exit 1
+          fi
