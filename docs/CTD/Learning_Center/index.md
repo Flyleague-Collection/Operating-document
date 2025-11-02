@@ -17,10 +17,12 @@
 塔台管制：
 
 - [陆空对话（空中交通无线电通话用语）](Radiotelephony_Communications_for_Air_Traffic_Services.md)
-- Metar报文解读
-- eAIP航图解读
+- [Metar报文解读](./References/国际气象报文解码.pdf)
+- [eAIP航图解读](./References/航图识读.pptx)
 - [RVSM飞行高度层](RVSM_flight_level.md)
-- 飞行情报区
+- [民用航空空中交通管理规则](./References/CCAR-93TM-R6.pdf)
+- [EuroScope使用教程](./References/Flyatcsim EuroScope扇区使用教程 v1.2.pdf)
+- [飞行情报区](FIR.md)
 - 空域
 - 班机航路的使用和查询
 
