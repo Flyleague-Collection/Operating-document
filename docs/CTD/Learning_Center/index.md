@@ -23,7 +23,7 @@
 - [民用航空空中交通管理规则](./References/CCAR-93TM-R6.pdf)
 - [EuroScope使用教程](./References/Flyatcsim EuroScope扇区使用教程 v1.2.pdf)
 - [飞行情报区](FIR.md)
-- 空域
+- [空域](Airspace.md)
 - 班机航路的使用和查询
 
 

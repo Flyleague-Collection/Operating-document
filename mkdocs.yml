@@ -31,7 +31,7 @@ theme:
     - navigation.footer
     - content.action.edit
     # code
-    - content.code.select
+    # - content.code.select  # sponsors only
     - content.code.copy
     - content.code.annotate
 
