@@ -26,8 +26,7 @@ Flight information region
     
     注：
         
-    中国大陆区域内的民用航空空中管理工作均由中国民用航空局管理，中国民用航空局各地区管理局“责监督管理本辖区民用航空空中交通管理工作”。<br>
-    各FIR的缩写四字码，现实中并不存在。
+    中国大陆区域内的民用航空空中管理工作均由中国民用航空局管理，中国民用航空局各地区管理局“责监督管理本辖区民用航空空中交通管理工作”。
 
 
 
@@ -44,7 +43,7 @@ Flight information region
 | 兰州飞行情报区     | Lanzhou FIR   | ZLHW | 西北空中交通管理局 |
 | 乌鲁木齐飞行情报区 | Urumqi FIR    | ZWUQ | 新疆空中交通管理局 |
 | 香港飞行情报区     | Hongkong FIR  | VHHK | 香港民航处         |
-| 台北飞行情报区     | Taibei FIR    | RCAA | 不详               |
+| 台北飞行情报区     | Taipei FIR    | RCAA | 不详               |
 
 
 

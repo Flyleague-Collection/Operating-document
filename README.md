@@ -36,10 +36,10 @@ pygments                                  2.19.1
 
 ## 部署教程
 
-#### 使用`mkdocs`进行部署
+### 使用`mkdocs`进行部署
 
 1. 确保有python环境(>=3.12)
-   
+
 2. 克隆本项目到本地
     ```shell
     git clone https://github.com/Flyleague-Collection/Operating-document.git
@@ -70,6 +70,18 @@ pygments                                  2.19.1
     ```
 
 7. 进行编写
+
+
+
+### [#8478](https://github.com/squidfunk/mkdocs-material/issues/8478)
+
+参考 [#8478](https://github.com/squidfunk/mkdocs-material/issues/8478) 的方案，接下来提供两种修复mkdocs实时加载服务不工作的**临时**解决：
+
+1. 使用`mkdocs serve --livereload`代替`mkdocs serve`，强制使用livereload
+2. 将Click组件库，手动降级至 8.2.1版本，即：使用`pip install click==8.2.1`即可
+
+两种方法任选其一，但由于上述方案均为临时性的，我们需要您手动进行处置
+
 
 
 ## 文件分类的说明
