@@ -1,6 +1,6 @@
 # 运行文档 Operating-document
 
-[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg?style=for-the-badge)](https://creativecommons.org/licenses/by-nc-sa/4.0)![Markdown](https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=Markdown&logoColor=ffffff)![BuildStateCard](https://img.shields.io/github/actions/workflow/status/Flyleague-Collection/Operating-document/ci.yml?style=for-the-badge&logo=github&label=github-pages)![LastCommitCard](https://img.shields.io/github/last-commit/Flyleague-Collection/Operating-document?display_timestamp=committer&style=for-the-badge&logo=github)
+[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg?style=for-the-badge) ](https://creativecommons.org/licenses/by-nc-sa/4.0) ![Markdown](https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=Markdown&logoColor=ffffff) ![BuildStateCard](https://img.shields.io/github/actions/workflow/status/Flyleague-Collection/Operating-document/ci.yml?style=for-the-badge&logo=github&label=build)  ![LastCommitCard](https://img.shields.io/github/last-commit/Flyleague-Collection/Operating-document?display_timestamp=committer&style=for-the-badge&logo=github)
 
 
 本项目是一个以Markdown语言以及文档站组成的一个模拟飞行平台运营所集成的所有文档，这包括：
@@ -11,11 +11,19 @@
 
 
 
+---
+
+
+
 ## 允许范围
 
 - 将本仓库Fork下来，再用Github page将此项目运营在github服务器上
 - 将本仓库Fork下来，和我们一起对其进行编写！
 - 也可以将此项目部署在本地服务器上
+
+
+
+---
 
 
 
@@ -74,6 +82,10 @@ watchdog                                  6.0.0
 
 
 
+---
+
+
+
 ## 部署教程
 
 ### 使用`mkdocs`进行部署
@@ -121,6 +133,20 @@ watchdog                                  6.0.0
 
 
 
+### 使用bat脚本部署
+
+1. 运行项目根目录下的`DevEnv-Launcher.bat`一键配置环境及打开Vscode
+
+2. 运行开发服务器
+
+   ```shell
+   mkdocs serve
+   ```
+
+3. 进行编写
+
+
+
 ### [#8478](https://github.com/squidfunk/mkdocs-material/issues/8478)
 
 参考 [#8478](https://github.com/squidfunk/mkdocs-material/issues/8478) 的方案，接下来提供两种修复mkdocs实时加载服务不工作的**临时**解决：
@@ -132,9 +158,17 @@ watchdog                                  6.0.0
 
 
 
+---
+
+
+
 ## 贡献方式
 
 您可以将本项目进行 [fork](https://github.com/Flyleague-Collection/Operating-document/fork)，并查看 [#3](https://github.com/Flyleague-Collection/Operating-document/issues/3) 内的Todo list以查看需要完成的任务
+
+
+
+---
 
 
 
@@ -152,9 +186,17 @@ Document - 文档，存放上述Markdown文件的docs、pdf格式文件
 
 
 
-## 适用的平台？
+---
+
+
+
+## 适用的平台
 
 目前我们已经将这套方案启用于“APOCFLY 天启模拟飞行平台”上，您可以[点此](https://qm.qq.com/q/5qyq2c4n9m)加群。
+
+
+
+---
 
 
 
@@ -177,6 +219,10 @@ Document - 文档，存放上述Markdown文件的docs、pdf格式文件
 
 完整协议请参见 [https://creativecommons.org/licenses/by-sa/4.0/deed.zh-hans](https://creativecommons.org/licenses/by-sa/4.0/deed.zh-hans)。
 ```
+
+
+
+---
 
 
 
