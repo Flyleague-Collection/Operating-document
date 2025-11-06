@@ -158,6 +158,22 @@ watchdog                                  6.0.0
 
 
 
+### 添加requirements.txt
+
+1. 安装freeze
+
+   ```shell
+   pip freeze
+   ```
+
+2. 生成requirements.txt
+
+   ```shell
+   pip freeze > requirements.txt
+   ```
+
+
+
 ---
 
 

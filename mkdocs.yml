@@ -37,6 +37,7 @@ theme:
 
   favicon: images/favicon.png
   name: material
+  custom_dir: docs/overrides
   language: zh
   font:
     text: Roboto
@@ -79,8 +80,37 @@ extra:
       link: https://v.douyin.com/97uoxOsUrcA
     - icon: fontawesome/brands/qq
       link: https://qm.qq.com/q/5qyq2c4n9m
-    
   scope: /
+  extra:
+  alternate:
+    - name: 中文
+      link: "javascript:translate.changeLanguage('chinese_simplified');"
+      lang: zh
+    - name: English
+      link: "javascript:translate.changeLanguage('english');"
+      lang: en
+    - name: 한국어
+      link: "javascript:translate.changeLanguage('korean');"
+      lang: ko
+    - name: 日本語
+      link: "javascript:translate.changeLanguage('japanese');"
+      lang: ja
+    - name: بالعربية
+      link: "javascript:translate.changeLanguage('arabic');"
+      lang: ar
+    - name: Deutsch
+      link: "javascript:translate.changeLanguage('german');"
+      lang: de
+    - name: Français
+      link: "javascript:translate.changeLanguage('french');"
+      lang: fr
+    - name: Español
+      link: "javascript:translate.changeLanguage('spanish');"
+      lang: es
+    - name: português
+      link: "javascript:translate.changeLanguage('portuguese');"
+      lang: pt
+
 
 markdown_extensions:
   - md_in_html
@@ -104,16 +134,24 @@ markdown_extensions:
   # - 许可证: 
   #   - license.md
 
-
+hooks:
+  - docs/overrides/hooks/related_posts.py
 
 plugins:
   - search
   - git-revision-date-localized:
+      enabled: !ENV [CI, false]
       enable_creation_date: true
+      # enable_git_follow: false
+
   - git-committers:
+      enabled: !ENV [CI, false]
       repository: Flyleague-Collection/Operating-document
       branch: main
       token: !!python/object/apply:os.getenv ["MKDOCS_GIT_COMMITTERS_APIKEY"]
+  # - document-dates:
+  #     position: bottom
+
   # - info
   # - privacy
   # - tags
