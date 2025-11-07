@@ -1,32 +1,33 @@
-name: Build Document 
+name: Build Document
+
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 permissions:
   contents: write
+
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
+    outputs:
+      commit_hash: ${{ steps.build-info.outputs.commit_hash }}
+      branch_name: ${{ steps.build-info.outputs.branch_name }}
+      python_version: ${{ steps.build-info.outputs.python_version }}
+      commit_message: ${{ steps.build-info.outputs.commit_message }}
+      build_date: ${{ steps.build-info.outputs.build_date }}
+
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Configure Git Credentials
-        run: |
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-
-      - name: Setup Python Environment
-        uses: actions/setup-python@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: 3.12
-          cache: 'pip' 
+          cache: pip
         
       - name: Install Dependency
         run: pip install -r requirements.txt
@@ -34,59 +35,69 @@ jobs:
       - name: Get build information
         id: build-info
         run: |
-          COMMIT_HASH=$(git rev-parse --short HEAD)
-          COMMIT_HASH_LONG=$(git rev-parse HEAD)
-          COMMIT_MESSAGE=$(git log -1 --pretty=%B | head -n 1)
-          PYTHON_VERSION=$(python --version | cut -d' ' -f2)
-          BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          BRANCH_NAME=${GITHUB_REF#refs/heads/}
-          
-          echo "commit_hash=$COMMIT_HASH" >> $GITHUB_OUTPUT
-          echo "commit_hash_long=$COMMIT_HASH_LONG" >> $GITHUB_OUTPUT
-          echo "commit_message=$COMMIT_MESSAGE" >> $GITHUB_OUTPUT
-          echo "python_version=$PYTHON_VERSION" >> $GITHUB_OUTPUT
-          echo "build_date=$BUILD_DATE" >> $GITHUB_OUTPUT
-          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          echo "commit_hash=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          echo "commit_hash_long=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          echo "commit_message=$(git log -1 --pretty=%B | head -n 1)" >> $GITHUB_OUTPUT
+          echo "python_version=$(python --version | cut -d' ' -f2)" >> $GITHUB_OUTPUT
+          echo "build_date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> $GITHUB_OUTPUT
+          echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
 
       - name: Build Document
         run: zensical build
-      
+
+      - name: Upload Site Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: site
+
+  deploy_build:
+    needs: build
+    if: always()  
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: site
+
       - name: Deploy to build branch
         run: |
+          git init
+          git checkout --orphan build
+          cp -r site/. .
+          git add .
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout --orphan build
-          git rm -rf .
-          cp -r site/. .
-          rm -rf site
-          git add .
-          git commit -m "Build: ${{ steps.build-info.outputs.commit_hash }} from ${{ steps.build-info.outputs.branch_name }}
-
-          Python: ${{ steps.build-info.outputs.python_version }}
-          Source: ${{ steps.build-info.outputs.commit_message }}
-          Date: ${{ steps.build-info.outputs.build_date }}"
+          git commit -m "Build: ${{ needs.build.outputs.commit_hash }} from ${{ needs.build.outputs.branch_name }}
+          Python: ${{ needs.build.outputs.python_version }}
+          Source: ${{ needs.build.outputs.commit_message }}
+          Date: ${{ needs.build.outputs.build_date }}"
+          git remote add origin https://github.com/${{ github.repository }}.git
           git push origin build --force
 
-      - uses: actions/checkout@v4
+  deploy_pages:
+    needs: build
+    if: always()  
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
         with:
-          fetch-depth: 0
+          name: site
+          path: site
 
-      - run: zensical build
-      
       - name: Deploy to gh-pages branch
         run: |
+          git init
+          git checkout --orphan gh-pages
+          echo "docs.master-gui.cn" > CNAME
+          cp -r site/. .
+          git add .
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout --orphan gh-pages
-          git rm -rf .
-          cp -r site/. .
-          rm -rf site
-          echo "docs.master-gui.cn" > site/CNAME  # 解析自定义域名
-          git add .
-          git commit -m "gh-pages: ${{ steps.build-info.outputs.commit_hash }} from ${{ steps.build-info.outputs.branch_name }}
-
-          Python: ${{ steps.build-info.outputs.python_version }}
-          Source: ${{ steps.build-info.outputs.commit_message }}
-          Date: ${{ steps.build-info.outputs.build_date }}"
-
+          git commit -m "gh-pages: ${{ needs.build.outputs.commit_hash }} from ${{ needs.build.outputs.branch_name }}
+          Python: ${{ needs.build.outputs.python_version }}
+          Source: ${{ needs.build.outputs.commit_message }}
+          Date: ${{ needs.build.outputs.build_date }}"
+          git remote add origin https://github.com/${{ github.repository }}.git
           git push origin gh-pages --force
