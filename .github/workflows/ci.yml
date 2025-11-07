@@ -77,17 +77,16 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout --orphan build
+          git checkout --orphan gh-pages
           git rm -rf .
           cp -r site/. .
           rm -rf site
-          git add .
-          git commit -m "Build: ${{ steps.build-info.outputs.commit_hash }} from ${{ steps.build-info.outputs.branch_name }}
-
           echo "docs.master-gui.cn" > site/CNAME  # 解析自定义域名
+          git add .
+          git commit -m "gh-pages: ${{ steps.build-info.outputs.commit_hash }} from ${{ steps.build-info.outputs.branch_name }}
 
-          Python: ${{ steps.build-info.outputs.python_version }}  
-          Source: '${{ steps.build-info.outputs.commit_message }}'
-          Build: ${{ steps.build-info.outputs.build_date }}
-          Environment: Production
-          Custom Domain: docs.master-gui.cn" site
+          Python: ${{ steps.build-info.outputs.python_version }}
+          Source: ${{ steps.build-info.outputs.commit_message }}
+          Date: ${{ steps.build-info.outputs.build_date }}"
+
+          git push origin gh-pages --force
