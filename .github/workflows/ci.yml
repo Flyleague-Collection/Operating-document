@@ -1,4 +1,4 @@
-name: Build Document
+name: Build & Deploy Docs
 
 on:
   push:
@@ -14,22 +14,24 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       commit_hash: ${{ steps.build-info.outputs.commit_hash }}
-      branch_name: ${{ steps.build-info.outputs.branch_name }}
-      python_version: ${{ steps.build-info.outputs.python_version }}
+      commit_hash_long: ${{ steps.build-info.outputs.commit_hash_long }}
       commit_message: ${{ steps.build-info.outputs.commit_message }}
+      python_version: ${{ steps.build-info.outputs.python_version }}
       build_date: ${{ steps.build-info.outputs.build_date }}
+      branch_name: ${{ steps.build-info.outputs.branch_name }}
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-python@v6
+      - name: Setup Python Environment
+        uses: actions/setup-python@v5
         with:
           python-version: 3.12
           cache: pip
         
-      - name: Install Dependency
+      - name: Install Dependencies
         run: pip install -r requirements.txt
 
       - name: Get build information
@@ -53,7 +55,7 @@ jobs:
 
   deploy_build:
     needs: build
-    if: always()  
+    if: always() # <--- 即使 build 或 deploy_pages失败也执行
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
@@ -69,16 +71,18 @@ jobs:
           git add .
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           git commit -m "Build: ${{ needs.build.outputs.commit_hash }} from ${{ needs.build.outputs.branch_name }}
           Python: ${{ needs.build.outputs.python_version }}
-          Source: ${{ needs.build.outputs.commit_message }}
+          Message: ${{ needs.build.outputs.commit_message }}
           Date: ${{ needs.build.outputs.build_date }}"
-          git remote add origin https://github.com/${{ github.repository }}.git
+
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git push origin build --force
 
   deploy_pages:
     needs: build
-    if: always()  
+    if: always() # <--- 即使 build 或 deploy_build失败也执行
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
@@ -90,14 +94,17 @@ jobs:
         run: |
           git init
           git checkout --orphan gh-pages
-          echo "docs.master-gui.cn" > CNAME
           cp -r site/. .
+          echo "docs.master-gui.cn" > CNAME
+          
           git add .
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           git commit -m "gh-pages: ${{ needs.build.outputs.commit_hash }} from ${{ needs.build.outputs.branch_name }}
           Python: ${{ needs.build.outputs.python_version }}
-          Source: ${{ needs.build.outputs.commit_message }}
+          Message: ${{ needs.build.outputs.commit_message }}
           Date: ${{ needs.build.outputs.build_date }}"
-          git remote add origin https://github.com/${{ github.repository }}.git
+
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git push origin gh-pages --force
