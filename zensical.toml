@@ -1,0 +1,83 @@
+[project.theme]
+variant = "modern"
+font.code = "JetBrains Mono"
+language = "zh"
+favicon = "images/favicon.png"
+  # logo = "images/Logo.png"
+features = [
+    "search.highlight",
+    "content.action.edit",
+    # "content.action.view",
+    "navigation.path",
+    "navigation.instant",
+    "navigation.instant.prefetch",
+    "navigation.instant.progress",
+    "navigation.tracking",
+    "navigation.sections",
+    "navigation.expand",
+    "navigation.prune",
+    "navigation.top",
+    "search.suggest",
+    "search.highlight",
+    "search.share",
+    "navigation.footer",
+    "content.action.edit",
+    "content.code.copy",
+    "content.code.select",
+    "content.code.annotate"
+]
+
+
+[project]
+site_name = "APOCFLY模拟飞行·文档站"
+site_url = "https://docs.apocfly.com"
+repo_url = "https://github.com/Flyleague-Collection/Operating-document"
+repo_name = "Flyleague-Collection/Operating-document"
+edit_uri = "edit/main/docs/"
+
+site_description = "Use Markdown language to finish the Operating document."
+site_author = "Yiheng Master Gui"
+copyright = """本项目的全部文字在 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh-hans" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0(知识共享 署名-相同方式共享 4.0协议)</a> 之条款下提供，附加条款亦可能应用。<br> Yiheng Master Gui 保留所有未明示授予的权利。"""
+
+  # extra_javascript = ["javascripts/feedback.js"]
+
+  # [project.extra.analytics]
+  # provider: custom
+  # property: foobar
+
+[project.extra]
+homepage = "https://www.apocfly.com"
+
+[project.extra.consent]
+title = "Cookie 许可"
+description = """
+    我们使用Cookie来识别您的重复访问和偏好，并衡量我们文档的有效性以及用户是否能找到他们正在搜索的内容。在您同意的情况下，您正在帮助我们改进我们的文档。
+"""
+
+# Palette toggle for automatic mode
+[[project.theme.palette]]
+media = "(prefers-color-scheme)"
+toggle.icon = "lucide/sun-moon"
+toggle.name = "Switch to light mode"
+
+# Palette toggle for light mode
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+# Palette toggle for dark mode
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to system preference"
+
+[project.markdown_extensions.pymdownx.highlight]
+anchor_linenums = true
+line_spans = "__span"
+pygments_lang_class = true
+[project.markdown_extensions.pymdownx.inlinehilite]
+[project.markdown_extensions.pymdownx.snippets]
+[project.markdown_extensions.pymdownx.superfences]

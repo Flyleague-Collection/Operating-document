@@ -31,53 +31,26 @@
 
 ### 基础库：
 
-| Package                                   | Version |
-| ----------------------------------------- | ------- |
-| mkdocs-material                           | 9.6.23  |
-| mkdocs-git-authors-plugin                 | 0.10.0  |
-| mkdocs-git-committers-plugin-2            | 2.5.0   |
-| mkdocs-git-revision-date-localized-plugin | 1.5.0   |
+| Package  | Version |
+| -------- | ------- |
+| zensical | 0.0.4   |
 
 
 
 ### 依赖库：
 
-```markdown
-Package                                   Version
------------------------------------------ -----------
-babel                                     2.17.0
-backrefs                                  5.9
-certifi                                   2025.10.5
-charset-normalizer                        3.4.4
-click                                     8.3.0(8.2.1)
-colorama                                  0.4.6
-ghp-import                                2.1.0
-gitdb                                     4.0.12
-GitPython                                 3.1.45
-idna                                      3.11
-Jinja2                                    3.1.6
-Markdown                                  3.9
-MarkupSafe                                3.0.3
-mergedeep                                 1.3.4
-mkdocs                                    1.6.1
-mkdocs-get-deps                           0.2.0                 
-mkdocs-material-extensions                1.3.1
-packaging                                 25.0
-paginate                                  0.5.7
-pathspec                                  0.12.1
-pip                                       25.3
-platformdirs                              4.5.0
-Pygments                                  2.19.2
-pymdown-extensions                        10.16.1
-python-dateutil                           2.9.0.post0
-PyYAML                                    6.0.3
-pyyaml_env_tag                            1.1
-requests                                  2.32.5
-six                                       1.17.0
-smmap                                     5.0.2
-tzdata                                    2025.2
-urllib3                                   2.5.0
-watchdog                                  6.0.0
+```
+Package            Version
+------------------ -------
+click              8.3.0
+colorama           0.4.6
+deepmerge          2.0
+Markdown           3.10
+pip                25.3
+Pygments           2.19.2
+pymdown-extensions 10.16.1
+PyYAML             6.0.3
+
 ```
 
 
@@ -126,7 +99,7 @@ watchdog                                  6.0.0
 
 6. 运行开发服务器
     ```shell
-    mkdocs serve
+    zensical serve
     ```
 
 7. 进行编写
@@ -140,7 +113,7 @@ watchdog                                  6.0.0
 2. 运行开发服务器
 
    ```shell
-   mkdocs serve
+   zensical serve
    ```
 
 3. 进行编写

@@ -37,7 +37,6 @@ jobs:
           COMMIT_HASH=$(git rev-parse --short HEAD)
           COMMIT_HASH_LONG=$(git rev-parse HEAD)
           COMMIT_MESSAGE=$(git log -1 --pretty=%B | head -n 1)
-          MKDOCS_VERSION=$(mkdocs --version | head -n 1)
           PYTHON_VERSION=$(python --version | cut -d' ' -f2)
           BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
           BRANCH_NAME=${GITHUB_REF#refs/heads/}
@@ -45,13 +44,12 @@ jobs:
           echo "commit_hash=$COMMIT_HASH" >> $GITHUB_OUTPUT
           echo "commit_hash_long=$COMMIT_HASH_LONG" >> $GITHUB_OUTPUT
           echo "commit_message=$COMMIT_MESSAGE" >> $GITHUB_OUTPUT
-          echo "mkdocs_version=$MKDOCS_VERSION" >> $GITHUB_OUTPUT
           echo "python_version=$PYTHON_VERSION" >> $GITHUB_OUTPUT
           echo "build_date=$BUILD_DATE" >> $GITHUB_OUTPUT
           echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
 
       - name: Build Document
-        run: mkdocs build
+        run: zensical build
       
       - name: Deploy to build branch
         run: |
@@ -64,7 +62,6 @@ jobs:
           git add .
           git commit -m "Build: ${{ steps.build-info.outputs.commit_hash }} from ${{ steps.build-info.outputs.branch_name }}
 
-          MkDocs: ${{ steps.build-info.outputs.mkdocs_version }}
           Python: ${{ steps.build-info.outputs.python_version }}
           Source: ${{ steps.build-info.outputs.commit_message }}
           Date: ${{ steps.build-info.outputs.build_date }}"
@@ -74,7 +71,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - run: mkdocs build
+      - run: zensical build
       - name: Create CNAME file in site directory
         run: echo "docs.master-gui.cn" > site/CNAME
       
@@ -84,7 +81,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           ghp-import -n -p -f -m "Deploy: ${{ steps.build-info.outputs.commit_hash }} to production
 
-          MkDocs: ${{ steps.build-info.outputs.mkdocs_version }}
           Python: ${{ steps.build-info.outputs.python_version }}  
           Source: '${{ steps.build-info.outputs.commit_message }}'
           Build: ${{ steps.build-info.outputs.build_date }}
