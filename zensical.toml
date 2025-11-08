@@ -3,7 +3,7 @@ variant = "modern"
 font.code = "JetBrains Mono"
 language = "zh"
 favicon = "images/favicon.png"
-  # logo = "images/Logo.png"
+# logo = "images/Logo.png"
 features = [
     "search.highlight",
     "content.action.edit",
@@ -81,6 +81,8 @@ pygments_lang_class = true
 [project.markdown_extensions.pymdownx.inlinehilite]
 [project.markdown_extensions.pymdownx.snippets]
 [project.markdown_extensions.pymdownx.superfences]
+[project.markdown_extensions.admonition]
+[project.markdown_extensions.pymdownx.details]
 
 [[project.extra.social]]
 icon = "fontawesome/brands/github"
