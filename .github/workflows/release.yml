@@ -2,11 +2,12 @@ name: Auto Release
 
 permissions:
   contents: write
+  pull-requests: write
 
 on:
   schedule:
-    # 每天 04:00 UTC → CST 12:00
-    - cron: "0 4 * * *"
+    # 每天 16:00 UTC = 中国 CST 次日 00:00（午夜）
+    - cron: "0 16 * * *"
   workflow_dispatch:
 
 jobs:
@@ -19,13 +20,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 判断是否应发布（周末始终发布，周中检测是否有提交）
+      # 判断是否需要发布
       - name: Check if release should run
         id: check_release
         run: |
-          DAY=$(date +%u) # 1=Mon ... 7=Sun
-
-          echo "Today weekday number: $DAY"
+          DAY=$(date -u +%u) # 1=Mon ... 7=Sun (UTC weekday)
+          echo "Today weekday: $DAY"
 
           # 周末（6=Sat, 7=Sun）→ 必发布
           if [ "$DAY" -ge 6 ]; then
@@ -33,21 +33,19 @@ jobs:
             exit 0
           fi
 
-          # 周中 → 检查过去24小时 main 是否有提交
-          COMMITS=$(git log --since="24 小时之前" origin/main --oneline)
+          # 周中检查过去 24h main 是否有提交
+          COMMITS=$(git log origin/main --since="24 hours ago" --oneline)
           if [ -z "$COMMITS" ]; then
-            echo "No commits in last 24h on weekday — skipping release."
+            echo "No commits in last 24h — skip."
             echo "is_release=false" >> $GITHUB_OUTPUT
           else
-            echo "Commits detected in last 24h — release will run."
+            echo "Commits detected — release will run."
             echo "is_release=true" >> $GITHUB_OUTPUT
           fi
 
       - name: Stop if no release today
         if: steps.check_release.outputs.is_release == 'false'
-        run: |
-          echo "Skipping release."
-          exit 0
+        run: exit 0
 
       # 获取最新 tag
       - name: Get latest tag
@@ -56,83 +54,112 @@ jobs:
           TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
           echo "latest_tag=$TAG" >> $GITHUB_OUTPUT
 
-      # 自动递增版本号 patch+1
+      # 自动递增版本号：patch +1
       - name: Calculate next version
         id: next_version
         run: |
           latest="${{ steps.get_tag.outputs.latest_tag }}"
           version="${latest#v}"
           IFS='.' read -r major minor patch <<< "$version"
-          patch=$((patch + 1))
-          next="v$major.$minor.$patch"
+          next="v$major.$minor.$((patch + 1))"
           echo "next_version=$next" >> $GITHUB_OUTPUT
+          echo "Next version: $next"
 
       # 生成 Release Notes
-      - name: Generate enterprise Release Notes
+      - name: Generate Release Notes
         run: |
           latest="${{ steps.get_tag.outputs.latest_tag }}"
-          commits=$(git log $latest..HEAD --pretty=format:'%h|%an|%s' || echo "")
-          authors=$(echo "$commits" | cut -d'|' -f2 | sort | uniq)
+          commits=$(git log $latest..HEAD --pretty=format:'%h|%an|%s' || true)
+          authors=$(echo "$commits" | cut -d'|' -f2 | sort -u)
           total_commits=$(echo "$commits" | wc -l)
 
-          feats=$(echo "$commits" | grep -i 'feat:' || true)
-          fixes=$(echo "$commits" | grep -i 'fix:' || true)
-          docs=$(echo "$commits" | grep -i 'docs:' || true)
-          others=$(echo "$commits" | grep -v -E 'feat:|fix:|docs:' || true)
+          feats=$(echo "$commits" | grep -i '^.*feat' || true)
+          fixes=$(echo "$commits" | grep -i '^.*fix' || true)
+          docs=$(echo "$commits" | grep -i '^.*docs' || true)
+          others=$(echo "$commits" | grep -v -Ei 'feat|fix|docs' || true)
 
           date=$(TZ='Asia/Shanghai' date +"%Y-%m-%d %H:%M CST")
 
           {
             echo "## 🚀 Release ${{ steps.next_version.outputs.next_version }} ($date)"
             echo ""
-            echo "共 **$total_commits** 次提交，**$(echo "$authors" | wc -l)** 位贡献者"
+            echo "共 **$total_commits** 次提交，贡献者 **$(echo "$authors" | wc -l)** 位"
             echo ""
             echo "### ✨ 新功能 (feat)"
-            echo "$feats"
+            echo "${feats:-无}"
             echo ""
             echo "### 🐞 修复 (fix)"
-            echo "$fixes"
+            echo "${fixes:-无}"
             echo ""
             echo "### 📚 文档 (docs)"
-            echo "$docs"
+            echo "${docs:-无}"
             echo ""
             echo "### 🔧 其他"
-            echo "$others"
+            echo "${others:-无}"
             echo ""
             echo "👥 贡献者："
             echo "$authors"
           } > release_notes.md
 
-      # 更新 CHANGELOG.md
+      # 上传 Release Notes 用于下一 Job
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release_notes
+          path: release_notes.md
+
+  changelog-pr:
+    needs: auto-release
+    if: needs.auto-release.outputs.is_release == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: release_notes
+
       - name: Update CHANGELOG.md
         run: |
-          if [ ! -f CHANGELOG.md ]; then
-            echo "# CHANGELOG" > CHANGELOG.md
-          fi
+          [ ! -f CHANGELOG.md ] && echo "# CHANGELOG" > CHANGELOG.md
           echo "" >> CHANGELOG.md
           cat release_notes.md >> CHANGELOG.md
+
+          branch="chore/update-changelog-${{ github.run_id }}"
+          git checkout -b "$branch"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add CHANGELOG.md
-          git commit -m "chore: update CHANGELOG for ${{ steps.next_version.outputs.next_version }}" || echo "No changes to commit"
-          git push origin HEAD:main
+          git commit -m "chore: update CHANGELOG for ${{ needs.auto-release.outputs.next_version }}"
+          git push origin "$branch"
 
-      # 切换到 build 分支
-      - name: Checkout build branch
-        run: |
-          git fetch origin build
-          git checkout build
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v5
+        with:
+          title: "chore: update CHANGELOG for ${{ needs.auto-release.outputs.next_version }}"
+          body: "Auto-update CHANGELOG"
+          branch: "chore/update-changelog-${{ github.run_id }}"
+          labels: documentation, automated
 
-      # 打包 build 产物
-      - name: Zip build artifacts
+  release:
+    needs: auto-release
+    if: needs.auto-release.outputs.is_release == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build artifacts
         run: zip -r build-artifacts.zip ./*
 
-      # 发布 Release
+      - uses: actions/download-artifact@v4
+        with:
+          name: release_notes
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.next_version.outputs.next_version }}
-          name: "Release ${{ steps.next_version.outputs.next_version }}"
+          tag_name: ${{ needs.auto-release.outputs.next_version }}
+          name: "Release ${{ needs.auto-release.outputs.next_version }}"
           body_path: release_notes.md
           files: build-artifacts.zip
         env:

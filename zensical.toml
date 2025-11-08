@@ -1,6 +1,7 @@
 [project.theme]
 variant = "modern"
 font.code = "JetBrains Mono"
+fonts = "JetBrains Mono"
 language = "zh"
 favicon = "images/favicon.png"
 # logo = "images/Logo.png"
