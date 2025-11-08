@@ -1,9 +1,12 @@
 name: Auto Release
 
+permissions:
+  contents: write  # 👈 必须声明此权限才能创建 Release
+
 on:
   schedule:
-    - cron: "0 12 * * 1" # 每周一 12:00 UTC+0（若你在中国则为20:00，如需调整我可再改）
-  workflow_dispatch: # 手动触发
+    - cron: "0 12 * * 1"
+  workflow_dispatch:
 
 jobs:
   auto-release:
@@ -13,7 +16,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # 需要完整历史才能找最新 tag
+          fetch-depth: 0
 
       - name: Get Latest Tag
         id: get_tag
@@ -25,7 +28,6 @@ jobs:
         id: next_version
         run: |
           latest="${{ steps.get_tag.outputs.latest_tag }}"
-          # Remove the v prefix and split
           version="${latest#v}"
           IFS='.' read -r major minor patch <<< "$version"
           patch=$((patch + 1))
