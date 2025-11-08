@@ -39,11 +39,11 @@ site_description = "Use Markdown language to finish the Operating document."
 site_author = "Yiheng Master Gui"
 copyright = """本项目的全部文字在 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh-hans" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0(知识共享 署名-相同方式共享 4.0协议)</a> 之条款下提供，附加条款亦可能应用。<br> Yiheng Master Gui 保留所有未明示授予的权利。"""
 
-  # extra_javascript = ["javascripts/feedback.js"]
+extra_javascript = ["javascripts/feedback.js"]
 
-  # [project.extra.analytics]
-  # provider: custom
-  # property: foobar
+# [project.extra.analytics]
+# provider: custom
+# property: foobar
 
 [project.extra]
 homepage = "https://www.apocfly.com"
@@ -81,3 +81,19 @@ pygments_lang_class = true
 [project.markdown_extensions.pymdownx.inlinehilite]
 [project.markdown_extensions.pymdownx.snippets]
 [project.markdown_extensions.pymdownx.superfences]
+
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = "https://github.com/Flyleague-Collection/Operating-document"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/bilibili"
+link = "https://space.bilibili.com/3494374067407653"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/tiktok"
+link = "https://v.douyin.com/97uoxOsUrcA"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/qq"
+link = "https://qm.qq.com/q/5qyq2c4n9m"

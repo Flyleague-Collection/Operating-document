@@ -33,7 +33,7 @@
 
 | Package  | Version |
 | -------- | ------- |
-| zensical | 0.0.4   |
+| zensical | 0.0.5   |
 
 
 
@@ -134,6 +134,19 @@ PyYAML             6.0.3
    ```
 
 
+### 更新Zensical
+
+1. 前往[github releases](https://github.com/zensical/zensical/releases)查看版本
+
+2. 更新Zensical
+
+    ```shell
+    pip install --upgrade --force-reinstall zensical
+    ```
+
+3. 参考[添加requirements.txt](#添加requirementstxt)更新requirements.txt
+
+
 
 ---
 
@@ -156,7 +169,7 @@ PyYAML             6.0.3
 ```markdown
 General - 总则，通适用于任何用户的文件
 CTD - 管制员训练部，培训管制员所用到的材料等
-	Learning_Center - 学习中心，培训管制员所用到的一些理论资料
+    Learning_Center - 学习中心，培训管制员所用到的一些理论资料
 PTD - 飞行员训练部，培训飞行员所用到的材料等
 Document - 文档，存放上述Markdown文件的docs、pdf格式文件
 ```

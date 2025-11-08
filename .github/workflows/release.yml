@@ -1,0 +1,60 @@
+name: Auto Release
+
+on:
+  schedule:
+    - cron: "0 12 * * 1" # 每周一 12:00 UTC+0（若你在中国则为20:00，如需调整我可再改）
+  workflow_dispatch: # 手动触发
+
+jobs:
+  auto-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 需要完整历史才能找最新 tag
+
+      - name: Get Latest Tag
+        id: get_tag
+        run: |
+          TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
+          echo "latest_tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Calculate Next Version
+        id: next_version
+        run: |
+          latest="${{ steps.get_tag.outputs.latest_tag }}"
+          # Remove the v prefix and split
+          version="${latest#v}"
+          IFS='.' read -r major minor patch <<< "$version"
+          patch=$((patch + 1))
+          next="v$major.$minor.$patch"
+          echo "next_version=$next" >> $GITHUB_OUTPUT
+
+      - name: Generate Release Notes
+        id: release_notes
+        run: |
+          notes=$(git log ${{ steps.get_tag.outputs.latest_tag }}..HEAD --pretty=format:"- %s" || echo "Auto weekly release")
+          echo -e "$notes" > release_notes.md
+          echo "notes_generated=true" >> $GITHUB_OUTPUT
+
+      - name: Checkout Build Branch
+        run: |
+          git fetch origin build
+          git checkout build
+
+      - name: Zip Build Artifacts
+        run: |
+          zip -r build-artifacts.zip ./*
+          echo "artifact_zip=build-artifacts.zip" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.next_version.outputs.next_version }}
+          name: "Release ${{ steps.next_version.outputs.next_version }}"
+          body_path: release_notes.md
+          files: build-artifacts.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
