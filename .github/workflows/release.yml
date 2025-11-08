@@ -5,7 +5,8 @@ permissions:
 
 on:
   schedule:
-    - cron: "0 12 * * 1" # 每周一 12:00 UTC
+    # 每天 04:00 UTC → CST 12:00
+    - cron: "0 4 * * *"
   workflow_dispatch:
 
 jobs:
@@ -13,20 +14,49 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # 2. 获取最新 tag
+      # 判断是否应发布（周末始终发布，周中检测是否有提交）
+      - name: Check if release should run
+        id: check_release
+        run: |
+          DAY=$(date +%u) # 1=Mon ... 7=Sun
+
+          echo "Today weekday number: $DAY"
+
+          # 周末（6=Sat, 7=Sun）→ 必发布
+          if [ "$DAY" -ge 6 ]; then
+            echo "is_release=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # 周中 → 检查过去24小时 main 是否有提交
+          COMMITS=$(git log --since="24 小时之前" origin/main --oneline)
+          if [ -z "$COMMITS" ]; then
+            echo "No commits in last 24h on weekday — skipping release."
+            echo "is_release=false" >> $GITHUB_OUTPUT
+          else
+            echo "Commits detected in last 24h — release will run."
+            echo "is_release=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Stop if no release today
+        if: steps.check_release.outputs.is_release == 'false'
+        run: |
+          echo "Skipping release."
+          exit 0
+
+      # 获取最新 tag
       - name: Get latest tag
         id: get_tag
         run: |
           TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
           echo "latest_tag=$TAG" >> $GITHUB_OUTPUT
 
-      # 3. 计算下一个版本号（patch +1）
+      # 自动递增版本号 patch+1
       - name: Calculate next version
         id: next_version
         run: |
@@ -37,42 +67,43 @@ jobs:
           next="v$major.$minor.$patch"
           echo "next_version=$next" >> $GITHUB_OUTPUT
 
-      # 4. 生成企业级 Release Notes
+      # 生成 Release Notes
       - name: Generate enterprise Release Notes
-        id: release_notes
         run: |
           latest="${{ steps.get_tag.outputs.latest_tag }}"
           commits=$(git log $latest..HEAD --pretty=format:'%h|%an|%s' || echo "")
           authors=$(echo "$commits" | cut -d'|' -f2 | sort | uniq)
           total_commits=$(echo "$commits" | wc -l)
 
-          feats=$(echo "$commits" | grep -i '^.*feat:' || true)
-          fixes=$(echo "$commits" | grep -i '^.*fix:' || true)
-          docs=$(echo "$commits" | grep -i '^.*docs:' || true)
+          feats=$(echo "$commits" | grep -i 'feat:' || true)
+          fixes=$(echo "$commits" | grep -i 'fix:' || true)
+          docs=$(echo "$commits" | grep -i 'docs:' || true)
           others=$(echo "$commits" | grep -v -E 'feat:|fix:|docs:' || true)
 
-          date=$(date -u +"%Y-%m-%d")
+          date=$(TZ='Asia/Shanghai' date +"%Y-%m-%d %H:%M CST")
 
-          echo "## 本次更新 ${{ steps.next_version.outputs.next_version }} ($date)" > release_notes.md
-          echo "" >> release_notes.md
-          echo "共 $total_commits 次提交，$(echo "$authors" | wc -l) 位贡献者" >> release_notes.md
-          echo "" >> release_notes.md
-          echo "### ✨ 新功能 (feat)" >> release_notes.md
-          echo "$feats" >> release_notes.md
-          echo "" >> release_notes.md
-          echo "### 🐞 修复 (fix)" >> release_notes.md
-          echo "$fixes" >> release_notes.md
-          echo "" >> release_notes.md
-          echo "### 📚 文档 (docs)" >> release_notes.md
-          echo "$docs" >> release_notes.md
-          echo "" >> release_notes.md
-          echo "### 🔧 其他" >> release_notes.md
-          echo "$others" >> release_notes.md
-          echo "" >> release_notes.md
-          echo "贡献者：" >> release_notes.md
-          echo "$authors" >> release_notes.md
+          {
+            echo "## 🚀 Release ${{ steps.next_version.outputs.next_version }} ($date)"
+            echo ""
+            echo "共 **$total_commits** 次提交，**$(echo "$authors" | wc -l)** 位贡献者"
+            echo ""
+            echo "### ✨ 新功能 (feat)"
+            echo "$feats"
+            echo ""
+            echo "### 🐞 修复 (fix)"
+            echo "$fixes"
+            echo ""
+            echo "### 📚 文档 (docs)"
+            echo "$docs"
+            echo ""
+            echo "### 🔧 其他"
+            echo "$others"
+            echo ""
+            echo "👥 贡献者："
+            echo "$authors"
+          } > release_notes.md
 
-      # 5. 更新 CHANGELOG.md 并推送
+      # 更新 CHANGELOG.md
       - name: Update CHANGELOG.md
         run: |
           if [ ! -f CHANGELOG.md ]; then
@@ -86,17 +117,17 @@ jobs:
           git commit -m "chore: update CHANGELOG for ${{ steps.next_version.outputs.next_version }}" || echo "No changes to commit"
           git push origin HEAD:main
 
-      # 6. Checkout build branch
+      # 切换到 build 分支
       - name: Checkout build branch
         run: |
           git fetch origin build
           git checkout build
 
-      # 7. Zip build artifacts
+      # 打包 build 产物
       - name: Zip build artifacts
         run: zip -r build-artifacts.zip ./*
 
-      # 8. Create GitHub Release and upload ZIP
+      # 发布 Release
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
