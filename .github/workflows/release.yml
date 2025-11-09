@@ -19,72 +19,79 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get latest tag
-        id: get_tag
-        run: |
-          TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
-          echo "latest_tag=$TAG" >> $GITHUB_OUTPUT
+      - name: Setup git safe directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
-      - name: Check for commits since latest tag
-        id: check_commit
+      - name: Get latest tag
+        id: latest_tag
         run: |
-          latest="${{ steps.get_tag.outputs.latest_tag }}"
-          if [ -z "$latest" ]; then
-            echo "has_commit=true" >> $GITHUB_OUTPUT
-            exit 0
+          set -e
+          tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -z "$tag" ]; then
+            tag="v1.0.0"
           fi
-          commits=$(git log "$latest"..HEAD --oneline)
+          echo "value=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Check for new commits since latest tag
+        id: commits_check
+        run: |
+          set -e
+          last_tag="${{ steps.latest_tag.outputs.value }}"
+          commits=$(git log "$last_tag"..HEAD --oneline)
           if [ -z "$commits" ]; then
-            echo "No new commits since latest tag, skip release."
-            echo "has_commit=false" >> $GITHUB_OUTPUT
+            echo "No new commits since $last_tag, skip release."
+            echo "needed=false" >> "$GITHUB_OUTPUT"
           else
-            echo "New commits found since latest tag."
-            echo "has_commit=true" >> $GITHUB_OUTPUT
+            echo "New commits found since $last_tag."
+            echo "needed=true" >> "$GITHUB_OUTPUT"
+            echo "commits=$commits" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Stop if no release needed
-        if: steps.check_commit.outputs.has_commit == 'false'
+        if: steps.commits_check.outputs.needed == 'false'
         run: exit 0
 
       - name: Calculate next version
         id: next_version
         run: |
-          latest="${{ steps.get_tag.outputs.latest_tag }}"
-          version="${latest#v}"
-
-          major=1
-          minor=0
-          patch=0
-
-          set +e
-          count=$(echo "$version" | grep -o '\.' | wc -l)
           set -e
-          if [ $count -eq 2 ]; then
-            major=$(echo "$version" | cut -d. -f1)
-            minor=$(echo "$version" | cut -d. -f2)
-            patch=$(echo "$version" | cut -d. -f3)
-          fi
-
+          last_tag="${{ steps.latest_tag.outputs.value }}"
+          version="${last_tag#v}"
+          IFS='.' read -r major minor patch <<< "$version"
+          # fallback if empty
+          major=${major:-1}; minor=${minor:-0}; patch=${patch:-0}
+          # 默认递增 PATCH
           next="v$major.$minor.$((patch + 1))"
-          echo "next_version=$next" >> $GITHUB_OUTPUT
-          echo "Next version: $next"
+          echo "value=$next" >> "$GITHUB_OUTPUT"
 
       - name: Create new tag
         run: |
+          set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git tag ${{ steps.next_version.outputs.next_version }}
-          git push origin ${{ steps.next_version.outputs.next_version }}
+          git tag "${{ steps.next_version.outputs.value }}"
+          git push origin "${{ steps.next_version.outputs.value }}"
 
-      - name: Publish Release
+      - name: Generate release body
+        id: release_body
+        run: |
+          set -e
+          body="自动发布版本: ${{ steps.next_version.outputs.value }}%0A变更内容:"
+          log=$(git log ${{ steps.latest_tag.outputs.value }}..HEAD --pretty=format:"- %h: %s (%an)")
+          if [ -z "$log" ]; then
+            body="$body%0A无 commit 变更."
+          else
+            body="$body%0A$log"
+          fi
+          echo "value=$body" >> "$GITHUB_OUTPUT"
+
+      - name: Create & publish release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.next_version.outputs.next_version }}
-          release_name: Release ${{ steps.next_version.outputs.next_version }}
-          body: |
-            自动发布版本: ${{ steps.next_version.outputs.next_version }}
-            变更内容:
-            $(git log ${{ steps.get_tag.outputs.latest_tag }}..HEAD --pretty=format:'- %h: %s (%an)' || echo "No commits")
+          tag_name: ${{ steps.next_version.outputs.value }}
+          release_name: Release ${{ steps.next_version.outputs.value }}
+          body: ${{ steps.release_body.outputs.value }}
           draft: false
           prerelease: false
