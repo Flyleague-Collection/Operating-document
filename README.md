@@ -11,6 +11,18 @@
 
 
 
+# Roadmap
+
+您可以在我们的[github仓库项目](https://github.com/orgs/Flyleague-Collection/projects/2)中，查阅我们的发展路线
+
+
+
+# 官方讨论渠道
+
+您可以前往我们的github仓库、[Discussions板块](https://github.com/Flyleague-Collection/Operating-document/discussions)与我们一同进行讨论，请务必遵守[社区行为准则](CODE_OF_CONDUCT.md)哦
+
+
+
 ## 使用指南
 
 - 将本仓库Fork下来，再用Github page将此项目运营在github服务器上
@@ -123,7 +135,7 @@ PyYAML             6.0.3
 
 ### 更新Zensical
 
-1. 前往[github releases](https://github.com/zensical/zensical/releases)查看版本
+1. 前往[Github releases](https://github.com/zensical/zensical/releases)查看版本
 
 2. 更新Zensical
 
@@ -158,10 +170,6 @@ Document - 文档，存放上述Markdown文件的docs、pdf格式文件
 ## 适用的平台
 
 目前我们已经将这套方案启用于“APOCFLY 天启模拟飞行平台”上，您可以[点此](https://qm.qq.com/q/5qyq2c4n9m)加群。
-
-
-
----
 
 
 

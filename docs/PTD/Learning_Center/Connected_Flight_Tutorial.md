@@ -5,7 +5,8 @@ Connected Flight Tutorial
 
 
 !!! Warning
-    由于zensical缘故，以下有序列表中的数字，均为错误的，我们已在[#34](https://github.com/zensical/zensical/issues/34)中提交，您可进入此页面进行追踪
+    
+    由于zensical缘故，以下有序列表中的数字，均为错误的，我们已在[#34](https://github.com/zensical/zensical/issues/34)中提交，您可进入此页面对议题(issue)进行追踪。
 
 
 
@@ -22,10 +23,11 @@ Connected Flight Tutorial
 
 ## 修订记录
 
-| 版本 | 时间       | 编者      | 描述                   |
-| ---- | ---------- | --------- | ---------------------- |
-| 0.1  | 2025.05.31 | 2352      | 第一版                 |
-| 1.0  | 2025.6.1   | 2352&5516 | 修改排版、增加部分内容 |
+| 版本 | 时间       | 编者      | 描述                                   |
+| ---- | ---------- | --------- | -------------------------------------- |
+| 0.1  | 2025.05.31 | 2352      | 第一版                                 |
+| 1.0  | 2025.06.01 | 2352&5516 | 修改排版、增加部分内容                 |
+| 2.0  | 2025.11.9  | 5516      | 增加Markdown版、将文字界面改为消息界面 |
 
 
 
@@ -215,7 +217,7 @@ AIG映射包下载后需要手动解压到MSFS的community目录下，注意不�
 
 勾上这两个复选框，前者表示同意使用协议，后者表示向服务器发送崩溃报告。
 
-	![image031](./Connected_Flight_Tutorial_assets/image031.png)
+![image031](./Connected_Flight_Tutorial_assets/image031.png)
 
 ---
 
@@ -223,7 +225,7 @@ AIG映射包下载后需要手动解压到MSFS的community目录下，注意不�
 
 在此页面您也许需要等待一些时间，来让Swift下载运行所必须的数据，当“Next”按钮亮起的时候，代表您可以继续进行下一步了，后续Swift可能会在后台继续下载一些数据。
 
-	![image033](./Connected_Flight_Tutorial_assets/image033.png)
+![image033](./Connected_Flight_Tutorial_assets/image033.png)
 
 ---
 
@@ -233,13 +235,13 @@ AIG映射包下载后需要手动解压到MSFS的community目录下，注意不�
 
 如果您是第一次安装Swift或者不需要其他版本的模型库，则可以直接进行下一步。
 
-	![image035](./Connected_Flight_Tutorial_assets/image035.png)
+![image035](./Connected_Flight_Tutorial_assets/image035.png)
 
 ---
 
 #### 3.4 从其他版本复制配置文件
 
-	![image037](./Connected_Flight_Tutorial_assets/image037.png)
+![image037](./Connected_Flight_Tutorial_assets/image037.png)
 
 ---
 
@@ -417,17 +419,203 @@ AIG映射包下载后需要手动解压到MSFS的community目录下，注意不�
 3. 全部填写完成后，点击右下角save
 
 	![image087](./Connected_Flight_Tutorial_assets/image087.png)
-	
-	
+
+
+
+### 5. swift 使用说明
+
+下面为swift的主界面，我们仅对几个经常用到的功能做详细说明
+
+![image089](./Connected_Flight_Tutorial_assets/image089.png)
+
+
+
+#### 5.1 Connect页面
+
+该页面是用于连接服务器的页面
+Swift 版本不同该页面可能会有些许不同，但操作逻辑相同
+
+![image091](./Connected_Flight_Tutorial_assets/image091.png)
+
+
+
+- 检查上方Network 选项框，选择Other Servers
+
+- 下面选择APOC服务器
+
+- Login这里需要检查是否是Normal位置，如果不是，检查模拟器启动是否正常
 
 ---
 
-未完待续
+- 下方的Pilot Info，检查无误即可
+
+- Home这里可以填你的基地机场，选一个自己喜欢的机场ICAO码填进去就行
 
 ---
+
+- 最后一个区域，需要检查Callsign 是否正确
+
+- Aircraft 是否是自己执飞的机型
+
+- Airline 是否是自己执飞的航司
+
+- 全部检查无误以后点击Connect 连接
+
+---
+
+![image093](./Connected_Flight_Tutorial_assets/image093.png)
+
+当显示该页面的并且左下角变成绿色，代表你已经连接成功
+!!! Warning
+
+    警告：请不要在跑道/滑行道上出生，这是违反[CoC 3.6](../../General/OPDOC-General-202502-R2-SC.md#_6)的违规行为
+
+
+
+#### 5.2 飞行计划页面
+
+!!! Note
+
+    注：如果您对此部分感到困惑，不妨试试我们的网页提交计划功能，[点此进入](https://www.apocfly.com/flight-plan)
+
+![image095](./Connected_Flight_Tutorial_assets/image095.png)
+
+点击Flight pl. 进入飞行计划页面，界面如下：
+
+![image097](./Connected_Flight_Tutorial_assets/image097.png)
+
+---
+
+飞行计划填写的顺序是，自左向右，自上而下填写，如下图所示：
+
+![image099](./Connected_Flight_Tutorial_assets/image099.png)
+
+解析如下：
+
+1. Type：飞行类型，一般我们航线飞行选择IFR即可
+2. Callsign：航班呼号，在上面连接的时候填写，这里无法修改
+3. Aircraft：飞机的ICAO 识别码，swift自动填写，一般不用动
+4. Wake Turbulence Category：尾流类型，swift自动填写，一般不用动
+
+---
+
+5. NAV/COM Equipment：导航和通讯设备代码，表明飞机的导航和通讯能力，如果不知道填什么，可以不用动
+
+6. SSR Equipment：二次雷达代码，表明飞机的二次雷达设备能力，如果不知道填什么，可以不用动
+
+7. TAS：计划飞行的真空速，如果不知道数值，可以不填，也可以填一个经验值（400-450）
+
+---
+
+8. Departure airport：离场机场，填写离场机场的ICAO码
+
+9. Departure time：计划离场时间，UTC时间，不了解可以不用管
+
+10. Cruising altitude：计划巡航高度，以英尺作为单位，如果飞国内航线需注意米制转换
+
+---
+
+11. Route：计划航路
+
+---
+
+12. Destination airport：到达机场，填写到达机场的ICAO码
+
+13. Est.time enroute：计划航路时间，计划的飞行时间，不清楚可以不填
+
+14. Fuel on board：机载燃油的飞行时间，不清楚可以不填
+
+16. Alternate Airport：备降机场，填写备降机场的ICAO码，没有备降场可以不填
+
+17. remarks：备注信息，备注信息右侧的下拉框表示交流类型；
+
+    Full voice 表示可以接受双向语音管制；
+
+    Receive vioce 表示只能单向接受语音管制；
+
+    Text only 表示只能接受双向文字管制
+
+!!! Note
+    
+    注：在管制空域内，此处提交的内容只需要提交一次，若您认为飞行计划有问题或管制员告知您的飞行计划有误时，您仅需要在您的飞机上进行更改，而您的计划，管制员会帮忙进行更改。
+
+---
+
+确认所有内容填写正确后，点击Send 按钮发送飞行计划到服务器（若不放心您也可以多点几下）
+
+![image101](./Connected_Flight_Tutorial_assets/image101.png)
+
+出现下方窗口代表发送成功
+
+![image103](./Connected_Flight_Tutorial_assets/image103.png)
+
+
+
+#### 5.3 消息界面
+
+![image105](./Connected_Flight_Tutorial_assets/image105.png)
+
+---
+
+这里主要用于与管制员的文字交流
+
+先点击Message to，在选择要发送到的管制席位
+
+最后在下面Message 中输入内容，随后按下回车，即可发送消息
+
+如果要在频道内发送消息，则点击上方COM1 或者COM2
+
+在下方输入框中输入消息，回车发送即可
+
+![image107](./Connected_Flight_Tutorial_assets/image107.png)
+
+---
+
+#### 5.4 ATC页面
+
+用于查看周围在线的管制员
+
+![image109](./Connected_Flight_Tutorial_assets/image109.png)
+
+#### 5.5 Radar页面
+
+用于查看周围的机组
+
+![image111](./Connected_Flight_Tutorial_assets/image111.png)
+
+#### 5.6 Aircraft页面
+
+同样可以查看周围的机组，不过是以列表形式展现
+
+![image113](./Connected_Flight_Tutorial_assets/image113.png)
+
+### 6. 联飞说明
+
+**不要使用**不熟悉的机模进行连飞活动！
+
+**不要使用**不熟悉的机模进行连飞活动！！
+
+**不要使用**不熟悉的机模进行连飞活动！！！
+
+- 不熟悉指：无法熟练使用自动驾驶或其他机载设备，准确无误的完成管制员的指令，并在管制员询问飞机状态时准确无误的回答
+
+所以，参加连飞活动请务必、一定、必须使用自己熟悉的机模
+
+这**不仅仅**保障了你有一个良好的活动体验，也同时保障了其他活动参与者和管制员的活动体验
+
 
 
 
 ## 后记
 
-(有意留空)
+连飞从来不仅是一场飞行模拟，更是一段人与人之间的协作与交流体验。
+
+无论您是第一次踏入虚拟蓝天的新飞行员，还是已在各大网络飞行平台积累了丰富经验的资深机长，我们都希望本指南能为您带来清晰的方向与可靠的参考，帮助您更加顺利地融入联飞环境。
+
+航空是一门严谨的学科，联飞亦然。规范、沟通、尊重与默契，是让每一次联飞变得愉快而富有成就感的关键。请记住：您的每一份准备、每一次遵守流程、每一次与他人的有效协作，都是让天空更加有序与和谐的重要力量。
+
+若您在阅读本教程的过程中遇到疑问、发现疏漏、或愿意贡献改进内容，我们诚挚欢迎您提出建议。您的反馈将使本教程不断完善，也能帮助更多飞行员收获更好的联飞体验。
+
+愿我们在无线电中相遇，在航迹上并肩，在虚拟的天空里，共同飞得更高、更远。
+
+期待在下一次的联飞活动中，与您在空中相见。
