@@ -94,7 +94,7 @@ Connected Flight Tutorial
 
 ---
 
-##### 1.2.1 MSFS 2020映射
+##### 1.2.1 MSFS 2020 映射
 
 [swift官方关于MSFS机模映射的文档](https://swift-project.org/home/models/msfs/)
 
@@ -422,7 +422,7 @@ AIG映射包下载后需要手动解压到MSFS的community目录下，注意不�
 
 
 
-### 5. swift 使用说明
+### 5. swift使用说明
 
 下面为swift的主界面，我们仅对几个经常用到的功能做详细说明
 
