@@ -30,6 +30,7 @@ jobs:
           if [ -z "$tag" ]; then
             tag="v1.0.0"
           fi
+          # tag 是单行，直接写入
           echo "value=$tag" >> "$GITHUB_OUTPUT"
 
       - name: Check for new commits since latest tag
@@ -37,14 +38,22 @@ jobs:
         run: |
           set -e
           last_tag="${{ steps.latest_tag.outputs.value }}"
-          commits=$(git log "$last_tag"..HEAD --oneline)
+          # 获取 oneline 列表（可能包含换行）
+          commits=$(git log "$last_tag"..HEAD --oneline || true)
+
           if [ -z "$commits" ]; then
             echo "No new commits since $last_tag, skip release."
             echo "needed=false" >> "$GITHUB_OUTPUT"
           else
             echo "New commits found since $last_tag."
+            # needed 为单行，可直接写入
             echo "needed=true" >> "$GITHUB_OUTPUT"
-            echo "commits=$commits" >> "$GITHUB_OUTPUT"
+            # commits 可能是多行，使用多行输出语法写入 GITHUB_OUTPUT
+            {
+              echo "commits<<EOF"
+              printf '%s\n' "$commits"
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
           fi
 
       - name: Stop if no release needed
@@ -77,13 +86,18 @@ jobs:
         run: |
           set -e
           body="自动发布版本: ${{ steps.next_version.outputs.value }}%0A变更内容:"
-          log=$(git log ${{ steps.latest_tag.outputs.value }}..HEAD --pretty=format:"- %h: %s (%an)")
+          log=$(git log ${{ steps.latest_tag.outputs.value }}..HEAD --pretty=format:"- %h: %s (%an)" || true)
           if [ -z "$log" ]; then
             body="$body%0A无 commit 变更."
           else
             body="$body%0A$log"
           fi
-          echo "value=$body" >> "$GITHUB_OUTPUT"
+          # body 可能包含换行，使用多行输出语法写入
+          {
+            echo "value<<EOF"
+            printf '%s\n' "$body"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Create & publish release
         uses: actions/create-release@v1
