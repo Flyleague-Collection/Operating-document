@@ -33,13 +33,17 @@ jobs:
             exit 0
           fi
 
-          # 周中检查过去 24h main 是否有提交
-          COMMITS=$(git log origin/main --since="24 hours ago" --oneline)
+          # 获取昨日日期（UTC时间）
+          YESTERDAY=$(date -u -d "yesterday" +%Y-%m-%d)
+          echo "Checking commits for yesterday: $YESTERDAY"
+
+          # 周中检查昨日是否有提交
+          COMMITS=$(git log origin/main --since="$YESTERDAY 00:00:00" --until="$YESTERDAY 23:59:59" --oneline)
           if [ -z "$COMMITS" ]; then
-            echo "No commits in last 24h — skip."
+            echo "No commits yesterday — skip."
             echo "is_release=false" >> $GITHUB_OUTPUT
           else
-            echo "Commits detected — release will run."
+            echo "Commits detected yesterday — release will run."
             echo "is_release=true" >> $GITHUB_OUTPUT
           fi
 
@@ -75,92 +79,4 @@ jobs:
 
           feats=$(echo "$commits" | grep -i '^.*feat' || true)
           fixes=$(echo "$commits" | grep -i '^.*fix' || true)
-          docs=$(echo "$commits" | grep -i '^.*docs' || true)
-          others=$(echo "$commits" | grep -v -Ei 'feat|fix|docs' || true)
-
-          date=$(TZ='Asia/Shanghai' date +"%Y-%m-%d %H:%M CST")
-
-          {
-            echo "## 🚀 Release ${{ steps.next_version.outputs.next_version }} ($date)"
-            echo ""
-            echo "共 **$total_commits** 次提交，贡献者 **$(echo "$authors" | wc -l)** 位"
-            echo ""
-            echo "### ✨ 新功能 (feat)"
-            echo "${feats:-无}"
-            echo ""
-            echo "### 🐞 修复 (fix)"
-            echo "${fixes:-无}"
-            echo ""
-            echo "### 📚 文档 (docs)"
-            echo "${docs:-无}"
-            echo ""
-            echo "### 🔧 其他"
-            echo "${others:-无}"
-            echo ""
-            echo "👥 贡献者："
-            echo "$authors"
-          } > release_notes.md
-
-      # 上传 Release Notes 用于下一 Job
-      - uses: actions/upload-artifact@v4
-        with:
-          name: release_notes
-          path: release_notes.md
-
-  changelog-pr:
-    needs: auto-release
-    if: needs.auto-release.outputs.is_release == 'true'
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: release_notes
-
-      - name: Update CHANGELOG.md
-        run: |
-          [ ! -f CHANGELOG.md ] && echo "# CHANGELOG" > CHANGELOG.md
-          echo "" >> CHANGELOG.md
-          cat release_notes.md >> CHANGELOG.md
-
-          branch="chore/update-changelog-${{ github.run_id }}"
-          git checkout -b "$branch"
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add CHANGELOG.md
-          git commit -m "chore: update CHANGELOG for ${{ needs.auto-release.outputs.next_version }}"
-          git push origin "$branch"
-
-      - name: Create PR
-        uses: peter-evans/create-pull-request@v5
-        with:
-          title: "chore: update CHANGELOG for ${{ needs.auto-release.outputs.next_version }}"
-          body: "Auto-update CHANGELOG"
-          branch: "chore/update-changelog-${{ github.run_id }}"
-          labels: documentation, automated
-
-  release:
-    needs: auto-release
-    if: needs.auto-release.outputs.is_release == 'true'
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Build artifacts
-        run: zip -r build-artifacts.zip ./*
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: release_notes
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ needs.auto-release.outputs.next_version }}
-          name: "Release ${{ needs.auto-release.outputs.next_version }}"
-          body_path: release_notes.md
-          files: build-artifacts.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          docs=$(
