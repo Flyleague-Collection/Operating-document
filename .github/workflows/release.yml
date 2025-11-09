@@ -1,14 +1,14 @@
 name: Auto Release
 
+on:
+  schedule:
+    # 每天 UTC 16:00，对应中国半夜
+    - cron: "0 16 * * *"
+  workflow_dispatch:
+
 permissions:
   contents: write
   pull-requests: write
-
-on:
-  schedule:
-    # 每天 16:00 UTC = 中国 CST 次日 00:00（午夜）
-    - cron: "0 16 * * *"
-  workflow_dispatch:
 
 jobs:
   auto-release:
@@ -20,37 +20,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 判断是否需要发布
-      - name: Check if release should run
-        id: check_release
-        run: |
-          DAY=$(date -u +%u) # 1=Mon ... 7=Sun (UTC weekday)
-          echo "Today weekday: $DAY"
-
-          # 周末（6=Sat, 7=Sun）→ 必发布
-          if [ "$DAY" -ge 6 ]; then
-            echo "is_release=true" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-
-          # 获取昨日日期（UTC时间）
-          YESTERDAY=$(date -u -d "yesterday" +%Y-%m-%d)
-          echo "Checking commits for yesterday: $YESTERDAY"
-
-          # 周中检查昨日是否有提交
-          COMMITS=$(git log origin/main --since="$YESTERDAY 00:00:00" --until="$YESTERDAY 23:59:59" --oneline)
-          if [ -z "$COMMITS" ]; then
-            echo "No commits yesterday — skip."
-            echo "is_release=false" >> $GITHUB_OUTPUT
-          else
-            echo "Commits detected yesterday — release will run."
-            echo "is_release=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Stop if no release today
-        if: steps.check_release.outputs.is_release == 'false'
-        run: exit 0
-
       # 获取最新 tag
       - name: Get latest tag
         id: get_tag
@@ -58,7 +27,25 @@ jobs:
           TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
           echo "latest_tag=$TAG" >> $GITHUB_OUTPUT
 
-      # 自动递增版本号：patch +1
+      # 检查从最新 tag 到 HEAD 是否有 commit
+      - name: Check for commits since latest tag
+        id: check_commit
+        run: |
+          latest="${{ steps.get_tag.outputs.latest_tag }}"
+          commits=$(git log "$latest"..HEAD --oneline)
+          if [ -z "$commits" ]; then
+            echo "No new commits since latest tag, skip release."
+            echo "has_commit=false" >> $GITHUB_OUTPUT
+          else
+            echo "New commits found since latest tag."
+            echo "has_commit=true" >> $GITHUB_OUTPUT
+
+      # 没有 commit 则直接退出
+      - name: Stop if no release needed
+        if: steps.check_commit.outputs.has_commit == 'false'
+        run: exit 0
+
+      # 自动递增版本号 patch+1
       - name: Calculate next version
         id: next_version
         run: |
@@ -69,14 +56,25 @@ jobs:
           echo "next_version=$next" >> $GITHUB_OUTPUT
           echo "Next version: $next"
 
-      # 生成 Release Notes
-      - name: Generate Release Notes
+      # 推送新 tag 到远程
+      - name: Create new tag
         run: |
-          latest="${{ steps.get_tag.outputs.latest_tag }}"
-          commits=$(git log $latest..HEAD --pretty=format:'%h|%an|%s' || true)
-          authors=$(echo "$commits" | cut -d'|' -f2 | sort -u)
-          total_commits=$(echo "$commits" | wc -l)
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag ${{ steps.next_version.outputs.next_version }}
+          git push origin ${{ steps.next_version.outputs.next_version }}
 
-          feats=$(echo "$commits" | grep -i '^.*feat' || true)
-          fixes=$(echo "$commits" | grep -i '^.*fix' || true)
-          docs=$(
+      # 发布 GitHub Release
+      - name: Publish Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.next_version.outputs.next_version }}
+          release_name: Release ${{ steps.next_version.outputs.next_version }}
+          body: |
+            自动发布版本: ${{ steps.next_version.outputs.next_version }}
+            变更内容:
+            $(git log ${{ steps.get_tag.outputs.latest_tag }}..HEAD --pretty=format:'- %h: %s (%an)' || echo "No commits")
+          draft: false
+          prerelease: false
