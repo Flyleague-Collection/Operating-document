@@ -2,7 +2,6 @@ name: Auto Release
 
 on:
   schedule:
-    # 每天 UTC 16:00，对应中国半夜
     - cron: "0 16 * * *"
   workflow_dispatch:
 
@@ -20,20 +19,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 获取最新 tag
       - name: Get latest tag
         id: get_tag
         run: |
           TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
           echo "latest_tag=$TAG" >> $GITHUB_OUTPUT
 
-      # 检查从最新 tag 到 HEAD 是否有 commit
       - name: Check for commits since latest tag
         id: check_commit
         run: |
           latest="${{ steps.get_tag.outputs.latest_tag }}"
           if [ -z "$latest" ]; then
-            # 没有 tag，强制触发发布
             echo "has_commit=true" >> $GITHUB_OUTPUT
             exit 0
           fi
@@ -45,32 +41,33 @@ jobs:
             echo "New commits found since latest tag."
             echo "has_commit=true" >> $GITHUB_OUTPUT
 
-      # 没有 commit 则直接退出
       - name: Stop if no release needed
         if: steps.check_commit.outputs.has_commit == 'false'
         run: exit 0
 
-      # 自动递增版本号 patch+1
       - name: Calculate next version
         id: next_version
         run: |
           latest="${{ steps.get_tag.outputs.latest_tag }}"
           version="${latest#v}"
-          # 防止 version 不合法时出错
-          if [[ "$version" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
-            major="${BASH_REMATCH[1]}"
-            minor="${BASH_REMATCH[2]}"
-            patch="${BASH_REMATCH[3]}"
-          else
-            major=1
-            minor=0
-            patch=0
+
+          major=1
+          minor=0
+          patch=0
+
+          set +e
+          count=$(echo "$version" | grep -o '\.' | wc -l)
+          set -e
+          if [ $count -eq 2 ]; then
+            major=$(echo "$version" | cut -d. -f1)
+            minor=$(echo "$version" | cut -d. -f2)
+            patch=$(echo "$version" | cut -d. -f3)
           fi
+
           next="v$major.$minor.$((patch + 1))"
           echo "next_version=$next" >> $GITHUB_OUTPUT
           echo "Next version: $next"
 
-      # 推送新 tag 到远程
       - name: Create new tag
         run: |
           git config user.name "github-actions[bot]"
@@ -78,7 +75,6 @@ jobs:
           git tag ${{ steps.next_version.outputs.next_version }}
           git push origin ${{ steps.next_version.outputs.next_version }}
 
-      # 发布 GitHub Release
       - name: Publish Release
         uses: actions/create-release@v1
         env:
