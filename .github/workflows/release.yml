@@ -32,6 +32,11 @@ jobs:
         id: check_commit
         run: |
           latest="${{ steps.get_tag.outputs.latest_tag }}"
+          if [ -z "$latest" ]; then
+            # 没有 tag，强制触发发布
+            echo "has_commit=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
           commits=$(git log "$latest"..HEAD --oneline)
           if [ -z "$commits" ]; then
             echo "No new commits since latest tag, skip release."
@@ -51,7 +56,16 @@ jobs:
         run: |
           latest="${{ steps.get_tag.outputs.latest_tag }}"
           version="${latest#v}"
-          IFS='.' read -r major minor patch <<< "$version"
+          # 防止 version 不合法时出错
+          if [[ "$version" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            major="${BASH_REMATCH[1]}"
+            minor="${BASH_REMATCH[2]}"
+            patch="${BASH_REMATCH[3]}"
+          else
+            major=1
+            minor=0
+            patch=0
+          fi
           next="v$major.$minor.$((patch + 1))"
           echo "next_version=$next" >> $GITHUB_OUTPUT
           echo "Next version: $next"
