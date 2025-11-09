@@ -4,7 +4,7 @@ font.code = "JetBrains Mono"
 fonts = "JetBrains Mono"
 language = "zh"
 favicon = "images/favicon.png"
-# logo = "images/Logo.png"
+logo = "images/Logo.png"
 features = [
     "search.highlight",
     "content.action.edit",
