@@ -14,41 +14,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout main and build branch
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: main
 
-      - name: Setup git safe directory
-        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - name: Fetch all branches & tags
+        run: git fetch --all --tags
 
       - name: Get latest tag
         id: latest_tag
         run: |
-          set -e
           tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-          if [ -z "$tag" ]; then
-            tag="v1.0.0"
-          fi
-          # tag 是单行，直接写入
+          if [ -z "$tag" ]; then tag="v1.0.0"; fi
           echo "value=$tag" >> "$GITHUB_OUTPUT"
 
       - name: Check for new commits since latest tag
         id: commits_check
         run: |
-          set -e
           last_tag="${{ steps.latest_tag.outputs.value }}"
-          # 获取 oneline 列表（可能包含换行）
           commits=$(git log "$last_tag"..HEAD --oneline || true)
-
           if [ -z "$commits" ]; then
-            echo "No new commits since $last_tag, skip release."
             echo "needed=false" >> "$GITHUB_OUTPUT"
           else
-            echo "New commits found since $last_tag."
-            # needed 为单行，可直接写入
             echo "needed=true" >> "$GITHUB_OUTPUT"
-            # commits 可能是多行，使用多行输出语法写入 GITHUB_OUTPUT
             {
               echo "commits<<EOF"
               printf '%s\n' "$commits"
@@ -63,49 +53,118 @@ jobs:
       - name: Calculate next version
         id: next_version
         run: |
-          set -e
           last_tag="${{ steps.latest_tag.outputs.value }}"
           version="${last_tag#v}"
           IFS='.' read -r major minor patch <<< "$version"
-          # fallback if empty
           major=${major:-1}; minor=${minor:-0}; patch=${patch:-0}
-          # 默认递增 PATCH
           next="v$major.$minor.$((patch + 1))"
           echo "value=$next" >> "$GITHUB_OUTPUT"
 
       - name: Create new tag
         run: |
-          set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag "${{ steps.next_version.outputs.value }}"
           git push origin "${{ steps.next_version.outputs.value }}"
 
-      - name: Generate release body
-        id: release_body
+      # 关键：拉取 build 分支，并自动打包所有文件
+      - name: Get build branch and zip for artifacts
         run: |
-          set -e
-          body="自动发布版本: ${{ steps.next_version.outputs.value }}%0A变更内容:"
-          log=$(git log ${{ steps.latest_tag.outputs.value }}..HEAD --pretty=format:"- %h: %s (%an)" || true)
-          if [ -z "$log" ]; then
-            body="$body%0A无 commit 变更."
-          else
-            body="$body%0A$log"
-          fi
-          # body 可能包含换行，使用多行输出语法写入
-          {
-            echo "value<<EOF"
-            printf '%s\n' "$body"
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
+          git fetch origin build:build || true
+          rm -rf build_artifacts
+          mkdir build_artifacts
+          # 检出 build 分支最新内容到 build_artifacts
+          git checkout build
+          cp -r ./* build_artifacts/ || true
+          git checkout main  # 切回main，避免主分支污染
 
-      - name: Create & publish release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create build zip & hash
+        run: |
+          cd build_artifacts
+          zip -r ../build-artifacts.zip ./*
+          cd ..
+          sha256sum build-artifacts.zip | awk '{print $1}' > build-artifacts.sha256
+          stat --format="%s" build-artifacts.zip > build-artifacts.size
+          date -u > build-artifacts.date
+
+      - name: Classify commits and contributors (release body)
+        id: generate_body
+        run: |
+          last_tag="${{ steps.latest_tag.outputs.value }}"
+          version="${{ steps.next_version.outputs.value }}"
+          # 分类 commit
+          function cats() {
+            grep -E "^$1:" | sed "s/^/- /"
+          }
+          # 分组
+          git log "$last_tag"..HEAD --pretty=format:"%s|%h|%an" > log.txt
+          cat log.txt | grep '^feat:' > added.txt || true
+          cat log.txt | grep 'fix\|bug' > fixed.txt || true
+          cat log.txt | grep '^docs:' > docs.txt || true
+          cat log.txt | grep '^ci:' > ci.txt || true
+          cat log.txt | grep -v -E '^(feat:|fix:|docs:|ci:)' > changed.txt || true
+
+          # 贡献者名单
+          git log "$last_tag"..HEAD --pretty=format:"%an" | sort | uniq > contributors.txt
+
+          # 格式化 release body
+          body="${version} 最新发行版\n\n"
+
+          # 简介统计
+          n_commit=$(wc -l < log.txt)
+          n_contrib=$(wc -l < contributors.txt)
+
+          body+="本次更新共 ${n_commit} 个 commit，${n_contrib} 位贡献者：\n"
+          body+="\n---\n"
+
+          if [ -s added.txt ]; then
+            body+="### Added\n$(cat added.txt)\n"
+          fi
+          if [ -s fixed.txt ]; then
+            body+="### Fixed\n$(cat fixed.txt)\n"
+          fi
+          if [ -s docs.txt ]; then
+            body+="### Docs\n$(cat docs.txt)\n"
+          fi
+          if [ -s ci.txt ]; then
+            body+="### CI\n$(cat ci.txt)\n"
+          fi
+          if [ -s changed.txt ]; then
+            body+="### Changed\n$(cat changed.txt)\n"
+          fi
+
+          body+="\n---\n"
+
+          # 贡献者
+          body+="### 贡献者\n"
+          while read -r name; do
+            body+="- $name\n"
+          done < contributors.txt
+
+          body+="\n---\n"
+
+          # 资源包
+          size=$(cat build-artifacts.size)
+          hash=$(cat build-artifacts.sha256)
+          date=$(cat build-artifacts.date)
+          body+="### 附件资源包\n"
+          body+="**build-artifacts.zip** \n"
+          body+="sha256:${hash}\n"
+          body+="大小: $((size/1048576)) MB\n"
+          body+="打包时间: ${date}\n"
+
+          # 输出
+          echo "body<<EOF" >> "$GITHUB_OUTPUT"
+          echo -e "$body" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      # 用 release-action 直接上传 zip 并发布
+      - name: Create & Publish Release With Artifact
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ steps.next_version.outputs.value }}
-          release_name: Release ${{ steps.next_version.outputs.value }}
-          body: ${{ steps.release_body.outputs.value }}
+          tag: ${{ steps.next_version.outputs.value }}
+          name: "Operating-document ${{ steps.next_version.outputs.value }} 最新发行版"
+          body: ${{ steps.generate_body.outputs.body }}
+          artifacts: build-artifacts.zip
           draft: false
           prerelease: false
