@@ -3,8 +3,8 @@ variant = "modern"
 font.code = "JetBrains Mono"
 fonts = "JetBrains Mono"
 language = "zh"
-favicon = "images/favicon.png"
-logo = "images/Logo.png"
+favicon = "images/Logo.svg"
+logo = "images/Logo.svg"
 features = [
     "search.highlight",
     "content.action.edit",
