@@ -100,3 +100,7 @@ link = "https://v.douyin.com/97uoxOsUrcA"
 [[project.extra.social]]
 icon = "fontawesome/brands/qq"
 link = "https://qm.qq.com/q/5qyq2c4n9m"
+
+# [project.extra.analytics]
+# provider : custom
+# property : foobar

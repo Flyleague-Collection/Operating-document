@@ -1,9 +1,9 @@
 # 运行文档 Operating-document
 
-[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg?style=for-the-badge) ](https://creativecommons.org/licenses/by-nc-sa/4.0) ![Markdown](https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=Markdown&logoColor=ffffff) ![BuildStateCard](https://img.shields.io/github/actions/workflow/status/Flyleague-Collection/Operating-document/ci.yml?style=for-the-badge&logo=github&label=build)  ![LastCommitCard](https://img.shields.io/github/last-commit/Flyleague-Collection/Operating-document?display_timestamp=committer&style=for-the-badge&logo=github)
+[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg?style=for-the-badge)](https://creativecommons.org/licenses/by-nc-sa/4.0) ![Markdown](https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=Markdown&logoColor=ffffff) ![BuildStateCard](https://img.shields.io/github/actions/workflow/status/Flyleague-Collection/Operating-document/ci.yml?style=for-the-badge&logo=github&label=build)  ![LastCommitCard](https://img.shields.io/github/last-commit/Flyleague-Collection/Operating-document?display_timestamp=committer&style=for-the-badge&logo=github)
 
 
-本项目是一个以Markdown语言以及文档站组成的一个模拟飞行平台运营所集成的所有文档，这包括：
+本项目是一个以Markdown语言以及[Zensical](https://zensical.org/)文档站(原[Material for MkDocs](https://squidfunk.github.io/mkdocs-material/)))组成的一个模拟飞行平台运营所集成的所有文档，这包括：
 
 - 行为准则
 - 管制员考核大纲
@@ -11,19 +11,23 @@
 
 
 
----
+# Roadmap
+
+您可以在我们的[github仓库项目](https://github.com/orgs/Flyleague-Collection/projects/2)中，查阅我们的发展路线
 
 
 
-## 允许范围
+# 官方讨论渠道
+
+您可以前往我们的github仓库、[Discussions板块](https://github.com/Flyleague-Collection/Operating-document/discussions)与我们一同进行讨论，请务必遵守[社区行为准则](CODE_OF_CONDUCT.md)哦
+
+
+
+## 使用指南
 
 - 将本仓库Fork下来，再用Github page将此项目运营在github服务器上
 - 将本仓库Fork下来，和我们一起对其进行编写！
 - 也可以将此项目部署在本地服务器上
-
-
-
----
 
 
 
@@ -51,10 +55,6 @@ Pygments           2.19.2
 pymdown-extensions 10.16.1
 PyYAML             6.0.3
 ```
-
-
-
----
 
 
 
@@ -87,8 +87,6 @@ PyYAML             6.0.3
     ; powershell
     .\.venv\Scripts\activate
     ```
-
-    
 
 5. 安装所需的库
 
@@ -134,9 +132,10 @@ PyYAML             6.0.3
    ```
 
 
+
 ### 更新Zensical
 
-1. 前往[github releases](https://github.com/zensical/zensical/releases)查看版本
+1. 前往[Github releases](https://github.com/zensical/zensical/releases)查看版本
 
 2. 更新Zensical
 
@@ -144,21 +143,13 @@ PyYAML             6.0.3
     pip install --upgrade --force-reinstall zensical
     ```
 
-3. 参考[添加requirements.txt](#添加requirementstxt)更新requirements.txt
-
-
-
----
+3. 参考[添加requirements.txt](#添加requirementstxt) 更新requirements.txt
 
 
 
 ## 贡献方式
 
 您可以将本项目进行 [fork](https://github.com/Flyleague-Collection/Operating-document/fork)，并查看 [#3](https://github.com/Flyleague-Collection/Operating-document/issues/3) 内的Todo list以查看需要完成的任务
-
-
-
----
 
 
 
@@ -169,24 +160,16 @@ PyYAML             6.0.3
 ```markdown
 General - 总则，通适用于任何用户的文件
 CTD - 管制员训练部，培训管制员所用到的材料等
-    Learning_Center - 学习中心，培训管制员所用到的一些理论资料
+	Learning_Center - 学习中心，培训管制员所用到的一些理论资料
 PTD - 飞行员训练部，培训飞行员所用到的材料等
 Document - 文档，存放上述Markdown文件的docs、pdf格式文件
 ```
 
 
 
----
-
-
-
 ## 适用的平台
 
 目前我们已经将这套方案启用于“APOCFLY 天启模拟飞行平台”上，您可以[点此](https://qm.qq.com/q/5qyq2c4n9m)加群。
-
-
-
----
 
 
 

@@ -20,4 +20,4 @@ document$.subscribe(function() {
     if (note)
       note.hidden = false 
   })
-}
+})
