@@ -1,4 +1,5 @@
-# 前置步骤同你原有，以下为 build 分支打包优化
+      # 导出 build 分支且只包含其文件，防止 workflow 污染
+	  
       - name: Prepare build branch for release artifacts
         run: |
           rm -rf build_files
