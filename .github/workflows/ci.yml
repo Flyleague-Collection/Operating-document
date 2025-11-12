@@ -10,7 +10,52 @@ permissions:
   contents: write
 
 jobs:
+  check_changes:
+    runs-on: ubuntu-latest
+    outputs:
+      docs_changed: ${{ steps.check_files.outputs.docs }}
+      config_changed: ${{ steps.check_files.outputs.config }}
+      should_build: ${{ steps.check_files.outputs.docs == 'true' || steps.check_files.outputs.config == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # 获取最近2次提交用于比较
+      
+      - name: Check for relevant file changes
+        id: check_files
+        run: |
+          # 对于 PR，比较当前分支与目标分支
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+            HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          else
+            # 对于 push，比较当前提交与上一次提交
+            BASE_SHA=$(git rev-parse HEAD~1)
+            HEAD_SHA=$(git rev-parse HEAD)
+          fi
+          
+          echo "Comparing $BASE_SHA..$HEAD_SHA"
+          
+          # 检查 zensical.toml 是否变更
+          if git diff --name-only $BASE_SHA $HEAD_SHA | grep -q "zensical.toml"; then
+            echo "config_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "config_changed=false" >> $GITHUB_OUTPUT
+          fi
+          
+          # 检查 /docs/ 目录下文件是否变更
+          if git diff --name-only $BASE_SHA $HEAD_SHA | grep -q "^docs/"; then
+            echo "docs_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "docs_changed=false" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "Files changed in docs/: $(git diff --name-only $BASE_SHA $HEAD_SHA | grep '^docs/' || echo 'none')"
+          echo "zensical.toml changed: $(git diff --name-only $BASE_SHA $HEAD_SHA | grep 'zensical.toml' || echo 'no')"
+
   build:
+    needs: check_changes
+    if: needs.check_changes.outputs.should_build == 'true'
     runs-on: ubuntu-latest
     outputs:
       commit_hash: ${{ steps.build-info.outputs.commit_hash }}
@@ -19,6 +64,7 @@ jobs:
       python_version: ${{ steps.build-info.outputs.python_version }}
       build_date: ${{ steps.build-info.outputs.build_date }}
       branch_name: ${{ steps.build-info.outputs.branch_name }}
+      has_changes: ${{ needs.check_changes.outputs.should_build }}
 
     steps:
       - uses: actions/checkout@v4
@@ -54,8 +100,8 @@ jobs:
           path: site
 
   deploy_build:
-    needs: build
-    if: always() # <--- 即使 build 或 deploy_pages失败也执行
+    needs: [check_changes, build]
+    if: needs.check_changes.outputs.should_build == 'true' && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
@@ -63,7 +109,28 @@ jobs:
           name: site
           path: site
 
+      - name: Check if build branch content changed
+        id: check_build_changes
+        run: |
+          # 获取当前构建内容与build分支内容的差异
+          git fetch origin build
+          git checkout build
+          # 临时保存当前构建内容用于比较
+          mkdir -p /tmp/current_site
+          cp -r ../site/. /tmp/current_site/
+          
+          # 比较文件差异
+          if diff -qr /tmp/current_site . > /dev/null 2>&1; then
+            echo "no_changes=true" >> $GITHUB_OUTPUT
+            echo "📝 Build branch content unchanged, skipping deployment"
+          else
+            echo "no_changes=false" >> $GITHUB_OUTPUT
+            echo "🔄 Build branch content changed, proceeding with deployment"
+          fi
+          git checkout main
+
       - name: Deploy to build branch
+        if: steps.check_build_changes.outputs.no_changes == 'false'
         run: |
           git init
           git checkout --orphan build
@@ -80,9 +147,13 @@ jobs:
           git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git push origin build --force
 
+      - name: Skip deployment (no changes)
+        if: steps.check_build_changes.outputs.no_changes == 'true'
+        run: echo "🚫 Skipping build branch deployment - no content changes detected"
+
   deploy_pages:
-    needs: build
-    if: always() # <--- 即使 build 或 deploy_build失败也执行
+    needs: [check_changes, build]
+    if: needs.check_changes.outputs.should_build == 'true' && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
@@ -90,7 +161,27 @@ jobs:
           name: site
           path: site
 
+      - name: Check if gh-pages content changed
+        id: check_pages_changes
+        run: |
+          git fetch origin gh-pages
+          git checkout gh-pages
+          # 临时保存当前构建内容用于比较
+          mkdir -p /tmp/current_site
+          cp -r ../site/. /tmp/current_site/
+          
+          # 比较文件差异（排除CNAME文件）
+          if diff -qr --exclude=CNAME /tmp/current_site . > /dev/null 2>&1; then
+            echo "no_changes=true" >> $GITHUB_OUTPUT
+            echo "📝 gh-pages content unchanged, skipping deployment"
+          else
+            echo "no_changes=false" >> $GITHUB_OUTPUT
+            echo "🔄 gh-pages content changed, proceeding with deployment"
+          fi
+          git checkout main
+
       - name: Deploy to gh-pages branch
+        if: steps.check_pages_changes.outputs.no_changes == 'false'
         run: |
           git init
           git checkout --orphan gh-pages
@@ -108,3 +199,7 @@ jobs:
 
           git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git push origin gh-pages --force
+
+      - name: Skip deployment (no changes)
+        if: steps.check_pages_changes.outputs.no_changes == 'true'
+        run: echo "🚫 Skipping gh-pages deployment - no content changes detected"
