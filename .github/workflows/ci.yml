@@ -24,38 +24,54 @@ jobs:
       - name: Check for relevant file changes
         id: check_files
         run: |
-          # 对于 PR，比较当前分支与目标分支
+          echo "GitHub event: ${{ github.event_name }}"
+          echo "Current SHA: $(git rev-parse HEAD)"
+          echo "Previous SHA: $(git rev-parse HEAD~1 2>/dev/null || echo 'N/A')"
+          
+          # 修复：使用更可靠的方式获取比较范围
           if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # 对于 PR 事件
             BASE_SHA="${{ github.event.pull_request.base.sha }}"
             HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+            echo "PR mode: base=$BASE_SHA, head=$HEAD_SHA"
           else
-            # 对于 push，比较当前提交与上一次提交
-            # 修复：使用更可靠的方式获取前一个提交
-            BASE_SHA=$(git log --oneline -n 2 | tail -1 | cut -d' ' -f1)
-            HEAD_SHA=$(git rev-parse HEAD)
+            # 对于 push 事件，使用 GitHub 提供的事件数据
+            if [ -n "${{ github.event.before }}" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+              BASE_SHA="${{ github.event.before }}"
+              HEAD_SHA="${{ github.event.after }}"
+              echo "Push mode with valid before: base=$BASE_SHA, head=$HEAD_SHA"
+            else
+              # 如果没有有效的 before SHA（比如首次提交），则与空树比较
+              BASE_SHA="4b825dc642cb6eb9a060e54bf8d69288fbee4904"  # 空树
+              HEAD_SHA="${{ github.sha }}"
+              echo "Push mode (initial commit): base=empty-tree, head=$HEAD_SHA"
+            fi
           fi
           
           echo "Comparing $BASE_SHA..$HEAD_SHA"
           
-          # 修复：检查文件是否存在，避免 grep 空结果报错
-          changed_files=$(git diff --name-only $BASE_SHA $HEAD_SHA || echo "")
+          # 修复：使用更可靠的 git diff 命令
+          changed_files=$(git diff --name-only $BASE_SHA $HEAD_SHA 2>/dev/null || echo "")
+          echo "All changed files:"
+          echo "$changed_files"
           
           # 检查 zensical.toml 是否变更
           if echo "$changed_files" | grep -q "zensical.toml"; then
             echo "config_changed=true" >> $GITHUB_OUTPUT
+            echo "✅ zensical.toml changed"
           else
             echo "config_changed=false" >> $GITHUB_OUTPUT
+            echo "❌ zensical.toml not changed"
           fi
           
           # 检查 /docs/ 目录下文件是否变更
           if echo "$changed_files" | grep -q "^docs/"; then
             echo "docs_changed=true" >> $GITHUB_OUTPUT
+            echo "✅ docs/ directory changed"
           else
             echo "docs_changed=false" >> $GITHUB_OUTPUT
+            echo "❌ docs/ directory not changed"
           fi
-          
-          echo "Files changed in docs/: $(echo "$changed_files" | grep '^docs/' || echo 'none')"
-          echo "zensical.toml changed: $(echo "$changed_files" | grep 'zensical.toml' || echo 'no')"
 
   build:
     needs: check_changes
@@ -84,7 +100,7 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          # 修复：确保安装 zensical 和项目依赖
+          # 确保安装 zensical 和项目依赖
           if [ -f requirements.txt ]; then
             pip install -r requirements.txt
           fi
@@ -128,7 +144,7 @@ jobs:
       - name: Check if build branch content changed
         id: check_build_changes
         run: |
-          # 修复：更可靠地检查 build 分支是否存在
+          # 检查 build 分支是否存在
           if git ls-remote --exit-code --heads origin build; then
             echo "Build branch exists"
             git fetch origin build
@@ -151,7 +167,7 @@ jobs:
       - name: Deploy to build branch
         if: steps.check_build_changes.outputs.no_changes == 'false'
         run: |
-          # 修复：使用临时目录进行部署
+          # 使用临时目录进行部署
           mkdir -p /tmp/deploy
           cd /tmp/deploy
           git init
@@ -175,9 +191,9 @@ jobs:
           git add .
           if ! git diff --staged --quiet; then
             git commit -m "Build: ${{ needs.build.outputs.commit_hash }} from ${{ needs.build.outputs.branch_name }}
-          Python: ${{ needs.build.outputs.python_version }}
-          Message: ${{ needs.build.outputs.commit_message }}
-          Date: ${{ needs.build.outputs.build_date }}"
+            Python: ${{ needs.build.outputs.python_version }}
+            Message: ${{ needs.build.outputs.commit_message }}
+            Date: ${{ needs.build.outputs.build_date }}"
             git push origin build
             echo "✅ Successfully deployed to build branch"
           else
@@ -205,7 +221,7 @@ jobs:
       - name: Check if gh-pages content changed
         id: check_pages_changes
         run: |
-          # 修复：更可靠地检查 gh-pages 分支是否存在
+          # 检查 gh-pages 分支是否存在
           if git ls-remote --exit-code --heads origin gh-pages; then
             echo "gh-pages branch exists"
             git fetch origin gh-pages
@@ -228,7 +244,7 @@ jobs:
       - name: Deploy to gh-pages branch
         if: steps.check_pages_changes.outputs.no_changes == 'false'
         run: |
-          # 修复：使用临时目录进行部署
+          # 使用临时目录进行部署
           mkdir -p /tmp/deploy-pages
           cd /tmp/deploy-pages
           git init
