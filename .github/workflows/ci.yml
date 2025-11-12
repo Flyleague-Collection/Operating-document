@@ -188,39 +188,36 @@ jobs:
       - name: Deploy to build branch
         if: steps.check_build_changes.outputs.no_changes == 'false'
         run: |
-          # 使用临时目录进行部署
-          mkdir -p /tmp/deploy
-          cd /tmp/deploy
-          git init
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          # 修复：使用更简单直接的方法部署到 build 分支
+          cd $GITHUB_WORKSPACE
           
-          # 拉取 build 分支（如果存在）
-          if git ls-remote --exit-code --heads origin build; then
-            git pull origin build
-          else
-            git checkout --orphan build
-          fi
+          # 删除现有的 build 分支（如果存在）并重新创建
+          git branch -D build 2>/dev/null || true
+          git checkout --orphan build
           
-          # 清空当前分支内容（除了 .git）
-          find . -maxdepth 1 ! -name '.git' ! -name '.' -exec rm -rf {} + 2>/dev/null || true
+          # 清空当前分支内容
+          git rm -rf . || true
           
           # 复制新构建的文件
-          cp -r $GITHUB_WORKSPACE/site/* ./
+          cp -r ./site/* ./
           
+          # 添加所有文件
           git add .
-          if ! git diff --staged --quiet; then
-            git commit -m "Build: ${{ needs.build.outputs.commit_hash }} from ${{ needs.build.outputs.branch_name }}
-            Python: ${{ needs.build.outputs.python_version }}
-            Message: ${{ needs.build.outputs.commit_message }}
-            Date: ${{ needs.build.outputs.build_date }}
-            Manual Trigger: ${{ needs.build.outputs.is_manual_trigger }}"
-            git push origin build
-            echo "✅ Successfully deployed to build branch"
-          else
-            echo "⚠️ No changes to deploy"
-          fi
+          
+          # 配置 Git 用户
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          # 提交更改
+          git commit -m "Build: ${{ needs.build.outputs.commit_hash }} from ${{ needs.build.outputs.branch_name }}
+          Python: ${{ needs.build.outputs.python_version }}
+          Message: ${{ needs.build.outputs.commit_message }}
+          Date: ${{ needs.build.outputs.build_date }}
+          Manual Trigger: ${{ needs.build.outputs.is_manual_trigger }}"
+          
+          # 推送到 build 分支
+          git push -f origin build
+          echo "✅ Successfully deployed to build branch"
 
       - name: Skip deployment (no changes)
         if: steps.check_build_changes.outputs.no_changes == 'true'
@@ -273,42 +270,39 @@ jobs:
       - name: Deploy to gh-pages branch
         if: steps.check_pages_changes.outputs.no_changes == 'false'
         run: |
-          # 使用临时目录进行部署
-          mkdir -p /tmp/deploy-pages
-          cd /tmp/deploy-pages
-          git init
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          # 修复：使用更简单直接的方法部署到 gh-pages 分支
+          cd $GITHUB_WORKSPACE
           
-          # 拉取 gh-pages 分支（如果存在）
-          if git ls-remote --exit-code --heads origin gh-pages; then
-            git pull origin gh-pages
-          else
-            git checkout --orphan gh-pages
-          fi
+          # 删除现有的 gh-pages 分支（如果存在）并重新创建
+          git branch -D gh-pages 2>/dev/null || true
+          git checkout --orphan gh-pages
           
-          # 清空当前分支内容（除了 .git）
-          find . -maxdepth 1 ! -name '.git' ! -name '.' -exec rm -rf {} + 2>/dev/null || true
+          # 清空当前分支内容
+          git rm -rf . || true
           
           # 复制新构建的文件
-          cp -r $GITHUB_WORKSPACE/site/* ./
+          cp -r ./site/* ./
           
           # 添加 CNAME 文件（如果域名配置需要）
           echo "docs.master-gui.cn" > CNAME
           
+          # 添加所有文件
           git add .
-          if ! git diff --staged --quiet; then
-            git commit -m "gh-pages: ${{ needs.build.outputs.commit_hash }} from ${{ needs.build.outputs.branch_name }}
-            Python: ${{ needs.build.outputs.python_version }}
-            Message: ${{ needs.build.outputs.commit_message }}
-            Date: ${{ needs.build.outputs.build_date }}
-            Manual Trigger: ${{ needs.build.outputs.is_manual_trigger }}"
-            git push origin gh-pages
-            echo "✅ Successfully deployed to gh-pages branch"
-          else
-            echo "⚠️ No changes to deploy"
-          fi
+          
+          # 配置 Git 用户
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          # 提交更改
+          git commit -m "gh-pages: ${{ needs.build.outputs.commit_hash }} from ${{ needs.build.outputs.branch_name }}
+          Python: ${{ needs.build.outputs.python_version }}
+          Message: ${{ needs.build.outputs.commit_message }}
+          Date: ${{ needs.build.outputs.build_date }}
+          Manual Trigger: ${{ needs.build.outputs.is_manual_trigger }}"
+          
+          # 推送到 gh-pages 分支
+          git push -f origin gh-pages
+          echo "✅ Successfully deployed to gh-pages branch"
 
       - name: Skip deployment (no changes)
         if: steps.check_pages_changes.outputs.no_changes == 'true'
