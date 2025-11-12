@@ -37,7 +37,7 @@
 
 | Package  | Version |
 | -------- | ------- |
-| zensical | 0.0.5   |
+| zensical | 0.0.6   |
 
 
 
