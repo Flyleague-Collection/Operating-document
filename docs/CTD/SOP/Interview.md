@@ -74,7 +74,7 @@ Regulatory interview standard operating procedure
 
 ### 了解管制员的规章制度
 
-询问其有没有查看管制员考核大纲，如未查看，在面试后的评语中加入链接：https://docs.apocfly.com/CTD/OPDOC-CTD-202501-R3-SC/
+询问其有没有查看管制员考核大纲，如未查看，在面试后的评语中加入链接：[https://docs.apocfly.com/CTD/OPDOC-CTD-202501-R3-SC/](https://docs.apocfly.com/CTD/OPDOC-CTD-202501-R3-SC/)
 
 查看者，可选择跳，或提问（分值占比不高）
 
@@ -82,7 +82,7 @@ Regulatory interview standard operating procedure
 
 Metar报文，应尽量采用中国大陆的，有后续预测的（即，带BECMG的报文），Metar报文
 
-可进入此网站查阅96小时内的报文，https://aviationweather.gov/data/metar/
+可进入此网站查阅96小时内的报文，[https://aviationweather.gov/data/metar/](https://aviationweather.gov/data/metar/)
 
 例如：METAR ZSSS 081400Z 29005MPS 260V320 9999 BKN016 18/15 Q1019 BECMG TL1540 BKN013
 

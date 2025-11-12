@@ -5,6 +5,9 @@ fonts = "JetBrains Mono"
 language = "zh"
 favicon = "images/Logo.svg"
 logo = "images/Logo.svg"
+# icon = [
+#     repo = "fontawesome/brands/github"
+# ]
 features = [
     "search.highlight",
     "content.action.edit",
