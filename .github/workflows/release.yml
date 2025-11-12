@@ -1,5 +1,32 @@
-      # 导出 build 分支且只包含其文件，防止 workflow 污染
-	  
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get latest tag and next version
+        id: versions
+        run: |
+          # 获取最新标签
+          latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          echo "latest_tag=$latest_tag" >> $GITHUB_OUTPUT
+          
+          # 生成下一个版本（基于时间戳）
+          next_version="v$(date +%Y%m%d%H%M%S)"
+          echo "next_version=$next_version" >> $GITHUB_OUTPUT
+
       - name: Prepare build branch for release artifacts
         run: |
           rm -rf build_files
@@ -28,17 +55,21 @@
       - name: Advanced release note formatting and empty artifact checks
         id: generate_body
         run: |
-          last_tag="${{ steps.latest_tag.outputs.value }}"
-          version="${{ steps.next_version.outputs.value }}"
+          last_tag="${{ steps.versions.outputs.latest_tag }}"
+          version="${{ steps.versions.outputs.next_version }}"
           n_commit=$(git log "$last_tag"..HEAD --pretty=format:"%h" | wc -l)
           n_contrib=$(git log "$last_tag"..HEAD --pretty=format:"%an" | sort | uniq | wc -l)
           body="${version} 最新发行版\n\n本次更新共 ${n_commit} 个 commit，${n_contrib} 位贡献者。\n\n---\n"
-          # ... 分组 commit 分类 shell 如你现有 …
+          
+          # 如果有commit分类逻辑可以在这里添加
+          # body+="分组commit内容..."
+          
           body+="\n---\n"
           body+="### 贡献者\n"
-          git log "$last_tag"..HEAD --pretty=format:"%an" | sort | uniq | awk '{print "- " $0}' >> contributors.txt
+          git log "$last_tag"..HEAD --pretty=format:"%an" | sort | uniq | awk '{print "- " $0}' > contributors.txt
           body+="$(cat contributors.txt)\n"
           body+="\n---\n"
+          
           # 附件格式优化
           size=$(cat build-artifacts.size)
           hash=$(cat build-artifacts.sha256)
@@ -60,8 +91,8 @@
       - name: Create & Publish Release With Artifact
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ steps.next_version.outputs.value }}
-          name: "Operating-document ${{ steps.next_version.outputs.value }} 最新发行版"
+          tag: ${{ steps.versions.outputs.next_version }}
+          name: "Operating-document ${{ steps.versions.outputs.next_version }} 最新发行版"
           body: ${{ steps.generate_body.outputs.body }}
           artifacts: build-artifacts.zip
           draft: false
