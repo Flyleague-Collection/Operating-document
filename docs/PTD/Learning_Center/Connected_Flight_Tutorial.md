@@ -13,9 +13,9 @@ Connected Flight Tutorial
 
 ## 前言
 
-本文档旨在为您提供一份清晰、详实的操作指南无论您是首次接触联飞，还是希望在一个规范化的新平台开始您的联飞之旅，本指南都将一步步引导您完成从软件准备、客户端配置、服务器连接到实际飞行操作的全过程我们涵盖了主流模拟飞行软件（如 Flight Simulator X、Prepar 3D、X-Plane、Microsoft Flight Simulator）的联飞设置要点，并重点强调了联飞中的规范、礼仪与安全准则
+本文档旨在为您提供一份清晰、详实的操作指南无论您是首次接触联飞，还是希望在一个规范化的新平台开始您的联飞之旅，本指南都将一步步引导您完成从软件准备、客户端配置、服务器连接到实际飞行操作的全过程我们涵盖了主流模拟飞行软件（如 Flight Simulator X、Prepar 3D、X-Plane、Microsoft Flight Simulator）的联飞设置要点，并重点强调了联飞中的规范、礼仪与安全准则。
 
-我们坚信，遵循指引、熟悉流程、尊重规则，是保障您个人及其他参与者获得流畅、沉浸且富有成就感联飞体验的基础特别是对于新手飞行员，我们强烈建议您在参与联飞活动前，务必熟练掌握所选机型的操作，并认真阅读本指南
+我们坚信，遵循指引、熟悉流程、尊重规则，是保障您个人及其他参与者获得流畅、沉浸且富有成就感联飞体验的基础特别是对于新手飞行员，我们强烈建议您在参与联飞活动前，务必熟练掌握所选机型的操作，并认真阅读本指南。
 
 现在，请跟随本指南，开启您的联飞旅程，我们期待在虚拟的蓝天之上，与您安全、顺畅地相会！
 
@@ -23,11 +23,11 @@ Connected Flight Tutorial
 
 ## 修订记录
 
-| 版本 | 时间       | 编者      | 描述                                   |
-| ---- | ---------- | --------- | -------------------------------------- |
-| 0.1  | 2025.05.31 | 2352      | 第一版                                 |
-| 1.0  | 2025.06.01 | 2352&5516 | 修改排版、增加部分内容                 |
-| 2.0  | 2025.11.9  | 5516      | 增加Markdown版、将文字界面改为消息界面 |
+| 版本 | 时间       | 编者      | 描述                                                         |
+| ---- | ---------- | --------- | ------------------------------------------------------------ |
+| 0.1  | 2025.05.31 | 2352      | 第一版                                                       |
+| 1.0  | 2025.06.01 | 2352&5516 | 修改排版、增加部分内容                                       |
+| 2.0  | 2025.11.12 | 5516      | 增加Markdown版、将文字界面改为消息界面、修订已知错误([#12](https://github.com/Flyleague-Collection/Operating-document/issues/12)) |
 
 
 
@@ -57,11 +57,19 @@ Connected Flight Tutorial
 
 ![image007](./Connected_Flight_Tutorial_assets/image007.png)
 
-若您不清楚windows-32与windows-64的区别，请善用搜索引擎
+| 模拟器           | swift 32bit | swift 64bit |
+| :--------------- | :---------- | :---------- |
+| FS2004 - FS9     | ✅           | ❌           |
+| FSX              | ✅           | ❌           |
+| MSFS - FS2020    | ✅           | ✅           |
+| P3D v1-v3        | ✅           | ❌           |
+| P3D v4 and later | ❌           | ✅           |
+| X-Plane 11       | ✅           | ✅           |
+| Flightgear       | ✅           | ✅           |
 
-目前大部分操作系统都是64位的，即选择"64"字样的安装包即可
+*此图转自[swift官方文档](https://swift-project.org/home/install/download/)*
 
-特别如果您是X-Plane 11/12用户，还需要下载xswiftbus，后文将再次提到
+如果您是X-Plane 11/12用户，还需要下载xswiftbus，后文	将再次提到
 
 ![img](./Connected_Flight_Tutorial_assets/image009.png)
 
@@ -102,7 +110,7 @@ Connected Flight Tutorial
 
 AIG映射包下载后需要手动解压到MSFS的community目录下，注意不要出现文件夹嵌套
 
-由于编者并不是MSFS玩家，所以暂时没有下载链接 : (
+百度网盘：https://pan.baidu.com/s/1fBCBvSGkq6pUC6d7jYa2lA?pwd=9jkc
 
 ---
 
@@ -134,12 +142,17 @@ AIG映射包下载后需要手动解压到MSFS的community目录下，注意不�
 
 ### 2. 安装Swift
 
-在安装之前，请确认四件事情：
-
-- swift安装包和对应的映射文件已经下载完毕
-- 对于X-Plane 11/12的用户：xswiftbus已正确安装并加载
-- 关闭所有正在运行的swift和模拟器
-- 确保使用的是正确的swift32或swift64位版本
+!!! Danger
+    
+    在安装之前，请确认四件事情：
+    
+    - 确保关闭**所有**正在运行的swift和模拟器
+    
+    - swift安装包和对应的映射文件已经下载完毕
+    
+    - 对于X-Plane 11/12的用户：xswiftbus已正确安装并加载
+    
+    - 确保使用的是正确的swift32或swift64位版本
 
 本小节以windows10 64位为例，其他操作系统大同小异
 
@@ -407,12 +420,25 @@ AIG映射包下载后需要手动解压到MSFS的community目录下，注意不�
 
 	![image085](./Connected_Flight_Tutorial_assets/image085.png)
 
-| Name/desc.  | 该服务器显示的名字（此项可以任意填写） | 可以不填       |
-| ----------- | -------------------------------------- | -------------- |
-| Eco./type   | 如上图所填                             | 如上图所填     |
-| Addr./port  | 如上图所填                             | 如上图所填     |
-| Real name   | 自己的昵称                             |                |
-| Id/password | 登录飞控的呼号                         | 登录飞控的密码 |
+| 名称        | 左填空栏                                  | 右填空栏       |
+| ----------- | ----------------------------------------- | -------------- |
+| Name/desc.  | 该服务器显示的名字，可以任意填写          | 服务器的描述   |
+| Eco./type   | FSD (private)                             | FSD (legacy)   |
+| Addr./port  | fsd.apocfly.com                           | 6809           |
+| Real name   | 自己的昵称 |                |
+| Id/password | 登录飞控的呼号                            | 登录飞控的密码 |
+
+!!! Note
+
+    根据[CoC 2.9](../../General/OPDOC-General-202502-R2-SC/?h=2.9+%E5%90%88%E7%90%86%E7%9A%84%E5%90%8D%E7%A7%B0%EF%BC%9A%E5%9C%A8%E4%BD%BF%E7%94%A8%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BF%9E%E6%8E%A5%E8%87%B3%E7%BD%91%E7%BB%9C%E6%97%B6%EF%BC%8C%E4%BC%9A%E5%87%BA%E7%8E%B0%22Realname%22%E7%9A%84%E5%A1%AB%E5%86%99%E6%A1%86%EF%BC%8C%E9%9C%80%E4%BD%BF%E7%94%A8%EF%BC%9A%E6%B3%A8%E5%86%8CCID%E3%80%81%E6%B3%A8%E5%86%8C%E6%98%B5%E7%A7%B0%E3%80%81%E6%B3%A8%E5%86%8C%E9%82%AE%E7%AE%B1%E4%B8%AD%E4%BB%BB%E6%84%8F%E4%B8%80%E4%B8%AA%EF%BC%88QQ%E5%8F%B7%E5%9B%A0%E5%9C%A8%E6%B3%A8%E5%86%8C%E6%97%B6%E4%B8%8D%E5%BC%BA%E5%88%B6%E5%A1%AB%E5%86%99%EF%BC%8C%E6%95%85%E4%B8%8D%E4%BD%9C%E4%B8%BA%E8%BA%AB%E4%BB%BD%E7%9A%84%E8%AF%86%E5%88%AB%EF%BC%8C%E4%B8%8D%E8%83%BD%E5%9C%A8%E6%AD%A4%E5%A4%84%E5%A1%AB%E5%86%99%EF%BC%89%E3%80%82#_5)有关规定您必须在Real name，填写以下中一项：
+    
+    - 注册CID
+    
+    - 注册昵称
+    
+    - 注册邮箱
+
+
 
 ---
 
@@ -434,6 +460,8 @@ AIG映射包下载后需要手动解压到MSFS的community目录下，注意不�
 
 该页面是用于连接服务器的页面
 Swift 版本不同该页面可能会有些许不同，但操作逻辑相同
+
+![image084](./Connected_Flight_Tutorial_assets/image084.png)
 
 ![image091](./Connected_Flight_Tutorial_assets/image091.png)
 
@@ -555,6 +583,14 @@ Swift 版本不同该页面可能会有些许不同，但操作逻辑相同
 
 ![image105](./Connected_Flight_Tutorial_assets/image105.png)
 
+!!! Note
+
+    如果您收到了此消息：
+    
+    ![image106](./Connected_Flight_Tutorial_assets/image106.png)
+    
+    那么证明您的计划已经在网页提交了，但是本次飞行的航班呼号和网页提交的不同，请您回至[connect页面](#51-connect)重新检查
+
 ---
 
 这里主要用于与管制员的文字交流
@@ -605,7 +641,6 @@ Swift 版本不同该页面可能会有些许不同，但操作逻辑相同
 
 
 
-
 ## 后记
 
 连飞从来不仅是一场飞行模拟，更是一段人与人之间的协作与交流体验。
@@ -619,3 +654,11 @@ Swift 版本不同该页面可能会有些许不同，但操作逻辑相同
 愿我们在无线电中相遇，在航迹上并肩，在虚拟的天空里，共同飞得更高、更远。
 
 期待在下一次的联飞活动中，与您在空中相见。
+
+
+
+
+
+## 参考资料
+
+[1] [Swift.文档站](https://swift-project.org/)
