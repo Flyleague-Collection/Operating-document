@@ -5,6 +5,13 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:  # 允许手动触发
+    inputs:
+      skip_checks:
+        description: '跳过变更检测，强制构建和部署'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -15,7 +22,7 @@ jobs:
     outputs:
       docs_changed: ${{ steps.check_files.outputs.docs }}
       config_changed: ${{ steps.check_files.outputs.config }}
-      should_build: ${{ steps.check_files.outputs.docs == 'true' || steps.check_files.outputs.config == 'true' }}
+      should_build: ${{ steps.check_files.outputs.docs == 'true' || steps.check_files.outputs.config == 'true' || github.event_name == 'workflow_dispatch' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -24,13 +31,19 @@ jobs:
       - name: Check for relevant file changes
         id: check_files
         run: |
+          # 如果是手动触发且选择跳过检测，则直接返回 true
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.skip_checks }}" = "true" ]; then
+            echo "🚀 Manual trigger with skip_checks enabled - forcing build"
+            echo "docs_changed=true" >> $GITHUB_OUTPUT
+            echo "config_changed=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
           echo "GitHub event: ${{ github.event_name }}"
           echo "Current SHA: $(git rev-parse HEAD)"
-          echo "Previous SHA: $(git rev-parse HEAD~1 2>/dev/null || echo 'N/A')"
           
-          # 修复：使用更可靠的方式获取比较范围
+          # 对于 PR，比较当前分支与目标分支
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            # 对于 PR 事件
             BASE_SHA="${{ github.event.pull_request.base.sha }}"
             HEAD_SHA="${{ github.event.pull_request.head.sha }}"
             echo "PR mode: base=$BASE_SHA, head=$HEAD_SHA"
@@ -50,7 +63,7 @@ jobs:
           
           echo "Comparing $BASE_SHA..$HEAD_SHA"
           
-          # 修复：使用更可靠的 git diff 命令
+          # 使用 git diff 检查变更
           changed_files=$(git diff --name-only $BASE_SHA $HEAD_SHA 2>/dev/null || echo "")
           echo "All changed files:"
           echo "$changed_files"
@@ -84,7 +97,7 @@ jobs:
       python_version: ${{ steps.build-info.outputs.python_version }}
       build_date: ${{ steps.build-info.outputs.build_date }}
       branch_name: ${{ steps.build-info.outputs.branch_name }}
-      has_changes: ${{ needs.check_changes.outputs.should_build }}
+      is_manual_trigger: ${{ github.event_name == 'workflow_dispatch' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -116,6 +129,7 @@ jobs:
           echo "python_version=$(python --version | cut -d' ' -f2)" >> $GITHUB_OUTPUT
           echo "build_date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> $GITHUB_OUTPUT
           echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+          echo "is_manual_trigger=${{ github.event_name == 'workflow_dispatch' }}" >> $GITHUB_OUTPUT
 
       - name: Build Document
         run: zensical build
@@ -129,7 +143,7 @@ jobs:
 
   deploy_build:
     needs: [check_changes, build]
-    if: needs.check_changes.outputs.should_build == 'true' && github.event_name == 'push'
+    if: needs.check_changes.outputs.should_build == 'true' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -144,6 +158,13 @@ jobs:
       - name: Check if build branch content changed
         id: check_build_changes
         run: |
+          # 如果是手动触发，跳过内容检查，强制部署
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "🚀 Manual trigger - forcing deployment to build branch"
+            echo "no_changes=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
           # 检查 build 分支是否存在
           if git ls-remote --exit-code --heads origin build; then
             echo "Build branch exists"
@@ -193,7 +214,8 @@ jobs:
             git commit -m "Build: ${{ needs.build.outputs.commit_hash }} from ${{ needs.build.outputs.branch_name }}
             Python: ${{ needs.build.outputs.python_version }}
             Message: ${{ needs.build.outputs.commit_message }}
-            Date: ${{ needs.build.outputs.build_date }}"
+            Date: ${{ needs.build.outputs.build_date }}
+            Manual Trigger: ${{ needs.build.outputs.is_manual_trigger }}"
             git push origin build
             echo "✅ Successfully deployed to build branch"
           else
@@ -206,7 +228,7 @@ jobs:
 
   deploy_pages:
     needs: [check_changes, build]
-    if: needs.check_changes.outputs.should_build == 'true' && github.event_name == 'push'
+    if: needs.check_changes.outputs.should_build == 'true' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -221,6 +243,13 @@ jobs:
       - name: Check if gh-pages content changed
         id: check_pages_changes
         run: |
+          # 如果是手动触发，跳过内容检查，强制部署
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "🚀 Manual trigger - forcing deployment to gh-pages"
+            echo "no_changes=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
           # 检查 gh-pages 分支是否存在
           if git ls-remote --exit-code --heads origin gh-pages; then
             echo "gh-pages branch exists"
@@ -273,7 +302,8 @@ jobs:
             git commit -m "gh-pages: ${{ needs.build.outputs.commit_hash }} from ${{ needs.build.outputs.branch_name }}
             Python: ${{ needs.build.outputs.python_version }}
             Message: ${{ needs.build.outputs.commit_message }}
-            Date: ${{ needs.build.outputs.build_date }}"
+            Date: ${{ needs.build.outputs.build_date }}
+            Manual Trigger: ${{ needs.build.outputs.is_manual_trigger }}"
             git push origin gh-pages
             echo "✅ Successfully deployed to gh-pages branch"
           else
