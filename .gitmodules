@@ -1,0 +1,3 @@
+[submodule ".github/issue-templates"]
+	path = .github/issue-templates
+	url = https://github.com/Flyleague-Collection/issue-templates
