@@ -1,101 +1,138 @@
 name: Release Management
 
 on:
-  # 手动触发
   workflow_dispatch:
-  
-  # 每日12点自动触发
   schedule:
-    - cron: '0 12 * * *'
+    - cron: "0 12 * * *"  # 每日12:00 UTC（北京时间20:00）
 
 permissions:
-  contents: write  # 添加写入权限
+  contents: write
 
 jobs:
   check-and-release:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0  # 获取所有历史记录，用于比较差异
-    
-    - name: Get latest tag
-      id: get_tag
-      run: |
-        # 获取最新的tag
-        LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-        echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
-        
-        # 如果没有tag，设置为初始commit
-        if [ -z "$LATEST_TAG" ]; then
-          echo "first_commit=true" >> $GITHUB_OUTPUT
-          echo "No previous tags found"
-        else
-          echo "first_commit=false" >> $GITHUB_OUTPUT
-          echo "Latest tag: $LATEST_TAG"
-        fi
-    
-    - name: Check differences (for scheduled runs)
-      id: check_diff
-      if: github.event_name == 'schedule'
-      run: |
-        # 如果是第一次commit或者没有tag，直接发布
-        if [ "${{ steps.get_tag.outputs.first_commit }}" == "true" ]; then
-          echo "has_changes=true" >> $GITHUB_OUTPUT
-          echo "No previous tag found, will create first release"
-          exit 0
-        fi
-        
-        # 检查当前main分支与最新tag之间的差异
-        echo "Checking differences between ${{ steps.get_tag.outputs.latest_tag }} and HEAD"
-        CHANGES=$(git diff ${{ steps.get_tag.outputs.latest_tag }} HEAD --name-only | wc -l)
-        echo "Number of changed files: $CHANGES"
-        
-        if [ $CHANGES -gt 0 ]; then
-          echo "has_changes=true" >> $GITHUB_OUTPUT
-          echo "Found $CHANGES changed files since last tag ${{ steps.get_tag.outputs.latest_tag }}"
-        else
-          echo "has_changes=false" >> $GITHUB_OUTPUT
-          echo "No changes since last tag ${{ steps.get_tag.outputs.latest_tag }}"
-        fi
-    
-    - name: Create Release (Auto - with changes)
-      if: github.event_name == 'schedule' && steps.check_diff.outputs.has_changes == 'true'
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: auto-release-${{ github.run_id }}
-        name: Auto Release ${{ github.run_number }}
-        body: |
-          ## 自动发布
-          
-          本次发布基于以下变更：
-          - 与上一个标签 ${{ steps.get_tag.outputs.latest_tag }} 的差异触发布
-          - 发布时间: ${{ fromJSON(format('"{0}"', toJSON(github.event.schedule))) }}
-          
-          变更文件数量：$(git diff ${{ steps.get_tag.outputs.latest_tag }} HEAD --name-only | wc -l)
-        draft: false
-        prerelease: false
-    
-    - name: Create Release (Manual)
-      if: github.event_name == 'workflow_dispatch'
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: manual-release-${{ github.run_id }}
-        name: Manual Release ${{ github.run_number }}
-        body: |
-          ## 手动发布
-          
-          本次发布由手动触发执行。
-          - 触发者：${{ github.actor }}
-          - 发布时间：${{ fromJSON(format('"{0}"', toJSON(github.event.head_commit.timestamp))) }}
-        draft: false
-        prerelease: false
-    
-    - name: Skip Release (No changes)
-      if: github.event_name == 'schedule' && steps.check_diff.outputs.has_changes == 'false'
-      run: |
-        echo "🚫 没有检测到代码变更，跳过发布"
-        echo "上一个标签：${{ steps.get_tag.outputs.latest_tag }}"
-        echo "当前分支：${{ github.ref }}"
-        echo "当前commit：$(git rev-parse HEAD)"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get latest tag
+        id: get_tag
+        run: |
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+          if [ -z "$LATEST_TAG" ]; then
+            echo "first_commit=true" >> $GITHUB_OUTPUT
+          else
+            echo "first_commit=false" >> $GITHUB_OUTPUT
+            echo "Latest tag: $LATEST_TAG"
+          fi
+
+      - name: Detect changes for scheduled runs
+        id: check_diff
+        if: github.event_name == 'schedule'
+        run: |
+          if [ "${{ steps.get_tag.outputs.first_commit }}" = "true" ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          CHANGES=$(git diff --name-only ${{ steps.get_tag.outputs.latest_tag }} HEAD | wc -l)
+          echo "Changed files: $CHANGES"
+          if [ $CHANGES -gt 0 ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate build artifacts
+        run: |
+          echo "📦 Generating build-artifacts.zip..."
+          mkdir -p build
+          # 🔧 这里你可以替换为你项目的真实构建命令
+          # 例如: mkdocs build -d build/
+          echo "Generated by CI at $(date)" > build/README.txt
+          zip -r build-artifacts.zip build/
+
+      - name: Collect commit info
+        id: collect
+        run: |
+          if [ "${{ steps.get_tag.outputs.first_commit }}" = "true" ]; then
+            RANGE=$(git rev-list --max-parents=0 HEAD)..HEAD
+          else
+            RANGE=${{ steps.get_tag.outputs.latest_tag }}..HEAD
+          fi
+
+          COMMITS=$(git log $RANGE --pretty=format:'%h|%an|%s')
+          COUNT=$(echo "$COMMITS" | wc -l)
+          AUTHORS=$(echo "$COMMITS" | cut -d"|" -f2 | sort | uniq | paste -sd "," -)
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          echo "authors=$AUTHORS" >> $GITHUB_OUTPUT
+
+          echo "$COMMITS" > commits.txt
+
+      - name: Generate release notes
+        id: notes
+        run: |
+          COUNT=${{ steps.collect.outputs.count }}
+          AUTHORS=${{ steps.collect.outputs.authors }}
+          DATE=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          TAG=${{ steps.get_tag.outputs.latest_tag }}
+          COMMITS_FILE=commits.txt
+
+          echo "## Operating-document ${{ github.run_number }} 最新发行版" > release_notes.md
+          echo "" >> release_notes.md
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "本次发布由手动触发执行。" >> release_notes.md
+            echo "" >> release_notes.md
+            echo "- 触发者：${{ github.actor }}" >> release_notes.md
+          else
+            echo "自动发布版本: $TAG" >> release_notes.md
+          fi
+          echo "- 发布时间: $DATE" >> release_notes.md
+          echo "- 上一个标签: ${TAG:-无}" >> release_notes.md
+          echo "- 本次更新共 $COUNT 个 commit，贡献者：$AUTHORS" >> release_notes.md
+          echo "" >> release_notes.md
+
+          echo "### 📝 变更内容" >> release_notes.md
+          echo "" >> release_notes.md
+          awk -F"|" '{printf "%s|%s|%s\n", $1, $2, $3}' $COMMITS_FILE | while IFS="|" read -r hash author msg; do
+            echo "- $hash: $msg ($author)" >> release_notes.md
+          done
+
+          echo "" >> release_notes.md
+          echo "### 📦 附件资源包" >> release_notes.md
+          echo "- build-artifacts.zip" >> release_notes.md
+          echo "- Source code (zip / tar.gz)" >> release_notes.md
+
+          echo "Release notes:"
+          cat release_notes.md
+
+      - name: Create Manual Release
+        if: github.event_name == 'workflow_dispatch'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: manual-release-${{ github.run_id }}
+          name: Operating-document v${{ github.run_number }} 最新发行版
+          body_path: release_notes.md
+          draft: false
+          prerelease: false
+          files: |
+            build-artifacts.zip
+
+      - name: Create Auto Release
+        if: github.event_name == 'schedule' && steps.check_diff.outputs.has_changes == 'true'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v1.${{ github.run_number }}
+          name: Operating-document v1.${{ github.run_number }} 最新发行版
+          body_path: release_notes.md
+          draft: false
+          prerelease: false
+          files: |
+            build-artifacts.zip
+
+      - name: Skip Release (No changes)
+        if: github.event_name == 'schedule' && steps.check_diff.outputs.has_changes == 'false'
+        run: echo "🚫 没有检测到代码变更，跳过发布"
