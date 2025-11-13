@@ -12,7 +12,7 @@ jobs:
   check-and-release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout main branch with tags and history
+      - name: Checkout main branch with full history
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -27,6 +27,7 @@ jobs:
         id: get_tag
         shell: bash
         run: |
+          # 获取所有语义化版本标签并排序
           LATEST_TAG=$(git tag --list "v[0-9]*.[0-9]*.[0-9]*" --sort=-v:refname | head -n 1)
           echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
           if [ -z "$LATEST_TAG" ]; then
@@ -55,73 +56,67 @@ jobs:
           echo "next_tag=$NEXT_TAG" >> $GITHUB_OUTPUT
           echo "Next tag: $NEXT_TAG"
 
-      - name: Detect changes for scheduled runs
-        id: check_diff
-        if: ${{ github.event_name == 'schedule' }}
+      - name: Debug - Show git history
         shell: bash
         run: |
+          echo "=== 完整的 git log ==="
+          git log --oneline -10
+          echo "=== 标签列表 ==="
+          git tag -l --sort=-v:refname | head -10
+          echo "=== 当前分支 ==="
+          git branch -a
+
+      - name: Collect commit information
+        id: collect_commits
+        shell: bash
+        run: |
+          echo "📝 Collecting commit information between tags..."
+          
           if [ "${{ steps.get_tag.outputs.first_commit }}" = "true" ]; then
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-          CHANGES=$(git diff --name-only ${{ steps.get_tag.outputs.latest_tag }} HEAD | wc -l)
-          echo "Changed files: $CHANGES"
-          if [ $CHANGES -gt 0 ]; then
-            echo "has_changes=true" >> $GITHUB_OUTPUT
+            # 首次发布，获取所有提交
+            RANGE="$(git rev-list --max-parents=0 HEAD)"
+            echo "First release, getting all commits from initial commit"
           else
-            echo "has_changes=false" >> $GITHUB_OUTPUT
+            # 正常发布，获取从上个标签到当前HEAD的提交
+            PREVIOUS_TAG=$(git describe --tags --abbrev=0 "${{ steps.get_tag.outputs.latest_tag }}"^ 2>/dev/null || echo "")
+            if [ -z "$PREVIOUS_TAG" ]; then
+              RANGE="${{ steps.get_tag.outputs.latest_tag }}..HEAD"
+              echo "No previous tag found, using range: $RANGE"
+            else
+              RANGE="$PREVIOUS_TAG..HEAD"
+              echo "Using range: $RANGE (from $PREVIOUS_TAG to HEAD)"
+            fi
           fi
-
-      - name: Checkout build branch for artifacts
-        uses: actions/checkout@v4
-        with:
-          ref: build
-          fetch-depth: 0
-
-      - name: Generate build artifacts from build branch
-        shell: bash
-        run: |
-          echo "📦 Generating build artifacts from build branch"
-          # 创建构建输出目录
-          mkdir -p build-output
           
-          # 复制所有文件到构建输出目录（排除build-output自身）
-          find . -maxdepth 1 -mindepth 1 -not -name build-output -exec cp -r {} build-output/ \;
+          # 获取提交数量
+          COMMIT_COUNT=$(git rev-list --count $RANGE 2>/dev/null || echo "0")
+          echo "Commit count: $COMMIT_COUNT"
+          echo "commit_count=$COMMIT_COUNT" >> $GITHUB_OUTPUT
           
-          # 创建构建产物zip文件
-          zip -r build-artifacts.zip build-output/
-          
-          # 显示生成的文件
-          echo "Generated files:"
-          ls -la build-artifacts.zip
-          echo "✅ Build artifacts generated successfully"
-
-      - name: Collect commit info
-        id: collect
-        shell: bash
-        run: |
-          echo "📝 Collecting commit information..."
-          if [ "${{ steps.get_tag.outputs.first_commit }}" = "true" ]; then
-            RANGE="$(git rev-list --max-parents=0 HEAD)..HEAD"
+          # 获取详细的提交信息
+          if [ "$COMMIT_COUNT" -gt 0 ]; then
+            git log $RANGE --pretty=format:'%h: %s (%an, %ad)' --date=short > commits.txt
+            echo "✅ Collected $COMMIT_COUNT commits"
           else
-            RANGE="${{ steps.get_tag.outputs.latest_tag }}..HEAD"
+            echo "No new commits found in range: $RANGE" > commits.txt
+            echo "⚠️ No commits found in the specified range"
           fi
           
-          # 导出本次发布的commit信息
-          git log $RANGE --pretty=format:'%h: %s (%an)' > commits.txt
-          COMMIT_COUNT=$(wc -l < commits.txt)
-          echo "count=$COMMIT_COUNT" >> $GITHUB_OUTPUT
-          echo "Collected $COMMIT_COUNT commits"
+          # 显示部分提交用于调试
+          echo "=== Recent commits ==="
+          cat commits.txt | head -20
 
       - name: Get contributors
         id: contrib
         shell: bash
         run: |
           echo "👥 Collecting contributor information..."
+          
           if [ "${{ steps.get_tag.outputs.first_commit }}" = "true" ]; then
             RANGE="$(git rev-list --max-parents=0 HEAD)..HEAD"
           else
-            RANGE="${{ steps.get_tag.outputs.latest_tag }}..HEAD"
+            PREVIOUS_TAG=$(git describe --tags --abbrev=0 "${{ steps.get_tag.outputs.latest_tag }}"^ 2>/dev/null || echo "${{ steps.get_tag.outputs.latest_tag }}")
+            RANGE="$PREVIOUS_TAG..HEAD"
           fi
           
           CONTRIB=$(git log $RANGE --pretty=format:'%an' 2>/dev/null | sort | uniq | grep -v '\[bot\]' | grep -v '^$' || true)
@@ -133,33 +128,71 @@ jobs:
           echo "contributors=$CONTRIB" >> $GITHUB_OUTPUT
           echo "Contributors: $CONTRIB"
 
-      - name: Generate release notes
+      - name: Checkout build branch for artifacts
+        uses: actions/checkout@v4
+        with:
+          ref: build
+          fetch-depth: 0
+
+      - name: Generate build artifacts
+        shell: bash
+        run: |
+          echo "📦 Generating build artifacts from build branch"
+          
+          # 清理并创建构建目录
+          rm -rf build-output
+          mkdir -p build-output
+          
+          # 复制所有文件到构建输出目录（排除build-output自身）
+          find . -maxdepth 1 -mindepth 1 -not -name build-output -not -name .git -exec cp -r {} build-output/ \;
+          
+          # 创建构建产物zip文件
+          zip -r build-artifacts.zip build-output/
+          
+          # 显示生成的文件信息
+          echo "Generated build-artifacts.zip:"
+          ls -lh build-artifacts.zip
+          echo "✅ Build artifacts generated successfully"
+
+      - name: Generate comprehensive release notes
         id: notes
         shell: bash
         run: |
-          echo "📄 Generating release notes..."
+          echo "📄 Generating comprehensive release notes..."
           NEXT_TAG=${{ steps.version.outputs.next_tag }}
+          LATEST_TAG=${{ steps.get_tag.outputs.latest_tag }}
+          COMMIT_COUNT=${{ steps.collect_commits.outputs.commit_count }}
           
           cat << EOF > release_notes.md
-          自动发布版本: ${NEXT_TAG}
+          # Operating Document $NEXT_TAG
           
-          变更内容:
+          ## 发布信息
+          - **版本号**: $NEXT_TAG
+          - **上一个版本**: ${LATEST_TAG:-无}
+          - **提交数量**: $COMMIT_COUNT
+          - **构建时间**: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          
+          ## 变更内容
           
           EOF
           
           # 添加提交记录
-          if [ -f commits.txt ]; then
+          if [ -f commits.txt ] && [ "$COMMIT_COUNT" -gt 0 ]; then
             cat commits.txt >> release_notes.md
           else
-            echo "无提交记录" >> release_notes.md
+            echo "无新增提交" >> release_notes.md
           fi
           
           cat << EOF >> release_notes.md
           
-          贡献者:
+          ## 贡献者
           ${{ steps.contrib.outputs.contributors }}
           
-          构建时间: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          ## 构建信息
+          - 工作流: \${{ github.workflow }}
+          - 运行ID: \${{ github.run_id }}
+          - 触发方式: \${{ github.event_name }}
+          
           EOF
           
           echo "Generated release notes:"
@@ -169,27 +202,14 @@ jobs:
         if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'schedule' && steps.check_diff.outputs.has_changes == 'true') }}
         shell: bash
         run: |
+          echo "🏷️ Creating Git tag: ${{ steps.version.outputs.next_tag }}"
           git tag ${{ steps.version.outputs.next_tag }}
           git push origin ${{ steps.version.outputs.next_tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create Manual Release
-        if: ${{ github.event_name == 'workflow_dispatch' }}
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ steps.version.outputs.next_tag }}
-          name: Operating Document ${{ steps.version.outputs.next_tag }}
-          body_path: release_notes.md
-          draft: false
-          prerelease: false
-          files: |
-            build-artifacts.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create Auto Release
-        if: ${{ github.event_name == 'schedule' && steps.check_diff.outputs.has_changes == 'true' }}
+      - name: Create Release
+        if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'schedule' && steps.check_diff.outputs.has_changes == 'true') }}
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.version.outputs.next_tag }}
@@ -216,4 +236,5 @@ jobs:
         run: |
           echo "🧹 Cleaning up temporary files..."
           rm -f commits.txt release_notes.md build-artifacts.zip
+          rm -rf build-output
           echo "✅ Cleanup completed"
