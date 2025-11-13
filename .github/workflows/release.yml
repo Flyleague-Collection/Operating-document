@@ -26,7 +26,6 @@ jobs:
           echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
           if [ -z "$LATEST_TAG" ]; then
             echo "first_commit=true" >> $GITHUB_OUTPUT
-            echo "No v-prefixed tag found, start from v1.0.0"
           else
             echo "first_commit=false" >> $GITHUB_OUTPUT
             echo "Latest tag: $LATEST_TAG"
@@ -79,31 +78,30 @@ jobs:
         id: notes
         shell: bash
         run: |
-          NEXT_TAG=${{ steps.version.outputs.next_tag }}
-          echo "## Operating-document ${NEXT_TAG#v}" > release_notes.md
+          COUNT=${{ steps.collect.outputs.count }}
+          AUTHORS=${{ steps.collect.outputs.authors }}
+          DATE=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          TAG=${{ steps.get_tag.outputs.latest_tag }}
+          COMMITS_FILE=commits.txt
+
+          echo "## Operating-document ${{ github.run_number }} 最新发行版" > release_notes.md
+          echo "" >> release_notes.md
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "本次发布由手动触发执行。" >> release_notes.md
+            echo "" >> release_notes.md
+            echo "- 触发者：${{ github.actor }}" >> release_notes.md
+          else
+            echo "自动发布版本: $TAG" >> release_notes.md
+          fi
+          echo "- 发布时间: $DATE" >> release_notes.md
+          echo "- 上一个标签: ${TAG:-无}" >> release_notes.md
+          echo "- 本次更新共 $COUNT 个 commit，贡献者：$AUTHORS" >> release_notes.md
           echo "" >> release_notes.md
 
-          declare -A GROUPS || true  # 防止POSIX报错
-          TMP_FILE=$(mktemp)
-          while IFS='|' read -r hash author msg; do
-            TYPE=$(echo "$msg" | sed -E 's/^([a-zA-Z]+):.*/\1/')
-            ENTRY="- ${msg#*:} @ ${author}\n"
-            case "$TYPE" in
-              feat|fix|ci|docs|chore|refactor|test|style)
-                printf "%s" "$ENTRY" >> "$TMP_FILE.$TYPE"
-                ;;
-              *)
-                printf "%s" "- ${msg} @ ${author}\n" >> "$TMP_FILE.other"
-                ;;
-            esac
-          done < commits.txt
-
-          for section in feat fix ci docs chore refactor test style other; do
-            if [ -f "$TMP_FILE.$section" ]; then
-              echo "${section}:" >> release_notes.md
-              cat "$TMP_FILE.$section" >> release_notes.md
-              echo "" >> release_notes.md
-            fi
+          echo "### 📝 变更内容" >> release_notes.md
+          echo "" >> release_notes.md
+          awk -F"|" '{printf "%s|%s|%s\n", $1, $2, $3}' $COMMITS_FILE | while IFS="|" read -r hash author msg; do
+            echo "- $hash: $msg ($author)" >> release_notes.md
           done
 
           AUTHORS=$(cut -d'|' -f2 commits.txt | sort | uniq | paste -sd ", " -)
