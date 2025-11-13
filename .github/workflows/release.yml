@@ -8,6 +8,9 @@ on:
   schedule:
     - cron: '0 12 * * *'
 
+permissions:
+  contents: write  # 添加写入权限
+
 jobs:
   check-and-release:
     runs-on: ubuntu-latest
@@ -16,11 +19,6 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0  # 获取所有历史记录，用于比较差异
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
     
     - name: Get latest tag
       id: get_tag
@@ -32,8 +30,10 @@ jobs:
         # 如果没有tag，设置为初始commit
         if [ -z "$LATEST_TAG" ]; then
           echo "first_commit=true" >> $GITHUB_OUTPUT
+          echo "No previous tags found"
         else
           echo "first_commit=false" >> $GITHUB_OUTPUT
+          echo "Latest tag: $LATEST_TAG"
         fi
     
     - name: Check differences (for scheduled runs)
@@ -48,7 +48,9 @@ jobs:
         fi
         
         # 检查当前main分支与最新tag之间的差异
-        CHANGES=$(git diff ${{ steps.get_tag.outputs.latest_tag }}..HEAD --name-only | wc -l)
+        echo "Checking differences between ${{ steps.get_tag.outputs.latest_tag }} and HEAD"
+        CHANGES=$(git diff ${{ steps.get_tag.outputs.latest_tag }} HEAD --name-only | wc -l)
+        echo "Number of changed files: $CHANGES"
         
         if [ $CHANGES -gt 0 ]; then
           echo "has_changes=true" >> $GITHUB_OUTPUT
@@ -60,31 +62,27 @@ jobs:
     
     - name: Create Release (Auto - with changes)
       if: github.event_name == 'schedule' && steps.check_diff.outputs.has_changes == 'true'
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v1
       with:
-        tag_name: v${{ github.run_number }}-auto-${{ github.run_id }}
-        release_name: Auto Release v${{ github.run_number }}
+        tag_name: auto-release-${{ github.run_id }}
+        name: Auto Release ${{ github.run_number }}
         body: |
           ## 自动发布
           
           本次发布基于以下变更：
           - 与上一个标签 ${{ steps.get_tag.outputs.latest_tag }} 的差异触发布
-          - 发布时间：${{ fromJSON(format('"{0}"', toJSON(github.event.schedule))) }}
+          - 发布时间: ${{ fromJSON(format('"{0}"', toJSON(github.event.schedule))) }}
           
-          变更文件数量：$(git diff ${{ steps.get_tag.outputs.latest_tag }}..HEAD --name-only | wc -l)
+          变更文件数量：$(git diff ${{ steps.get_tag.outputs.latest_tag }} HEAD --name-only | wc -l)
         draft: false
         prerelease: false
     
     - name: Create Release (Manual)
       if: github.event_name == 'workflow_dispatch'
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v1
       with:
-        tag_name: v${{ github.run_number }}-manual-${{ github.run_id }}
-        release_name: Manual Release v${{ github.run_number }}
+        tag_name: manual-release-${{ github.run_id }}
+        name: Manual Release ${{ github.run_number }}
         body: |
           ## 手动发布
           
@@ -100,3 +98,4 @@ jobs:
         echo "🚫 没有检测到代码变更，跳过发布"
         echo "上一个标签：${{ steps.get_tag.outputs.latest_tag }}"
         echo "当前分支：${{ github.ref }}"
+        echo "当前commit：$(git rev-parse HEAD)"
