@@ -79,8 +79,9 @@ jobs:
         run: |
           echo "📦 Generating build‑artifacts.zip from build branch"
           mkdir -p build-output
-          cp -r ./* build-output/
-          zip -r build‑artifacts.zip build‑output/
+          shopt -s extglob
+          cp -r !(build-output) build-output/
+          zip -r build‑artifacts.zip build-output/
 
       - name: Collect commit info
         id: collect
