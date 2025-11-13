@@ -12,11 +12,16 @@ jobs:
   check-and-release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout main branch latest tags and history
+      - name: Checkout main branch with tags and history
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           fetch-tags: true
+
+      - name: Setup Git identity
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
 
       - name: Get latest semantic tag
         id: get_tag
@@ -76,86 +81,126 @@ jobs:
       - name: Generate build artifacts from build branch
         shell: bash
         run: |
-          echo "📦 Generating build-artifacts.zip from build branch"
+          echo "📦 Generating build artifacts from build branch"
+          # 创建构建输出目录
           mkdir -p build-output
-          shopt -s extglob
-          cp -r !(build-output) build-output/
+          
+          # 复制所有文件到构建输出目录（排除build-output自身）
+          find . -maxdepth 1 -mindepth 1 -not -name build-output -exec cp -r {} build-output/ \;
+          
+          # 创建构建产物zip文件
           zip -r build-artifacts.zip build-output/
+          
+          # 显示生成的文件
+          echo "Generated files:"
+          ls -la build-artifacts.zip
           echo "✅ Build artifacts generated successfully"
 
       - name: Collect commit info
         id: collect
         shell: bash
         run: |
+          echo "📝 Collecting commit information..."
           if [ "${{ steps.get_tag.outputs.first_commit }}" = "true" ]; then
             RANGE="$(git rev-list --max-parents=0 HEAD)..HEAD"
           else
             RANGE="${{ steps.get_tag.outputs.latest_tag }}..HEAD"
           fi
+          
           # 导出本次发布的commit信息
           git log $RANGE --pretty=format:'%h: %s (%an)' > commits.txt
           COMMIT_COUNT=$(wc -l < commits.txt)
           echo "count=$COMMIT_COUNT" >> $GITHUB_OUTPUT
-          echo "📝 Collected $COMMIT_COUNT commits"
+          echo "Collected $COMMIT_COUNT commits"
 
-      - name: Get contributors (filter bot, safe)
+      - name: Get contributors
         id: contrib
         shell: bash
         run: |
+          echo "👥 Collecting contributor information..."
           if [ "${{ steps.get_tag.outputs.first_commit }}" = "true" ]; then
             RANGE="$(git rev-list --max-parents=0 HEAD)..HEAD"
           else
             RANGE="${{ steps.get_tag.outputs.latest_tag }}..HEAD"
           fi
-          CONTRIB=$(git log $RANGE --pretty=format:'%an' 2>/dev/null | sort | uniq | grep -v '\[bot\]')
+          
+          CONTRIB=$(git log $RANGE --pretty=format:'%an' 2>/dev/null | sort | uniq | grep -v '\[bot\]' | grep -v '^$' || true)
           if [ -z "$CONTRIB" ]; then
             CONTRIB="无"
           else
             CONTRIB=$(echo "$CONTRIB" | paste -sd ", " -)
           fi
           echo "contributors=$CONTRIB" >> $GITHUB_OUTPUT
-          echo "👥 Contributors: $CONTRIB"
+          echo "Contributors: $CONTRIB"
 
       - name: Generate release notes
         id: notes
         shell: bash
         run: |
+          echo "📄 Generating release notes..."
           NEXT_TAG=${{ steps.version.outputs.next_tag }}
-          SHORT_VER=${NEXT_TAG#v}
-          echo "自动发布版本: ${NEXT_TAG}" > release_notes.md
-          echo "变更内容:" >> release_notes.md
-          echo "" >> release_notes.md
-          cat commits.txt >> release_notes.md
-          echo "" >> release_notes.md
-          echo "贡献者" >> release_notes.md
-          echo "${{ steps.contrib.outputs.contributors }}" >> release_notes.md
-          echo "" >> release_notes.md
+          
+          cat << EOF > release_notes.md
+          自动发布版本: ${NEXT_TAG}
+          
+          变更内容:
+          
+          EOF
+          
+          # 添加提交记录
+          if [ -f commits.txt ]; then
+            cat commits.txt >> release_notes.md
+          else
+            echo "无提交记录" >> release_notes.md
+          fi
+          
+          cat << EOF >> release_notes.md
+          
+          贡献者:
+          ${{ steps.contrib.outputs.contributors }}
+          
+          构建时间: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          EOF
+          
           echo "Generated release notes:"
           cat release_notes.md
+
+      - name: Create Git Tag
+        if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'schedule' && steps.check_diff.outputs.has_changes == 'true') }}
+        shell: bash
+        run: |
+          git tag ${{ steps.version.outputs.next_tag }}
+          git push origin ${{ steps.version.outputs.next_tag }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Manual Release
         if: ${{ github.event_name == 'workflow_dispatch' }}
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.version.outputs.next_tag }}
-          name: Operating-document ${{ steps.version.outputs.next_tag }}
+          name: Operating Document ${{ steps.version.outputs.next_tag }}
           body_path: release_notes.md
           draft: false
           prerelease: false
           files: |
             build-artifacts.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Auto Release
         if: ${{ github.event_name == 'schedule' && steps.check_diff.outputs.has_changes == 'true' }}
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.version.outputs.next_tag }}
-          name: Operating-document ${{ steps.version.outputs.next_tag }}
+          name: Operating Document ${{ steps.version.outputs.next_tag }}
           body_path: release_notes.md
           draft: false
           prerelease: false
           files: |
             build-artifacts.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Skip Release (No changes)
         if: ${{ github.event_name == 'schedule' && steps.check_diff.outputs.has_changes == 'false' }}
@@ -164,3 +209,11 @@ jobs:
           echo "🚫 没有检测到代码变更，跳过发布"
           echo "当前最新版本: ${{ steps.get_tag.outputs.latest_tag }}"
           echo "没有新的提交需要发布"
+
+      - name: Cleanup
+        if: always()
+        shell: bash
+        run: |
+          echo "🧹 Cleaning up temporary files..."
+          rm -f commits.txt release_notes.md build-artifacts.zip
+          echo "✅ Cleanup completed"
