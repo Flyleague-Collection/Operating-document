@@ -97,7 +97,7 @@ jobs:
           COMMIT_COUNT=$(wc -l < commits.txt)
           echo "count=$COMMIT_COUNT" >> $GITHUB_OUTPUT
 
-      - name: Get contributors (filter bot)
+      - name: Get contributors (filter bot, safe)
         id: contrib
         shell: bash
         run: |
@@ -106,9 +106,14 @@ jobs:
           else
             RANGE="${{ steps.get_tag.outputs.latest_tag }}..HEAD"
           fi
-          CONTRIB=$(git log $RANGE --pretty=format:'%an' | sort | uniq | grep -v '\[bot\]' | paste -sd ", " -)
+          CONTRIB=$(git log $RANGE --pretty=format:'%an' 2>/dev/null | sort | uniq | grep -v '\[bot\]')
+          if [ -z "$CONTRIB" ]; then
+            CONTRIB="无"
+          else
+            CONTRIB=$(echo "$CONTRIB" | paste -sd ", " -)
+          fi
           echo "contributors=$CONTRIB" >> $GITHUB_OUTPUT
-
+          
       - name: Generate release notes
         id: notes
         shell: bash
