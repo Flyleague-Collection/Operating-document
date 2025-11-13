@@ -88,22 +88,25 @@ jobs:
         shell: bash
         run: |
           if [ "${{ steps.get_tag.outputs.first_commit }}" = "true" ]; then
-            RANGE=$(git rev-list --max-parents=0 HEAD)..HEAD
+            RANGE="$(git rev-list --max-parents=0 HEAD)..HEAD"
           else
-            RANGE=${{ steps.get_tag.outputs.latest_tag }}..HEAD
+            RANGE="${{ steps.get_tag.outputs.latest_tag }}..HEAD"
           fi
-          git log $RANGE --pretty=format:'%h|%an|%s' > commits.txt
+          # 导出本次发布的commit信息
+          git log $RANGE --pretty=format:'%h: %s (%an)' > commits.txt
           COMMIT_COUNT=$(wc -l < commits.txt)
           echo "count=$COMMIT_COUNT" >> $GITHUB_OUTPUT
 
-      - name: Get GitHub contributors
+      - name: Get contributors (filter bot)
         id: contrib
         shell: bash
         run: |
-          REPO="${{ github.repository }}"
-          CONTRIB=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/$REPO/contributors?per_page=100" \
-            | jq -r '.[].login' | paste -sd ", " -)
+          if [ "${{ steps.get_tag.outputs.first_commit }}" = "true" ]; then
+            RANGE="$(git rev-list --max-parents=0 HEAD)..HEAD"
+          else
+            RANGE="${{ steps.get_tag.outputs.latest_tag }}..HEAD"
+          fi
+          CONTRIB=$(git log $RANGE --pretty=format:'%an' | sort | uniq | grep -v '\[bot\]' | paste -sd ", " -)
           echo "contributors=$CONTRIB" >> $GITHUB_OUTPUT
 
       - name: Generate release notes
@@ -112,32 +115,14 @@ jobs:
         run: |
           NEXT_TAG=${{ steps.version.outputs.next_tag }}
           SHORT_VER=${NEXT_TAG#v}
-          echo "## Operating‑document ${SHORT_VER}" > release_notes.md
+          echo "自动发布版本: ${NEXT_TAG}" > release_notes.md
+          echo "变更内容:" >> release_notes.md
           echo "" >> release_notes.md
-
-          while IFS='|' read -r hash author msg; do
-            TYPE=$(echo "$msg" | sed -E 's/^([a-zA-Z]+):.*/\1/')
-            BODY=$(echo "$msg" | sed -E 's/^[a-zA-Z]+:[[:space:]]*//')
-            case "$TYPE" in
-              fix|ci|feat|docs|chore|refactor|test|style)
-                printf "- ${BODY} @ ${author}\n" >> "group_${TYPE}.txt"
-                ;;
-              *)
-                printf "- ${msg} @ ${author}\n" >> "group_other.txt"
-                ;;
-            esac
-          done < commits.txt
-
-          for section in fix ci feat docs chore refactor test style other; do
-            if [ -f "group_${section}.txt" ]; then
-              echo "${section}:" >> release_notes.md
-              cat "group_${section}.txt" >> release_notes.md
-              echo "" >> release_notes.md
-            fi
-          done
-
-          echo "贡献者: ${{ steps.contrib.outputs.contributors }}" >> release_notes.md
-
+          cat commits.txt >> release_notes.md
+          echo "" >> release_notes.md
+          echo "贡献者" >> release_notes.md
+          echo "${{ steps.contrib.outputs.contributors }}" >> release_notes.md
+          echo "" >> release_notes.md
           echo "Generated release notes:"
           cat release_notes.md
 
