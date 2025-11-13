@@ -1,99 +1,102 @@
-name: Create Release
+name: Release Management
 
 on:
-  push:
-    tags:
-      - 'v*'
+  # 手动触发
   workflow_dispatch:
+  
+  # 每日12点自动触发
+  schedule:
+    - cron: '0 12 * * *'
 
 jobs:
-  build-and-release:
+  check-and-release:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Get latest tag and next version
-        id: versions
-        run: |
-          # 获取最新标签
-          latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
-          echo "latest_tag=$latest_tag" >> $GITHUB_OUTPUT
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # 获取所有历史记录，用于比较差异
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: Get latest tag
+      id: get_tag
+      run: |
+        # 获取最新的tag
+        LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+        echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+        
+        # 如果没有tag，设置为初始commit
+        if [ -z "$LATEST_TAG" ]; then
+          echo "first_commit=true" >> $GITHUB_OUTPUT
+        else
+          echo "first_commit=false" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Check differences (for scheduled runs)
+      id: check_diff
+      if: github.event_name == 'schedule'
+      run: |
+        # 如果是第一次commit或者没有tag，直接发布
+        if [ "${{ steps.get_tag.outputs.first_commit }}" == "true" ]; then
+          echo "has_changes=true" >> $GITHUB_OUTPUT
+          echo "No previous tag found, will create first release"
+          exit 0
+        fi
+        
+        # 检查当前main分支与最新tag之间的差异
+        CHANGES=$(git diff ${{ steps.get_tag.outputs.latest_tag }}..HEAD --name-only | wc -l)
+        
+        if [ $CHANGES -gt 0 ]; then
+          echo "has_changes=true" >> $GITHUB_OUTPUT
+          echo "Found $CHANGES changed files since last tag ${{ steps.get_tag.outputs.latest_tag }}"
+        else
+          echo "has_changes=false" >> $GITHUB_OUTPUT
+          echo "No changes since last tag ${{ steps.get_tag.outputs.latest_tag }}"
+        fi
+    
+    - name: Create Release (Auto - with changes)
+      if: github.event_name == 'schedule' && steps.check_diff.outputs.has_changes == 'true'
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ github.run_number }}-auto-${{ github.run_id }}
+        release_name: Auto Release v${{ github.run_number }}
+        body: |
+          ## 自动发布
           
-          # 生成下一个版本（基于时间戳）
-          next_version="v$(date +%Y%m%d%H%M%S)"
-          echo "next_version=$next_version" >> $GITHUB_OUTPUT
-
-      - name: Prepare build branch for release artifacts
-        run: |
-          rm -rf build_files
-          git fetch origin build
-          git checkout build
-          # 导出 build 分支全部文件到 build_files
-          git ls-tree -z -r build --name-only | xargs -0 -I{} cp --parents {} build_files/
-          git checkout main
-
-      - name: Create zipped artifact and record hash/size
-        run: |
-          cd build_files
-          zip -r ../build-artifacts.zip ./*
-          cd ..
-          sha256=$(sha256sum build-artifacts.zip | awk '{print $1}')
-          size_bytes=$(stat --format="%s" build-artifacts.zip)
-          if [ $size_bytes -gt 1048576 ]; then
-            size_str="$(echo "scale=1; $size_bytes/1048576" | bc) MB"
-          else
-            size_str="$size_bytes bytes"
-          fi
-          echo "$sha256" > build-artifacts.sha256
-          echo "$size_str" > build-artifacts.size
-          date -u > build-artifacts.date
-
-      - name: Advanced release note formatting and empty artifact checks
-        id: generate_body
-        run: |
-          last_tag="${{ steps.versions.outputs.latest_tag }}"
-          version="${{ steps.versions.outputs.next_version }}"
-          n_commit=$(git log "$last_tag"..HEAD --pretty=format:"%h" | wc -l)
-          n_contrib=$(git log "$last_tag"..HEAD --pretty=format:"%an" | sort | uniq | wc -l)
-          body="${version} 最新发行版\n\n本次更新共 ${n_commit} 个 commit，${n_contrib} 位贡献者。\n\n---\n"
+          本次发布基于以下变更：
+          - 与上一个标签 ${{ steps.get_tag.outputs.latest_tag }} 的差异触发布
+          - 发布时间：${{ fromJSON(format('"{0}"', toJSON(github.event.schedule))) }}
           
-          # 如果有commit分类逻辑可以在这里添加
-          # body+="分组commit内容..."
+          变更文件数量：$(git diff ${{ steps.get_tag.outputs.latest_tag }}..HEAD --name-only | wc -l)
+        draft: false
+        prerelease: false
+    
+    - name: Create Release (Manual)
+      if: github.event_name == 'workflow_dispatch'
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ github.run_number }}-manual-${{ github.run_id }}
+        release_name: Manual Release v${{ github.run_number }}
+        body: |
+          ## 手动发布
           
-          body+="\n---\n"
-          body+="### 贡献者\n"
-          git log "$last_tag"..HEAD --pretty=format:"%an" | sort | uniq | awk '{print "- " $0}' > contributors.txt
-          body+="$(cat contributors.txt)\n"
-          body+="\n---\n"
-          
-          # 附件格式优化
-          size=$(cat build-artifacts.size)
-          hash=$(cat build-artifacts.sha256)
-          date=$(cat build-artifacts.date)
-          body+="### 附件资源包\n"
-          if [ ! -s build-artifacts.zip ] || [ "$size" = "0 bytes" ]; then
-            body+="未检测到 build 分支内容或打包文件为空（请检查build分支是否有实际内容）\n"
-          else
-            body+="**build-artifacts.zip**\n"
-            body+="sha256: \`${hash}\`\n"
-            body+="大小: ${size}\n"
-            body+="打包时间: ${date}\n"
-            body+="> 校验文件完整性建议：下载后可用 sha256 值校验\n"
-          fi
-          echo "body<<EOF" >> "$GITHUB_OUTPUT"
-          echo -e "$body" >> "$GITHUB_OUTPUT"
-          echo "EOF" >> "$GITHUB_OUTPUT"
-
-      - name: Create & Publish Release With Artifact
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ steps.versions.outputs.next_version }}
-          name: "Operating-document ${{ steps.versions.outputs.next_version }} 最新发行版"
-          body: ${{ steps.generate_body.outputs.body }}
-          artifacts: build-artifacts.zip
-          draft: false
-          prerelease: false
+          本次发布由手动触发执行。
+          - 触发者：${{ github.actor }}
+          - 发布时间：${{ fromJSON(format('"{0}"', toJSON(github.event.head_commit.timestamp))) }}
+        draft: false
+        prerelease: false
+    
+    - name: Skip Release (No changes)
+      if: github.event_name == 'schedule' && steps.check_diff.outputs.has_changes == 'false'
+      run: |
+        echo "🚫 没有检测到代码变更，跳过发布"
+        echo "上一个标签：${{ steps.get_tag.outputs.latest_tag }}"
+        echo "当前分支：${{ github.ref }}"
