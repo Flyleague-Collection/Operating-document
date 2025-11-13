@@ -1,6 +1,6 @@
 ﻿name: "🚀 功能请求"
 description: "为项目建议一个新功能或改进"
-title: "[Feature]: "
+title: "[Feature] <Topic>"
 labels: ["enhancement"]
 body:
   - type: markdown

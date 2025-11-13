@@ -1,6 +1,6 @@
 ﻿name: "🐛 Bug 报告"
 description: "报告一个可复现的错误或问题"
-title: "[Bug]: "
+title: "[Bug] <Topic>"
 labels: ["bug", "triage"]
 body:
   - type: markdown

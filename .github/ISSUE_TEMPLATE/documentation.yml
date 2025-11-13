@@ -1,6 +1,6 @@
 ﻿name: "📚 文档改进"
 description: "报告文档问题或建议文档改进"
-title: "[Docs]: "
+title: "[Docs] <Topic>"
 labels: ["documentation"]
 body:
   - type: markdown

@@ -1,6 +1,6 @@
 ﻿name: "✨ 功能增强"
 description: "对现有功能提出改进建议（非新功能）"
-title: "[Enhance]: "
+title: "[Enhance] <Topic>"
 labels: ["enhancement"]
 body:
   - type: markdown
