@@ -1,240 +1,146 @@
-name: Release Management
+name: Auto Release
 
 on:
-  workflow_dispatch:
   schedule:
-    - cron: "0 12 * * *"  # 每日 12:00 UTC（对应北京时间 20:00）
+    # 每天UTC时间12:00运行（对应北京时间20:00，请根据需求调整时区）
+    - cron: '0 12 * * *'
+  workflow_dispatch:  # 允许手动触发
+    inputs:
+      skip_check:
+        description: '跳过变更检测直接发布'
+        required: false
+        default: false
+        type: boolean
 
-permissions:
-  contents: write
+env:
+  BUILD_BRANCH: 'build'  # 设置构建分支
 
 jobs:
-  check-and-release:
+  check-changes:
     runs-on: ubuntu-latest
+    outputs:
+      has_changes: ${{ steps.check-changes.outputs.has_changes }}
+      next_tag: ${{ steps.get-next-tag.outputs.next_tag }}
     steps:
-      - name: Checkout main branch with full history
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          fetch-tags: true
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ env.BUILD_BRANCH }}
+        fetch-depth: 0  # 获取所有历史记录，用于比较变更
 
-      - name: Setup Git identity
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+    - name: Get next tag version
+      id: get-next-tag
+      run: |
+        # 获取最新的v1.0.x标签
+        LATEST_TAG=$(git tag -l "v1.0.*" --sort=-v:refname | head -n 1 || echo "")
+        if [ -z "$LATEST_TAG" ]; then
+          NEXT_TAG="v1.0.0"
+        else
+          # 递增版本号
+          BASE_VERSION=$(echo $LATEST_TAG | cut -d. -f1-2)
+          PATCH_VERSION=$(echo $LATEST_TAG | awk -F. '{print $3}')
+          NEXT_PATCH=$((PATCH_VERSION + 1))
+          NEXT_TAG="${BASE_VERSION}.${NEXT_PATCH}"
+        fi
+        echo "next_tag=$NEXT_TAG" >> $GITHUB_OUTPUT
+        echo "Next tag: $NEXT_TAG"
 
-      - name: Get latest semantic tag
-        id: get_tag
-        shell: bash
-        run: |
-          # 获取所有语义化版本标签并排序
-          LATEST_TAG=$(git tag --list "v[0-9]*.[0-9]*.[0-9]*" --sort=-v:refname | head -n 1)
-          echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
-          if [ -z "$LATEST_TAG" ]; then
-            echo "first_commit=true" >> $GITHUB_OUTPUT
-            echo "No semantic tag found; starting from v1.0.0"
+    - name: Check for changes since last tag
+      id: check-changes
+      # 手动触发且选择跳过检测时，直接返回true
+      if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.skip_check) }}
+      run: |
+        LATEST_TAG=$(git tag -l "v1.0.*" --sort=-v:refname | head -n 1 || echo "")
+        if [ -z "$LATEST_TAG" ]; then
+          echo "has_changes=true" >> $GITHUB_OUTPUT
+          echo "No existing tags, proceeding with release"
+        else
+          # 检查自上一个标签以来的变更[citation:1][citation:5]
+          if git diff --name-only $LATEST_TAG HEAD | grep -q . ; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected since $LATEST_TAG"
           else
-            echo "first_commit=false" >> $GITHUB_OUTPUT
-            echo "Latest tag: $LATEST_TAG"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes detected since $LATEST_TAG"
           fi
+        fi
 
-      - name: Compute next version
-        id: version
-        shell: bash
-        run: |
-          if [ "${{ steps.get_tag.outputs.first_commit }}" = "true" ]; then
-            NEXT_TAG="v1.0.0"
-          else
-            BASE=${{ steps.get_tag.outputs.latest_tag }}
-            BASE=${BASE#v}
-            MAJOR=$(echo $BASE | cut -d. -f1)
-            MINOR=$(echo $BASE | cut -d. -f2)
-            PATCH=$(echo $BASE | cut -d. -f3)
-            NEXT_PATCH=$((PATCH + 1))
-            NEXT_TAG="v${MAJOR}.${MINOR}.${NEXT_PATCH}"
-          fi
-          echo "next_tag=$NEXT_TAG" >> $GITHUB_OUTPUT
-          echo "Next tag: $NEXT_TAG"
+    - name: Force release for manual trigger
+      # 手动触发且选择跳过检测时，强制设置为有变更
+      if: ${{ github.event_name == 'workflow_dispatch' && inputs.skip_check }}
+      run: |
+        echo "Manual trigger with skip check, forcing release"
+        echo "has_changes=true" >> $GITHUB_OUTPUT
 
-      - name: Debug - Show git history
-        shell: bash
-        run: |
-          echo "=== 完整的 git log ==="
-          git log --oneline -10
-          echo "=== 标签列表 ==="
-          git tag -l --sort=-v:refname | head -10
-          echo "=== 当前分支 ==="
-          git branch -a
+  create-release:
+    needs: check-changes
+    if: needs.check-changes.outputs.has_changes == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 发布Release所需权限[citation:3]
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ env.BUILD_BRANCH }}
+        fetch-depth: 0
 
-      - name: Collect commit information
-        id: collect_commits
-        shell: bash
-        run: |
-          echo "📝 Collecting commit information between tags..."
-          
-          if [ "${{ steps.get_tag.outputs.first_commit }}" = "true" ]; then
-            # 首次发布，获取所有提交
-            RANGE="$(git rev-list --max-parents=0 HEAD)"
-            echo "First release, getting all commits from initial commit"
-          else
-            # 正常发布，获取从上个标签到当前HEAD的提交
-            PREVIOUS_TAG=$(git describe --tags --abbrev=0 "${{ steps.get_tag.outputs.latest_tag }}"^ 2>/dev/null || echo "")
-            if [ -z "$PREVIOUS_TAG" ]; then
-              RANGE="${{ steps.get_tag.outputs.latest_tag }}..HEAD"
-              echo "No previous tag found, using range: $RANGE"
-            else
-              RANGE="$PREVIOUS_TAG..HEAD"
-              echo "Using range: $RANGE (from $PREVIOUS_TAG to HEAD)"
-            fi
-          fi
-          
-          # 获取提交数量
-          COMMIT_COUNT=$(git rev-list --count $RANGE 2>/dev/null || echo "0")
-          echo "Commit count: $COMMIT_COUNT"
-          echo "commit_count=$COMMIT_COUNT" >> $GITHUB_OUTPUT
-          
-          # 获取详细的提交信息
-          if [ "$COMMIT_COUNT" -gt 0 ]; then
-            git log $RANGE --pretty=format:'%h: %s (%an, %ad)' --date=short > commits.txt
-            echo "✅ Collected $COMMIT_COUNT commits"
-          else
-            echo "No new commits found in range: $RANGE" > commits.txt
-            echo "⚠️ No commits found in the specified range"
-          fi
-          
-          # 显示部分提交用于调试
-          echo "=== Recent commits ==="
-          cat commits.txt | head -20
+    - name: Get next tag and commit history
+      id: get-info
+      run: |
+        NEXT_TAG="${{ needs.check-changes.outputs.next_tag }}"
+        LATEST_TAG=$(git tag -l "v1.0.*" --sort=-v:refname | head -n 1 || echo "")
+        
+        # 获取提交历史
+        if [ -z "$LATEST_TAG" ]; then
+          COMMIT_RANGE="HEAD"
+        else
+          COMMIT_RANGE="$LATEST_TAG..HEAD"
+        fi
+        
+        # 生成变更内容[citation:5]
+        echo "变更内容:" > commit_history.txt
+        git log $COMMIT_RANGE --pretty=format:"%h: %s" >> commit_history.txt
+        
+        # 获取去重后的贡献者列表
+        echo "贡献者：" > contributors.txt
+        git log $COMMIT_RANGE --pretty=format:"%an" | sort -u >> contributors.txt
+        
+        echo "next_tag=$NEXT_TAG" >> $GITHUB_OUTPUT
 
-      - name: Get contributors
-        id: contrib
-        shell: bash
-        run: |
-          echo "👥 Collecting contributor information..."
-          
-          if [ "${{ steps.get_tag.outputs.first_commit }}" = "true" ]; then
-            RANGE="$(git rev-list --max-parents=0 HEAD)..HEAD"
-          else
-            PREVIOUS_TAG=$(git describe --tags --abbrev=0 "${{ steps.get_tag.outputs.latest_tag }}"^ 2>/dev/null || echo "${{ steps.get_tag.outputs.latest_tag }}")
-            RANGE="$PREVIOUS_TAG..HEAD"
-          fi
-          
-          CONTRIB=$(git log $RANGE --pretty=format:'%an' 2>/dev/null | sort | uniq | grep -v '\[bot\]' | grep -v '^$' || true)
-          if [ -z "$CONTRIB" ]; then
-            CONTRIB="无"
-          else
-            CONTRIB=$(echo "$CONTRIB" | paste -sd ", " -)
-          fi
-          echo "contributors=$CONTRIB" >> $GITHUB_OUTPUT
-          echo "Contributors: $CONTRIB"
+    - name: Create package
+      run: |
+        # 创建时间戳用于文件名
+        TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+        # 打包build分支所有内容
+        tar -czf build-package-$TIMESTAMP.tar.gz .
+        echo "timestamp=$TIMESTAMP" >> $GITHUB_ENV
 
-      - name: Checkout build branch for artifacts
-        uses: actions/checkout@v4
-        with:
-          ref: build
-          fetch-depth: 0
+    - name: Create Git tag
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git tag ${{ steps.get-info.outputs.next_tag }}
+        git push origin ${{ steps.get-info.outputs.next_tag }}
 
-      - name: Generate build artifacts
-        shell: bash
-        run: |
-          echo "📦 Generating build artifacts from build branch"
-          
-          # 清理并创建构建目录
-          rm -rf build-output
-          mkdir -p build-output
-          
-          # 复制所有文件到构建输出目录（排除build-output自身）
-          find . -maxdepth 1 -mindepth 1 -not -name build-output -not -name .git -exec cp -r {} build-output/ \;
-          
-          # 创建构建产物zip文件
-          zip -r build-artifacts.zip build-output/
-          
-          # 显示生成的文件信息
-          echo "Generated build-artifacts.zip:"
-          ls -lh build-artifacts.zip
-          echo "✅ Build artifacts generated successfully"
+    - name: Generate release notes
+      id: generate-notes
+      run: |
+        {
+          echo "自动发布版本: ${{ steps.get-info.outputs.next_tag }}"
+          echo ""
+          cat commit_history.txt
+          echo ""
+          cat contributors.txt
+          echo ""
+          echo "构建SHA: ${{ github.sha }}"
+          echo "构建时间: $(date)"
+        } > release_notes.md
 
-      - name: Generate comprehensive release notes
-        id: notes
-        shell: bash
-        run: |
-          echo "📄 Generating comprehensive release notes..."
-          NEXT_TAG=${{ steps.version.outputs.next_tag }}
-          LATEST_TAG=${{ steps.get_tag.outputs.latest_tag }}
-          COMMIT_COUNT=${{ steps.collect_commits.outputs.commit_count }}
-          
-          cat << EOF > release_notes.md
-          # Operating Document $NEXT_TAG
-          
-          ## 发布信息
-          - **版本号**: $NEXT_TAG
-          - **上一个版本**: ${LATEST_TAG:-无}
-          - **提交数量**: $COMMIT_COUNT
-          - **构建时间**: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
-          
-          ## 变更内容
-          
-          EOF
-          
-          # 添加提交记录
-          if [ -f commits.txt ] && [ "$COMMIT_COUNT" -gt 0 ]; then
-            cat commits.txt >> release_notes.md
-          else
-            echo "无新增提交" >> release_notes.md
-          fi
-          
-          cat << EOF >> release_notes.md
-          
-          ## 贡献者
-          ${{ steps.contrib.outputs.contributors }}
-          
-          ## 构建信息
-          - 工作流: \${{ github.workflow }}
-          - 运行ID: \${{ github.run_id }}
-          - 触发方式: \${{ github.event_name }}
-          
-          EOF
-          
-          echo "Generated release notes:"
-          cat release_notes.md
-
-      - name: Create Git Tag
-        if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'schedule' && steps.check_diff.outputs.has_changes == 'true') }}
-        shell: bash
-        run: |
-          echo "🏷️ Creating Git tag: ${{ steps.version.outputs.next_tag }}"
-          git tag ${{ steps.version.outputs.next_tag }}
-          git push origin ${{ steps.version.outputs.next_tag }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create Release
-        if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'schedule' && steps.check_diff.outputs.has_changes == 'true') }}
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ steps.version.outputs.next_tag }}
-          name: Operating Document ${{ steps.version.outputs.next_tag }}
-          body_path: release_notes.md
-          draft: false
-          prerelease: false
-          files: |
-            build-artifacts.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Skip Release (No changes)
-        if: ${{ github.event_name == 'schedule' && steps.check_diff.outputs.has_changes == 'false' }}
-        shell: bash
-        run: |
-          echo "🚫 没有检测到代码变更，跳过发布"
-          echo "当前最新版本: ${{ steps.get_tag.outputs.latest_tag }}"
-          echo "没有新的提交需要发布"
-
-      - name: Cleanup
-        if: always()
-        shell: bash
-        run: |
-          echo "🧹 Cleaning up temporary files..."
-          rm -f commits.txt release_notes.md build-artifacts.zip
-          rm -rf build-output
-          echo "✅ Cleanup completed"
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.get-info.outputs.next_tag }}
+        name: Release ${{ steps.get-info.outputs.next_tag }}
+        body_path: release_notes.md
+        files: build-package-${{ env.timestamp }}.tar.gz
