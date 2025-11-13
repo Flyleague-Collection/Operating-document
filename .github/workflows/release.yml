@@ -3,7 +3,7 @@ name: Release Management
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 12 * * *"  # 每日 12:00 UTC（对应北京时间 20:00）
+    - cron: "0 12 * * *"  # 每日 12:00 UTC（对应北京时间 20:00）
 
 permissions:
   contents: write
@@ -72,16 +72,16 @@ jobs:
         with:
           ref: build
           fetch-depth: 0
-          # Note: this will override the workspace with build branch content
 
       - name: Generate build artifacts from build branch
         shell: bash
         run: |
-          echo "📦 Generating build‑artifacts.zip from build branch"
+          echo "📦 Generating build-artifacts.zip from build branch"
           mkdir -p build-output
           shopt -s extglob
           cp -r !(build-output) build-output/
-          zip -r build‑artifacts.zip build-output/
+          zip -r build-artifacts.zip build-output/
+          echo "✅ Build artifacts generated successfully"
 
       - name: Collect commit info
         id: collect
@@ -96,6 +96,7 @@ jobs:
           git log $RANGE --pretty=format:'%h: %s (%an)' > commits.txt
           COMMIT_COUNT=$(wc -l < commits.txt)
           echo "count=$COMMIT_COUNT" >> $GITHUB_OUTPUT
+          echo "📝 Collected $COMMIT_COUNT commits"
 
       - name: Get contributors (filter bot, safe)
         id: contrib
@@ -113,7 +114,8 @@ jobs:
             CONTRIB=$(echo "$CONTRIB" | paste -sd ", " -)
           fi
           echo "contributors=$CONTRIB" >> $GITHUB_OUTPUT
-          
+          echo "👥 Contributors: $CONTRIB"
+
       - name: Generate release notes
         id: notes
         shell: bash
@@ -136,27 +138,29 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.version.outputs.next_tag }}
-          name: Operating‑document ${{ steps.version.outputs.next_tag }}
+          name: Operating-document ${{ steps.version.outputs.next_tag }}
           body_path: release_notes.md
           draft: false
           prerelease: false
           files: |
-            build‑artifacts.zip
+            build-artifacts.zip
 
       - name: Create Auto Release
         if: ${{ github.event_name == 'schedule' && steps.check_diff.outputs.has_changes == 'true' }}
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.version.outputs.next_tag }}
-          name: Operating‑document ${{ steps.version.outputs.next_tag }}
+          name: Operating-document ${{ steps.version.outputs.next_tag }}
           body_path: release_notes.md
           draft: false
           prerelease: false
           files: |
-            build‑artifacts.zip
+            build-artifacts.zip
 
       - name: Skip Release (No changes)
         if: ${{ github.event_name == 'schedule' && steps.check_diff.outputs.has_changes == 'false' }}
         shell: bash
         run: |
           echo "🚫 没有检测到代码变更，跳过发布"
+          echo "当前最新版本: ${{ steps.get_tag.outputs.latest_tag }}"
+          echo "没有新的提交需要发布"
