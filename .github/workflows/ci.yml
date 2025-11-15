@@ -17,78 +17,78 @@ permissions:
   contents: write
 
 jobs:
-  check_changes:
-    runs-on: ubuntu-latest
-    outputs:
-      docs_changed: ${{ steps.check_files.outputs.docs }}
-      config_changed: ${{ steps.check_files.outputs.config }}
-      should_build: ${{ steps.check_files.outputs.docs == 'true' || steps.check_files.outputs.config == 'true' || github.event_name == 'workflow_dispatch' }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-      
-      - name: Check for relevant file changes
-        id: check_files
-        run: |
-          # 如果是手动触发且选择跳过检测，则直接返回 true
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.skip_checks }}" = "true" ]; then
-            echo "🚀 Manual trigger with skip_checks enabled - forcing build"
-            echo "docs_changed=true" >> $GITHUB_OUTPUT
-            echo "config_changed=true" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-          
-          echo "GitHub event: ${{ github.event_name }}"
-          echo "Current SHA: $(git rev-parse HEAD)"
-          
-          # 对于 PR，比较当前分支与目标分支
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            BASE_SHA="${{ github.event.pull_request.base.sha }}"
-            HEAD_SHA="${{ github.event.pull_request.head.sha }}"
-            echo "PR mode: base=$BASE_SHA, head=$HEAD_SHA"
-          else
-            # 对于 push 事件，使用 GitHub 提供的事件数据
-            if [ -n "${{ github.event.before }}" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
-              BASE_SHA="${{ github.event.before }}"
-              HEAD_SHA="${{ github.event.after }}"
-              echo "Push mode with valid before: base=$BASE_SHA, head=$HEAD_SHA"
-            else
-              # 如果没有有效的 before SHA（比如首次提交），则与空树比较
-              BASE_SHA="4b825dc642cb6eb9a060e54bf8d69288fbee4904"  # 空树
-              HEAD_SHA="${{ github.sha }}"
-              echo "Push mode (initial commit): base=empty-tree, head=$HEAD_SHA"
-            fi
-          fi
-          
-          echo "Comparing $BASE_SHA..$HEAD_SHA"
-          
-          # 使用 git diff 检查变更
-          changed_files=$(git diff --name-only $BASE_SHA $HEAD_SHA 2>/dev/null || echo "")
-          echo "All changed files:"
-          echo "$changed_files"
-          
-          # 检查 zensical.toml 是否变更
-          if echo "$changed_files" | grep -q "zensical.toml"; then
-            echo "config_changed=true" >> $GITHUB_OUTPUT
-            echo "✅ zensical.toml changed"
-          else
-            echo "config_changed=false" >> $GITHUB_OUTPUT
-            echo "❌ zensical.toml not changed"
-          fi
-          
-          # 检查 /docs/ 目录下文件是否变更
-          if echo "$changed_files" | grep -q "^docs/"; then
-            echo "docs_changed=true" >> $GITHUB_OUTPUT
-            echo "✅ docs/ directory changed"
-          else
-            echo "docs_changed=false" >> $GITHUB_OUTPUT
-            echo "❌ docs/ directory not changed"
-          fi
+#  check_changes:
+#    runs-on: ubuntu-latest
+#    outputs:
+#      docs_changed: ${{ steps.check_files.outputs.docs }}
+#      config_changed: ${{ steps.check_files.outputs.config }}
+#      should_build: ${{ steps.check_files.outputs.docs == 'true' || steps.check_files.outputs.config == 'true' || github.event_name == 'workflow_dispatch' }}
+#    steps:
+#      - uses: actions/checkout@v4
+#        with:
+#          fetch-depth: 2
+#
+#      - name: Check for relevant file changes
+#        id: check_files
+#        run: |
+#          # 如果是手动触发且选择跳过检测，则直接返回 true
+#          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.skip_checks }}" = "true" ]; then
+#            echo "🚀 Manual trigger with skip_checks enabled - forcing build"
+#            echo "docs_changed=true" >> $GITHUB_OUTPUT
+#            echo "config_changed=true" >> $GITHUB_OUTPUT
+#            exit 0
+#          fi
+#
+#          echo "GitHub event: ${{ github.event_name }}"
+#          echo "Current SHA: $(git rev-parse HEAD)"
+#
+#          # 对于 PR，比较当前分支与目标分支
+#          if [ "${{ github.event_name }}" = "pull_request" ]; then
+#            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+#            HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+#            echo "PR mode: base=$BASE_SHA, head=$HEAD_SHA"
+#          else
+#            # 对于 push 事件，使用 GitHub 提供的事件数据
+#            if [ -n "${{ github.event.before }}" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+#              BASE_SHA="${{ github.event.before }}"
+#              HEAD_SHA="${{ github.event.after }}"
+#              echo "Push mode with valid before: base=$BASE_SHA, head=$HEAD_SHA"
+#            else
+#              # 如果没有有效的 before SHA（比如首次提交），则与空树比较
+#              BASE_SHA="4b825dc642cb6eb9a060e54bf8d69288fbee4904"  # 空树
+#              HEAD_SHA="${{ github.sha }}"
+#              echo "Push mode (initial commit): base=empty-tree, head=$HEAD_SHA"
+#            fi
+#          fi
+#
+#          echo "Comparing $BASE_SHA..$HEAD_SHA"
+#
+#          # 使用 git diff 检查变更
+#          changed_files=$(git diff --name-only $BASE_SHA $HEAD_SHA 2>/dev/null || echo "")
+#          echo "All changed files:"
+#          echo "$changed_files"
+#
+#          # 检查 zensical.toml 是否变更
+#          if echo "$changed_files" | grep -q "zensical.toml"; then
+#            echo "config_changed=true" >> $GITHUB_OUTPUT
+#            echo "✅ zensical.toml changed"
+#          else
+#            echo "config_changed=false" >> $GITHUB_OUTPUT
+#            echo "❌ zensical.toml not changed"
+#          fi
+#
+#          # 检查 /docs/ 目录下文件是否变更
+#          if echo "$changed_files" | grep -q "^docs/"; then
+#            echo "docs_changed=true" >> $GITHUB_OUTPUT
+#            echo "✅ docs/ directory changed"
+#          else
+#            echo "docs_changed=false" >> $GITHUB_OUTPUT
+#            echo "❌ docs/ directory not changed"
+#          fi
 
   build:
-    needs: check_changes
-    if: needs.check_changes.outputs.should_build == 'true'
+#    needs: check_changes
+#    if: needs.check_changes.outputs.should_build == 'true'
     runs-on: ubuntu-latest
     outputs:
       commit_hash: ${{ steps.build-info.outputs.commit_hash }}
@@ -142,8 +142,11 @@ jobs:
           retention-days: 1
 
   deploy_build:
-    needs: [check_changes, build]
-    if: needs.check_changes.outputs.should_build == 'true' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+#    needs: [check_changes, build]
+    needs: [build]
+#    if: needs.check_changes.outputs.should_build == 'true' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -159,25 +162,25 @@ jobs:
         id: check_build_changes
         run: |
           # 如果是手动触发，跳过内容检查，强制部署
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "🚀 Manual trigger - forcing deployment to build branch"
-            echo "no_changes=false" >> $GITHUB_OUTPUT
-            exit 0
-          fi
+#          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+#            echo "🚀 Manual trigger - forcing deployment to build branch"
+#            echo "no_changes=false" >> $GITHUB_OUTPUT
+#            exit 0
+#          fi
           
           # 检查 build 分支是否存在
-          if git ls-remote --exit-code --heads origin build; then
-            echo "Build branch exists"
-            git fetch origin build
-            git worktree add ../build-branch build
+#          if git ls-remote --exit-code --heads origin build; then
+#            echo "Build branch exists"
+#            git fetch origin build
+#            git worktree add ../build-branch build
             # 比较文件差异
-            if diff -qr ./site ../build-branch > /dev/null 2>&1; then
-              echo "no_changes=true" >> $GITHUB_OUTPUT
-              echo "📝 Build branch content unchanged, skipping deployment"
-            else
-              echo "no_changes=false" >> $GITHUB_OUTPUT
-              echo "🔄 Build branch content changed, proceeding with deployment"
-            fi
+#            if diff -qr ./site ../build-branch > /dev/null 2>&1; then
+#              echo "no_changes=true" >> $GITHUB_OUTPUT
+#              echo "📝 Build branch content unchanged, skipping deployment"
+#            else
+#              echo "no_changes=false" >> $GITHUB_OUTPUT
+#              echo "🔄 Build branch content changed, proceeding with deployment"
+#            fi
             # 清理工作树
             git worktree remove ../build-branch
           else
@@ -186,7 +189,7 @@ jobs:
           fi
 
       - name: Deploy to build branch
-        if: steps.check_build_changes.outputs.no_changes == 'false'
+#        if: steps.check_build_changes.outputs.no_changes == 'false'
         run: |
           # 修复：使用更简单直接的方法部署到 build 分支
           cd $GITHUB_WORKSPACE
@@ -220,12 +223,15 @@ jobs:
           echo "✅ Successfully deployed to build branch"
 
       - name: Skip deployment (no changes)
-        if: steps.check_build_changes.outputs.no_changes == 'true'
+#        if: steps.check_build_changes.outputs.no_changes == 'true'
         run: echo "🚫 Skipping build branch deployment - no content changes detected"
 
   deploy_pages:
-    needs: [check_changes, build]
-    if: needs.check_changes.outputs.should_build == 'true' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    needs: [build]
+#    needs: [check_changes, build]
+#    if: needs.check_changes.outputs.should_build == 'true' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -241,25 +247,25 @@ jobs:
         id: check_pages_changes
         run: |
           # 如果是手动触发，跳过内容检查，强制部署
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "🚀 Manual trigger - forcing deployment to gh-pages"
-            echo "no_changes=false" >> $GITHUB_OUTPUT
-            exit 0
-          fi
+#          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+#            echo "🚀 Manual trigger - forcing deployment to gh-pages"
+#            echo "no_changes=false" >> $GITHUB_OUTPUT
+#            exit 0
+#          fi
           
           # 检查 gh-pages 分支是否存在
-          if git ls-remote --exit-code --heads origin gh-pages; then
-            echo "gh-pages branch exists"
-            git fetch origin gh-pages
-            git worktree add ../gh-pages-branch gh-pages
+#          if git ls-remote --exit-code --heads origin gh-pages; then
+#            echo "gh-pages branch exists"
+#            git fetch origin gh-pages
+#            git worktree add ../gh-pages-branch gh-pages
             # 比较文件差异（排除CNAME文件）
-            if diff -qr --exclude=CNAME ./site ../gh-pages-branch > /dev/null 2>&1; then
-              echo "no_changes=true" >> $GITHUB_OUTPUT
-              echo "📝 gh-pages content unchanged, skipping deployment"
-            else
-              echo "no_changes=false" >> $GITHUB_OUTPUT
-              echo "🔄 gh-pages content changed, proceeding with deployment"
-            fi
+#            if diff -qr --exclude=CNAME ./site ../gh-pages-branch > /dev/null 2>&1; then
+#              echo "no_changes=true" >> $GITHUB_OUTPUT
+#              echo "📝 gh-pages content unchanged, skipping deployment"
+#            else
+#              echo "no_changes=false" >> $GITHUB_OUTPUT
+#              echo "🔄 gh-pages content changed, proceeding with deployment"
+#            fi
             # 清理工作树
             git worktree remove ../gh-pages-branch
           else
@@ -268,7 +274,7 @@ jobs:
           fi
 
       - name: Deploy to gh-pages branch
-        if: steps.check_pages_changes.outputs.no_changes == 'false'
+#        if: steps.check_pages_changes.outputs.no_changes == 'false'
         run: |
           # 修复：使用更简单直接的方法部署到 gh-pages 分支
           cd $GITHUB_WORKSPACE
@@ -304,6 +310,6 @@ jobs:
           git push -f origin gh-pages
           echo "✅ Successfully deployed to gh-pages branch"
 
-      - name: Skip deployment (no changes)
-        if: steps.check_pages_changes.outputs.no_changes == 'true'
-        run: echo "🚫 Skipping gh-pages deployment - no content changes detected"
+#      - name: Skip deployment (no changes)
+#        if: steps.check_pages_changes.outputs.no_changes == 'true'
+#        run: echo "🚫 Skipping gh-pages deployment - no content changes detected"
