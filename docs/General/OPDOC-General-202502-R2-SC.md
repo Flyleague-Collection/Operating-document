@@ -155,6 +155,8 @@
 - Chinaflier
 - Sino
 
+4.11 遵循ATC INFO规定：在本训练大纲的各部分，例如：Under Mentoring、Solo等，均出现了明确的ATC INFO规定，管制员应遵循此规定。
+
 
 
 ## 参考资料

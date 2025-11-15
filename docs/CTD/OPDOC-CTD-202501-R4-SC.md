@@ -1,10 +1,6 @@
 # 管制员培训大纲
 
-!!! Note
-
-    此文档正在维护中，您可详见：[#25](https://github.com/Flyleague-Collection/Operating-document/issues/25)，查阅详情。
-
-发行日期：2025年XX月XX日
+发行日期：2025年11月15日
 
 文件编号：OPDOC-CTD-202501-R4-SC
 
@@ -29,13 +25,13 @@
 
 ## 修订记录
 
-| 版本 | 时间       | 描述                                       | 编者                                     |
-| ---- | ---------- | ------------------------------------------ | ---------------------------------------- |
-| R0   | 2025.05.22 | 初版                                       | Half nothing(2352)                       |
-| R1   | 2025.07.09 | 重构<br />增加内容                         | Half nothing(2352)<br />Yiheng Gui(5516) |
-| R2   | 2025.09.14 | 重构<br />增加至Operating-document         | Yiheng Gui(5516)                         |
-| R3   | 2025.10.02 | 取消连飞小时数要求<br />增加教员、教师部分 | Yiheng Gui(5516)                         |
-| R4   | 2025.XX.XX | 增加关于solo的事宜                         | Yiheng Gui(5516)                         |
+| 版本 | 时间       | 描述                                                         | 编者                                     |
+| ---- | ---------- | ------------------------------------------------------------ | ---------------------------------------- |
+| R0   | 2025.05.22 | 初版                                                         | Half nothing(2352)                       |
+| R1   | 2025.07.09 | 重构<br />增加内容                                           | Half nothing(2352)<br />Yiheng Gui(5516) |
+| R2   | 2025.09.14 | 重构<br />增加至Operating-document                           | Yiheng Gui(5516)                         |
+| R3   | 2025.10.02 | 取消连飞小时数要求<br />增加教员、教师部分                   | Yiheng Gui(5516)                         |
+| R4   | 2025.11.15 | 增加关于solo的事宜<br />增加监管运行模式<br />明确在ATC INFO中的填写信息 | Yiheng Gui(5516)                         |
 
 
 
@@ -115,6 +111,8 @@
 - [Xflysim](https://www.xflysim.com/)
 - [Chinaflier](https://www.chinaflier.com/)
 - [Sino](https://bbs.sinofsx.org/)
+
+2.15 遵循ATC INFO规定：在本训练大纲的各部分，例如：Under Mentoring、Solo等，均出现了明确的ATC INFO规定，管制员应遵循此规定。
 
 
 
@@ -258,6 +256,7 @@ Solo - 能够胜任该席位的放单标准，但缺少一定的经验。
 
 - 拥有对管制工作的热爱
 - 注册满48小时
+- 24小时内**未进行**申请
 - 机组的中英文陆空能力
 - 了解管制员的规章制度
 - 简单的Metar报文解读能力
@@ -739,7 +738,7 @@ Sweatbox文本应含有对向含有潜在冲突的航空器，**10~12架次。**
 
 - “Student 3 进近管制员（正式）”及以上
 - 获得该权限30天及以上
-- 在线小时在该权限累计>100小时
+- 在线小时在该权限累计>30小时
 - 非活动时段
 
 
@@ -748,7 +747,7 @@ Sweatbox文本应含有对向含有潜在冲突的航空器，**10~12架次。**
 
 比当前权限低一级的Under Mentoring管制员
 
-例如：S3监管可以监管S2及以下
+例如：S3监管可以监管S2 Under Mentoring及以下
 
 
 
@@ -765,20 +764,20 @@ Sweatbox文本应含有对向含有潜在冲突的航空器，**10~12架次。**
     ```
     
     例如：
-
+    
     ZBAA_APP
     ```
     [S3] I am mentoring ZBAA_TWR.
     ```
-
+    
     ---
-
+    
     下级需在ATC INFO填写：
     ```
     [XX XXXXX XXXXXXXXX] Training in progress, mentored by XXXX_XXX. 
     ```
     例如：
-
+    
     ZBAA_TWR
     ```
     [S1 Under Mentoring] Training in progress, mentored by ZBAA_APP. 
