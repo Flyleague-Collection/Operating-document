@@ -729,6 +729,64 @@ Sweatbox文本应含有对向含有潜在冲突的航空器，**10~12架次。**
 
 
 
+## 第八章 监管运行
+!!! Note
+    注此运行模式目前处于试运行状态，如您有任何意见需要反馈的，请前往：[ctd@apocfly.com](mailto:ctd@apocfly.com)
+
+    教员/教师的监管与此模式并不一致，他们需要以：XXXX_X_XXX的形式上线，例如：ZBAA_I_APP
+
+### 开放条件
+
+- “Student 3 进近管制员（正式）”及以上
+- 获得该权限30天及以上
+- 在线小时在该权限累计>100小时
+- 非活动时段
+
+
+
+### 监管对象
+
+比当前权限低一级的Under Mentoring管制员
+
+例如：S3监管可以监管S2及以下
+
+
+
+### 监管席位：
+
+上级监管下级，且同时在线
+
+例如：ZBAA_APP可以监管ZBAA_TWR、ZBAA_GND、ZBAA_RMP、ZBAA_DEL
+
+!!! Note
+    上级需在ATC INFO填写：
+    ```
+    [XX] I am mentoring ZBAA_TWR.
+    ```
+    
+    例如：
+
+    ZBAA_APP
+    ```
+    [S3] I am mentoring ZBAA_TWR.
+    ```
+
+    ---
+
+    下级需在ATC INFO填写：
+    ```
+    [XX XXXXX XXXXXXXXX] Training in progress, mentored by XXXX_XXX. 
+    ```
+    例如：
+
+    ZBAA_TWR
+    ```
+    [S1 Under Mentoring] Training in progress, mentored by ZBAA_APP. 
+    ```
+
+
+
+
 ## 参考资料
 
 [1] [VATSIM.Globa- Controller Administration Policy (GCAP)](https://cdn.vatsim.net/policy-documents/GCAP_v1.1_Release.pdf)
