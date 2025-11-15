@@ -12,7 +12,7 @@ Contribution Guidelines
 
 | Package  | Version |
 | -------- |---------|
-| zensical | 0.0.7   |
+| zensical | 0.0.8   |
 
 #### 依赖库
 
