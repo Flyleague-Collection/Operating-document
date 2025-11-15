@@ -51,7 +51,7 @@
 
 1.4 本规则会根据平台情况适时调整，请关注最新培训要求。
 
-1.5 本规则最终解释权归行政管理组所有，任何疑问请及时反馈。
+1.5 本规则最终解释权归管理组所有，任何疑问请及时反馈。
 
 1.6 有任意两名教员或一名教员与教师在场的情况下，可不进行录音，保护学员隐私。
 
@@ -59,7 +59,9 @@
 
 ### 2. 管制员行为规范
 
-注：此行为规范基于主行为准则进行补充，与主COC不冲突。
+!!! Note
+
+    注：此行为规范基于主行为准则进行补充，与主COC不冲突
 
 2.1 尊重每一个人：如果该管制员在训练过程中有对教员、飞行员或任何平台成员有不尊重或不文明的行为，就可能根据其严重程度，终止本次训练、甚至取消训练资格。
 
@@ -108,11 +110,11 @@
 
 2.14 仅允许以下模拟飞行平台的**在职**管制员通过客座管制员的身份加入本平台。
 
-- Vatprc（其他Vatsim分部的管制，视情况客座）
-- Skyline
-- Xflysim
-- Chinaflier
-- Sino
+- [Vatprc](https://vatprc.net/)（其他Vatsim分部的管制，视情况客座）
+- [Skyline](https://home.skylineflyleague.cn/)
+- [Xflysim](https://www.xflysim.com/)
+- [Chinaflier](https://www.chinaflier.com/)
+- [Sino](https://bbs.sinofsx.org/)
 
 
 
@@ -146,9 +148,55 @@
 
 盒子(Sweatbox)  -  模拟机。用于对管制员进行训练的手段，通常由操控端和训练端组成。
 
-向下兼容(Topdown)  -  一种管制的运行模式。注：此提倡在尽可能的情况下其用该模式以覆盖多机场的管制。
+向下兼容(Topdown)  -  一种管制的运行模式。
+!!! Note
+    注：
+    
+    此提倡在尽可能的情况下其用该模式以覆盖多机场的管制。
+    
+    默认情况下，所有席位均为Topdown模式，如该管制席位不希望运行Topdown，则应在ATC INFO中注明：
+    
+    ```
+    [Operating] XXXX_XXX Airspace Topdown Operating mode is UNAVBL.
+    ```
+    例如：
+    ```
+    [Operating] ZBAA_CTR Airspace Topdown Operating mode is UNAVBL.
+    ```
 
-见习(Under Mentoring)  -  正在学习管制的阶段，有一定的经验，但还未达到正式的要求。注：该席位的见习者需在责任教员报备，且有教员/教师监管的情况下，方可进行活动管制。日常在线也需要在教员监管下进行。
+
+见习(Under Mentoring)  -  正在学习管制的阶段，有一定的经验，但还未达到正式的要求。
+!!! Note
+    注：
+
+    该席位的见习者需在责任教员**报备**，且有教员/教师监管的情况下，方可进行活动管制。日常在线也需要在教员监管下进行。
+    
+    Under Mentoring期间，所有在线活动应在ATC INFO中注明：
+    ```
+    [XX Under Mentoring] Training in progress, mentored by XXXX_I_XXX.
+    ```
+    例如：
+    ```
+    [S1 Under Mentoring] Training in progress, mentored by ZBAA_I_TWR.
+    ```
+
+Solo - 能够胜任该席位的放单标准，但缺少一定的经验。
+!!! Note
+    注：
+
+    每次Solo证书签至少7天，最多一次性签发14天，共计最多签发70天。
+    
+    该席位的见习者需在责任教员**报备**，且有教员/教师监管的情况下，方可进行活动管制。但，日常在线**不需要**在教员监管下进行。
+    
+    Solo期间，所有在线活动应在ATC INFO中注明：
+    
+    ```
+    [XX Solo] Certification expires on XXXX.XX.XX
+    ```
+    例如：
+    ```
+    [S1 Solo] Certification expires on 2077.02.31
+    ```
 
 教员(Instructor)  -  教授学员的人员，且可以负责考核的人员。
 
@@ -169,11 +217,14 @@
 | 观察员                   | Observer                      | OBS             |                                                    | 仅能进行观察 |
 | 塔台管制员<br />（见习） | Student 1 Under Mentoring     | S1 UM、S1 见习  | GND/DEL<br />Ground/Delivery<br />（地面/放行）    |              |
 | 塔台管制员<br />（正式） | Student 1                     | S1              | GND/DEL<br />Ground/Delivery<br />（地面/放行）    |              |
+| 无                       | Student 1 Solo                | S1 Solo         | GND/DEL<br />Ground/Delivery<br />（地面/放行）    |              |
 | 塔台管制员<br />（资深） | Student 2                     | S2              | TWR<br />Tower<br />（塔台）                       |              |
 | 非雷达管制员             | Tier 2                        | T2              | Procedural<br />Tower<br />（塔台）                |              |
 | 进近管制员<br />（见习） | Student 3 Under Mentoring     | S3 UM、S3 见习  | TMA<br />Termina Control Area<br />（终端）        |              |
+| 无                       | Student 3 Solo                | S3 Solo         | TMA<br />Termina Control Area<br />（终端）        |              |
 | 进近管制员<br />（正式） | Student 3                     | S3              | TMA<br />Termina Control Area<br />（终端）        |              |
 | 区域管制员<br />（见习） | Control 1<br/>Under Mentoring | C1 UM、C1 见习  | ACC<br />Area Control Centre<br />（区域管制中心） |              |
+| 无                       | Control 1 Solo                | C1 Solo         | ACC<br />Area Control Centre<br />（区域管制中心） |              |
 | 区域管制员<br />（正式） | Control 1                     | C1              | ACC<br />Area Control Centre<br />（区域管制中心） |              |
 | 区域管制员<br />（弃用） | Control 2<br/>（弃用）        | C2<br/>（弃用） |                                                    | 弃用         |
 | 区域管制员<br />（资深） | Control 3                     | C3              | ACC<br/>Area Control Centre<br/>（区域管制中心）   |              |
@@ -267,6 +318,15 @@
 
 
 
+### Student 1 Solo
+
+#### S1 Solo 授予标准
+
+- 获得“Student 1 Under Mentoring 塔台管制员（见习）”管制权限
+- 得到责任教员/教师授予的Solo签发证书
+
+
+
 ### Student 1
 
 #### S1 在线训练 考核标准
@@ -293,7 +353,7 @@
 #### S2 授予标准
 
 - 获得“Student 1 塔台管制员（正式）”管制权限
-- 上管时长达到2小时
+- S1期间上管时长累计达2小时
 
 
 
@@ -418,6 +478,15 @@ Sweatbox文本应含有进离场航空器，10~12架次。
 
 
 
+### Student 3 Solo
+
+#### S3 Solo 授予标准
+
+- 获得“Student 3 Under Mentoring 进近管制员（见习）”管制权限
+- 得到责任教员/教师授予的Solo签发证书
+
+
+
 ### **Student 3**
 
 #### S3 在线训练 考核标准
@@ -525,6 +594,15 @@ Sweatbox文本应含有对向含有潜在冲突的航空器，**10~12架次。**
 - 通过Sweatbox考核
 
 注：Control 1 Under Mentoring权限不需要在线训练。
+
+
+
+### Control 1 Solo
+
+#### C1 Solo 授予标准
+
+- 获得“Control 1 Under Mentoring 区域管制员 （见习）”管制权限
+- 得到责任教员/教师授予的Solo签发证书
 
 
 
