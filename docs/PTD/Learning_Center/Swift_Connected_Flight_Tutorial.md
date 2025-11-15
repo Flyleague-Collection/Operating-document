@@ -505,6 +505,10 @@ Swift 版本不同该页面可能会有些许不同，但操作逻辑相同
 !!! Note
 
     注：如果您对此部分感到困惑，不妨试试我们的网页提交计划功能，[点此进入](https://www.apocfly.com/flight-plan)
+        
+    !!! Note
+
+        此功能仅限[APOC模拟飞行平台](https://www.apocfly.com)使用
 
 ![image095](./Connected_Flight_Tutorial_assets/image095.png)
 
@@ -566,7 +570,10 @@ Swift 版本不同该页面可能会有些许不同，但操作逻辑相同
 !!! Note
     
     注：在管制空域内，此处提交的内容只需要提交一次，若您认为飞行计划有问题或管制员告知您的飞行计划有误时，您仅需要在您的飞机上进行更改，而您的计划，管制员会帮忙进行更改。
+    !!! Note
 
+        此功能仅限[APOC模拟飞行平台](https://www.apocfly.com)使用
+    
 ---
 
 确认所有内容填写正确后，点击Send 按钮发送飞行计划到服务器（若不放心您也可以多点几下）
@@ -590,6 +597,8 @@ Swift 版本不同该页面可能会有些许不同，但操作逻辑相同
     ![image106](./Connected_Flight_Tutorial_assets/image106.png)
     
     那么证明您的计划已经在网页提交了，但是本次飞行的航班呼号和网页提交的不同，请您回至[connect页面](#51-connect)重新检查
+    !!! Note
+        此功能仅限[APOC模拟飞行平台](https://www.apocfly.com)使用
 
 ---
 
