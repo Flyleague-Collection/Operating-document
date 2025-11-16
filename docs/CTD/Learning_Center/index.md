@@ -24,7 +24,7 @@
 - [EuroScope使用教程](./References/Flyatcsim EuroScope扇区使用教程 v1.2.pdf)
 - [飞行情报区](../../PTD/Learning_Center/FIR.md)
 - [空域](../../PTD/Learning_Center/Airspace.md)
-- 班机航路的使用和查询
+- [班机航路的使用和查询](../../PTD/Learning_Center/Airlines_flight_route.md)
 
 
 
