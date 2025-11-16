@@ -74,7 +74,7 @@ Regulatory interview standard operating procedure
 
 ### 了解管制员的规章制度
 
-询问其有没有查看管制员考核大纲，如未查看，在面试后的评语中加入链接：[https://docs.apocfly.com/CTD/OPDOC-CTD-202501-R3-SC/](https://docs.apocfly.com/CTD/OPDOC-CTD-202501-R3-SC/)
+询问其有没有查看管制员考核大纲，如未查看，在面试后的评语中加入链接：[https://docs.apocfly.com/CTD/OPDOC-CTD-202501-R4-SC/](https://docs.apocfly.com/CTD/OPDOC-CTD-202501-R4-SC/)
 
 查看者，可选择跳，或提问（分值占比不高）
 
