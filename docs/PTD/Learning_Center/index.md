@@ -17,6 +17,7 @@
 - [RVSM飞行高度层](./RVSM_flight_level.md)
 - [飞行情报区](./FIR.md)
 - [空域](./Airspace.md)
+- [班机航路的查询教程](./Airlines_flight_route.md)
 
 
 

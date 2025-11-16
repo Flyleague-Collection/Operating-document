@@ -33,4 +33,5 @@ Tutorial-Contents
 - [RVSM飞行高度层](./PTD/Learning_Center/RVSM_flight_level.md)
 - [飞行情报区](./PTD/Learning_Center/FIR.md)
 - [空域](./PTD/Learning_Center/Airspace.md)
+- [班机航路的查询教程](./PTD/Learning_Center/Airlines_flight_route.md)
 
