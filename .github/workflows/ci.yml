@@ -105,6 +105,9 @@ jobs:
           # 复制新构建的文件
           cp -r ./site/* ./
           
+          # 添加 robots.txt (拦截GPT等请求)
+          echo "User-agent: Amazonbot`nDisallow: /`n`nUser-agent: GPTBot`nDisallow: /`n`nUser-agent: *`nAllow: /" > robots.txt
+
           # 添加所有文件
           git add .
           
@@ -156,6 +159,9 @@ jobs:
           
           # 添加 CNAME 文件（如果域名配置需要）
           echo "docs.master-gui.cn" > CNAME
+          
+          # 添加 robots.txt (拦截GPT等请求)
+          echo "User-agent: Amazonbot`nDisallow: /`n`nUser-agent: GPTBot`nDisallow: /`n`nUser-agent: *`nAllow: /" > robots.txt
           
           # 添加所有文件
           git add .
