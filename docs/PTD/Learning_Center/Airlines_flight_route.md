@@ -1,4 +1,4 @@
-# 班级航路的查询和使用
+# 班机航路的查询和使用
 
 Query and use of flight routes by airlines
 

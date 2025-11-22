@@ -14,7 +14,7 @@ Regulatory interview standard operating procedure
 
 > 1.6 有任意两名教员或一名教员与教师在场的情况下，可不进行录音，保护学员隐私。
 >
-> ——管制员培训大纲.文件编号：OPDOC-CTD-202501-R3-SC
+> ——管制员培训大纲.文件编号：OPDOC-CTD-202501-R4-SC
 
 按照上述条例，进行朗读考纪律
 
