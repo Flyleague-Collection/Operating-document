@@ -1,0 +1,3285 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Use Markdown language to finish the Operating document.">
+      
+      
+        <meta name="author" content="Yiheng Master Gui">
+      
+      
+        <link rel="canonical" href="https://docs.apocfly.com/PTD/Learning_Center/Swift_Connected_Flight_Tutorial/">
+      
+      
+        <link rel="prev" href="../Radiotelephony_Communications_for_Air_Traffic_Services/">
+      
+      
+        <link rel="next" href="../../../Programming/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../images/Logo.svg">
+      <meta name="generator" content="zensical-0.0.9">
+    
+    
+      
+        <title>Swift 连飞教程 - APOCFLY模拟飞行·文档站</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../../../assets/stylesheets/modern/main.2644c6b7.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/modern/palette.dfe2e883.min.css">
+      
+      
+  
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+  
+  <style>:root{}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,a=__md_scope)=>JSON.parse(t.getItem(a.pathname+"."+e)),__md_set=(e,t,a=localStorage,_=__md_scope)=>{try{a.setItem(_.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#swift" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="https://www.apocfly.com" title="APOCFLY模拟飞行·文档站" class="md-header__button md-logo" aria-label="APOCFLY模拟飞行·文档站" data-md-component="logo">
+      
+  <img src="../../../images/Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            APOCFLY模拟飞行·文档站
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Swift 连飞教程
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun-moon" viewBox="0 0 24 24"><path d="M12 2v2M14.837 16.385a6 6 0 1 1-7.223-7.222c.624-.147.97.66.715 1.248a4 4 0 0 0 5.26 5.259c.589-.255 1.396.09 1.248.715M16 12a4 4 0 0 0-4-4M19 5l-1.256 1.256M20 12h2"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="查找">
+  <button type="button" class="md-search__button">
+    查找
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+        <a href="https://github.com/Flyleague-Collection/Operating-document" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Flyleague-Collection/Operating-document
+  </div>
+</a>
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://www.apocfly.com" title="APOCFLY模拟飞行·文档站" class="md-nav__button md-logo" aria-label="APOCFLY模拟飞行·文档站" data-md-component="logo">
+      
+  <img src="../../../images/Logo.svg" alt="logo">
+
+    </a>
+    APOCFLY模拟飞行·文档站
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Flyleague-Collection/Operating-document" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Flyleague-Collection/Operating-document
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    主页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CODE_OF_CONDUCT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    贡献者公约
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Contents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    教程目录
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Contribution_guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    贡献指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LICENSE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CC BY-SA 4.0 License
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CTD
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CTD
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CTD/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第一部分 管制员培训中心 CTD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CTD/OPDOC-CTD-202501-R4-SC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    管制员培训大纲
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../CTD/Learning_Center/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Center
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../CTD/SOP/Interview/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOP
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../CTD/Work_report/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work report
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    General
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    General
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../General/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第一部分 总则 General
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../General/OPDOC-General-202501-R3-SC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    标准文件发行格式
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../General/OPDOC-General-202502-R2-SC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    行为准则
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Meeting
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Meeting
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Meeting/OPDOC-MT-202501-R0-SC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2025年第一次全体职员会议
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PTD
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PTD
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_9_1" id="__nav_9_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Center
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Learning Center
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    飞行员培训中心·学习中心 PTD·Learning Center
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Airlines_flight_route/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    班机航路的查询和使用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Airspace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    空域
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FIR/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    飞行情报区
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RVSM_flight_level/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RVSM 飞行高度层
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Radiotelephony_Communications_for_Air_Traffic_Services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    空中交通无线电通话用语
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Swift 连飞教程
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Swift 连飞教程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        前言
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        修订记录
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第一章 连飞软件的安装及配置
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第一章 连飞软件的安装及配置">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 下载所需文件
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 下载所需文件">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-swift" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Swift客户端
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 下载机模映射包
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2 下载机模映射包">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#121-msfs-2020" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2.1 MSFS 2020 映射
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#122-x-plane-1112" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2.2 X-Plane 11/12 映射
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#123-flight-simulator-x-prepar-3d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2.3 Flight Simulator X &amp; Prepar 3D
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-swift" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 安装Swift
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-swift" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 Swift配置（模型库安装）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3 Swift配置（模型库安装）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 同意使用协议
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 检查数据库
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 从其他版本复制模型库
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 从其他版本复制配置文件
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 路径配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 创建模型库
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-x-csl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 X-CSL映射
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-xswifbusx-plane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 安装xswifbus（仅X-Plane玩家）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 配置快捷键
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 服务器配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-swift" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. swift使用说明
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. swift使用说明">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Connect页面
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 飞行计划页面
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 消息界面
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-atc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 ATC页面
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-radar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 Radar页面
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#56-aircraft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.6 Aircraft页面
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 联飞说明
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        后记
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        参考资料
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Programming
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Programming
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录 技术专题
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../Programming/Docs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docs
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../Programming/FSD/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../Programming/Sectors/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sectors
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        前言
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        修订记录
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第一章 连飞软件的安装及配置
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第一章 连飞软件的安装及配置">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 下载所需文件
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 下载所需文件">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-swift" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Swift客户端
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 下载机模映射包
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2 下载机模映射包">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#121-msfs-2020" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2.1 MSFS 2020 映射
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#122-x-plane-1112" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2.2 X-Plane 11/12 映射
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#123-flight-simulator-x-prepar-3d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2.3 Flight Simulator X &amp; Prepar 3D
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-swift" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 安装Swift
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-swift" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 Swift配置（模型库安装）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3 Swift配置（模型库安装）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 同意使用协议
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 检查数据库
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 从其他版本复制模型库
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 从其他版本复制配置文件
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 路径配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 创建模型库
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-x-csl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 X-CSL映射
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-xswifbusx-plane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 安装xswifbus（仅X-Plane玩家）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 配置快捷键
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 服务器配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-swift" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. swift使用说明
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. swift使用说明">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Connect页面
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 飞行计划页面
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 消息界面
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-atc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 ATC页面
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-radar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 Radar页面
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#56-aircraft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.6 Aircraft页面
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 联飞说明
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        后记
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        参考资料
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="导航栏" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    主页
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    PTD
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Learning Center
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+    <a href="https://github.com/Flyleague-Collection/Operating-document/edit/main/docs/PTD/Learning_Center/Swift_Connected_Flight_Tutorial.md" title="编辑此页" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-pen" viewBox="0 0 24 24"><path d="M12.5 22H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v9.5"/><path d="M14 2v4a2 2 0 0 0 2 2h4M13.378 15.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="swift">Swift 连飞教程</h1>
+<p>Swift Connected Flight Tutorial</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>由于zensical缘故，以下有序列表中的数字，均为错误的，我们已在<a href="https://github.com/zensical/zensical/issues/34">#34</a>中提交，您可进入此页面对议题(issue)进行追踪。</p>
+</div>
+<h2 id="_1">前言</h2>
+<p>本文档旨在为您提供一份清晰、详实的操作指南无论您是首次接触联飞，还是希望在一个规范化的新平台开始您的联飞之旅，本指南都将一步步引导您完成从软件准备、客户端配置、服务器连接到实际飞行操作的全过程我们涵盖了主流模拟飞行软件（如 Flight Simulator X、Prepar 3D、X-Plane、Microsoft Flight Simulator）的联飞设置要点，并重点强调了联飞中的规范、礼仪与安全准则。</p>
+<p>我们坚信，遵循指引、熟悉流程、尊重规则，是保障您个人及其他参与者获得流畅、沉浸且富有成就感联飞体验的基础特别是对于新手飞行员，我们强烈建议您在参与联飞活动前，务必熟练掌握所选机型的操作，并认真阅读本指南。</p>
+<p>现在，请跟随本指南，开启您的联飞旅程，我们期待在虚拟的蓝天之上，与您安全、顺畅地相会！</p>
+<h2 id="_2">修订记录</h2>
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>时间</th>
+<th>编者</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.1</td>
+<td>2025.05.31</td>
+<td>2352</td>
+<td>第一版</td>
+</tr>
+<tr>
+<td>1.0</td>
+<td>2025.06.01</td>
+<td>2352&amp;5516</td>
+<td>修改排版、增加部分内容</td>
+</tr>
+<tr>
+<td>2.0</td>
+<td>2025.11.12</td>
+<td>5516</td>
+<td>增加Markdown版、将文字界面改为消息界面、修订已知错误(<a href="https://github.com/Flyleague-Collection/Operating-document/issues/12">#12</a>)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3">第一章 连飞软件的安装及配置</h2>
+<h3 id="1">1. 下载所需文件</h3>
+<h4 id="11-swift">1.1 Swift客户端</h4>
+<p>首先，需要下载swift联飞客户端，任意版本均可，<a href="https://github.com/swift-project/pilotclient/releases">Swift Github仓库官方下载地址</a>：</p>
+<p>请尽可能避免使用Alpha版本，除非您清晰明确的知晓使用Alpha版本可能导致的后果，如下图所示（图片截于2025.05.29）<img alt="image003" src=".././Connected_Flight_Tutorial_assets/image003.png" /></p>
+<p><img alt="image005" src=".././Connected_Flight_Tutorial_assets/image005.png" /></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>请不要使用Alpha开头的版本</p>
+<p>请使用以Beta或者只有Version开头且后方标记为latest的版本</p>
+</div>
+<p>然后根据您的操作系统及<strong>模拟器</strong>情况，点击“Assets”下方特定版本的安装包下载</p>
+<p><img alt="image007" src=".././Connected_Flight_Tutorial_assets/image007.png" /></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">模拟器</th>
+<th style="text-align: left;">swift 32bit</th>
+<th style="text-align: left;">swift 64bit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">FS2004 - FS9</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">❌</td>
+</tr>
+<tr>
+<td style="text-align: left;">FSX</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">❌</td>
+</tr>
+<tr>
+<td style="text-align: left;">MSFS - FS2020</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">✅</td>
+</tr>
+<tr>
+<td style="text-align: left;">P3D v1-v3</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">❌</td>
+</tr>
+<tr>
+<td style="text-align: left;">P3D v4 and later</td>
+<td style="text-align: left;">❌</td>
+<td style="text-align: left;">✅</td>
+</tr>
+<tr>
+<td style="text-align: left;">X-Plane 11</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">✅</td>
+</tr>
+<tr>
+<td style="text-align: left;">Flightgear</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">✅</td>
+</tr>
+</tbody>
+</table>
+<p><em>此图转自<a href="https://swift-project.org/home/install/download/">swift官方文档</a></em></p>
+<p>如果您是X-Plane 11/12用户，还需要下载xswiftbus，后文   将再次提到</p>
+<p><img alt="img" src=".././Connected_Flight_Tutorial_assets/image009.png" /></p>
+<p>请确保xswiftbus的版本号，即0.14.142，与您下载的swift版本号相匹配</p>
+<p>请注意：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>安装位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Swift</td>
+<td>软件</td>
+<td>任意位置  （就像日常安装的软件一样）</td>
+</tr>
+<tr>
+<td>xswiftbus</td>
+<td>插件</td>
+<td>X-Plane的插件文件夹</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="image011" src=".././Connected_Flight_Tutorial_assets/image011.png" /></p>
+<hr />
+<h4 id="12">1.2 下载机模映射包</h4>
+<p>关于映射包的作用：</p>
+<p>机模映射包对于完整的连飞体验来说是必需且必要的，虽然不同模拟飞行软件的机模映射包各不相同，但对于连飞而言，其底层逻辑逻辑是一致的，即：</p>
+<ul>
+<li>使模拟飞行软件和swift 可以读取几乎所有主流机型的“飞机模型”（即“机模”）；</li>
+<li>在游戏内添加“AI”飞机；</li>
+<li>根据从连飞服务器上其他飞机的状态，同步调整“AI”飞机的状态</li>
+</ul>
+<p>由此实现了将服务器上的其他飞机 “映射” 到您自己的模拟飞行软件中</p>
+<p>所以“机模”由映射包提供，“映射”则由联飞软件提供</p>
+<hr />
+<h5 id="121-msfs-2020">1.2.1 MSFS 2020 映射</h5>
+<p><a href="https://swift-project.org/home/models/msfs/">swift官方关于MSFS机模映射的文档</a></p>
+<p>推荐使用AIG映射包</p>
+<p>AIG映射包下载后需要手动解压到MSFS的community目录下，注意不要出现文件夹嵌套</p>
+<p>百度网盘：https://pan.baidu.com/s/1fBCBvSGkq6pUC6d7jYa2lA?pwd=9jkc</p>
+<hr />
+<h5 id="122-x-plane-1112">1.2.2 X-Plane 11/12 映射</h5>
+<p><a href="https://swift-project.org/home/models/xplane/">swift官方关于X-Plane机模映射的文档</a></p>
+<p>您可以使用官方文档中提到的X-CSL作为X-Plane的映射包，这里是X-CSL的官网：https://x-csl.ru/downloads</p>
+<p>按照X-CSL官网提供的步骤进行下载安装即可</p>
+<p>鉴于X-CSL的官方下载器的下载速度感人，这里给出网盘下载地址</p>
+<p>百度网盘：https://pan.baidu.com/s/1FdbYVhd8lucimYaXXuTmMw?pwd=hkps</p>
+<p>123云盘：<a href="https://www.123912.com/s/oFMGTd-Rs4gv?">https://www.123912.com/s/oFMGTd-Rs4gv?</a>   提取码:tZgp</p>
+<p>下载后请解压到xplane目录的任意位置，推荐放在Custom Data文件夹下，文件名随意，但一定要在xplane的目录下，xplane无法读取目录以外的文件</p>
+<hr />
+<h5 id="123-flight-simulator-x-prepar-3d">1.2.3 Flight Simulator X &amp; Prepar 3D</h5>
+<p><a href="https://swift-project.org/home/models/fsx_p3d/">swift官方关于Flight Simulator X、Prepar 3D机模映射的文档</a></p>
+<p>官方文档也没写太多东西，只提了一嘴P3D用的是AIG映射包</p>
+<hr />
+<h3 id="2-swift">2. 安装Swift</h3>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>在安装之前，请确认四件事情：</p>
+<ul>
+<li>
+<p>确保关闭<strong>所有</strong>正在运行的swift和模拟器</p>
+</li>
+<li>
+<p>swift安装包和对应的映射文件已经下载完毕</p>
+</li>
+<li>
+<p>对于X-Plane 11/12的用户：xswiftbus已正确安装并加载</p>
+</li>
+<li>
+<p>确保使用的是正确的swift32或swift64位版本</p>
+</li>
+</ul>
+</div>
+<p>本小节以windows10 64位为例，其他操作系统大同小异</p>
+<p>本教程假设您为第一次安装swift，如果您曾经安装过swift，则部分页面会有些许不同，请您灵活应变</p>
+<ol>
+<li>
+<p>双击运行swift安装程序，你可能会看到如下窗口，点击“是”即可：</p>
+<p><img alt="image013" src=".././Connected_Flight_Tutorial_assets/image013.png" /></p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>点击“Next”</p>
+<p><img alt="image015" src=".././Connected_Flight_Tutorial_assets/image015.png" /></p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>点击“I accept the agreement”，然后下一步</p>
+<p><img alt="image017" src=".././Connected_Flight_Tutorial_assets/image017.png" /></p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>红框内请按照你安装的模拟器勾选，然后下一步  </p>
+<p><img alt="image019" src=".././Connected_Flight_Tutorial_assets/image019.png" /></p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>注：除了红框内的内容，不要动其他的选项。</p>
+</div>
+<hr />
+<ol>
+<li>
+<p>在这个页面可以自定义安装目录，建议放置在自己记得的位置。</p>
+<p><img alt="image021" src=".././Connected_Flight_Tutorial_assets/image021.png" /></p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>注：其他选项不要动，下一步。</p>
+</div>
+<hr />
+<ol>
+<li>
+<p>点击Next</p>
+<p><img alt="image023" src=".././Connected_Flight_Tutorial_assets/image023.png" /></p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>等待安装完成后，点击下一步</p>
+<p><img alt="image025" src=".././Connected_Flight_Tutorial_assets/image025.png" /></p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>随后会弹出如下页面</p>
+<p><img alt="image027" src=".././Connected_Flight_Tutorial_assets/image027.png" /></p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>请等待他初始化完成，初始化完成后会跳出如下页面：</p>
+<p><img alt="image029" src=".././Connected_Flight_Tutorial_assets/image029.png" /></p>
+</li>
+<li>
+<p>此时我们的swift已经安装好了，接下来要进行swift的配置</p>
+</li>
+</ol>
+<hr />
+<h3 id="3-swift">3 Swift配置（模型库安装）</h3>
+<h4 id="31">3.1 同意使用协议</h4>
+<p>勾上这两个复选框，前者表示同意使用协议，后者表示向服务器发送崩溃报告。</p>
+<p><img alt="image031" src=".././Connected_Flight_Tutorial_assets/image031.png" /></p>
+<hr />
+<h4 id="32">3.2 检查数据库</h4>
+<p>在此页面您也许需要等待一些时间，来让Swift下载运行所必须的数据，当“Next”按钮亮起的时候，代表您可以继续进行下一步了，后续Swift可能会在后台继续下载一些数据。</p>
+<p><img alt="image033" src=".././Connected_Flight_Tutorial_assets/image033.png" /></p>
+<hr />
+<h4 id="33">3.3 从其他版本复制模型库</h4>
+<p>如果您曾经安装过其他Swift版本，可以在此页面从其他Swift中复制模型库。</p>
+<p>如果您是第一次安装Swift或者不需要其他版本的模型库，则可以直接进行下一步。</p>
+<p><img alt="image035" src=".././Connected_Flight_Tutorial_assets/image035.png" /></p>
+<hr />
+<h4 id="34">3.4 从其他版本复制配置文件</h4>
+<p><img alt="image037" src=".././Connected_Flight_Tutorial_assets/image037.png" /></p>
+<hr />
+<h4 id="35">3.5 路径配置</h4>
+<ol>
+<li>
+<p>对于上方的模拟器，您飞哪个，就勾选哪个  请不要多勾选，后续您需要对每个模拟器进行模型库配置  这里我们以X-Plane为例（其他模拟器操作类似）</p>
+<p><img alt="image039" src=".././Connected_Flight_Tutorial_assets/image039.png" /></p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>首先，需要检查模拟器路径（第一行）和模型库路径（第二行）是否正确，  如果swift没有正确识别，需要点击对应的右侧按钮，手动选择目录</p>
+<p><img alt="image041" src=".././Connected_Flight_Tutorial_assets/image041.png" /></p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>对于其他模拟器，同理  检查无误后，点击save按钮后，进入下一步  （如果有多个模拟器，请全部检查完成并save后再进入下一步）</p>
+<p><img alt="image043" src=".././Connected_Flight_Tutorial_assets/image043.png" /></p>
+</li>
+</ol>
+<hr />
+<h4 id="36">3.6 创建模型库</h4>
+<p>这里同样以X-Plane为例：</p>
+<ol>
+<li>
+<p>首先，需要在左侧选择对应的模拟器平台，在这里我们选择X-Plane  然后，注意力来到右侧的models选项卡  第一行，是模型库路径，这里再次检查一下是否正确</p>
+<p><img alt="image045" src=".././Connected_Flight_Tutorial_assets/image045.png" /></p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>然后，点击第二行的display按钮，会弹出如下窗口：</p>
+<p><img alt="image047" src=".././Connected_Flight_Tutorial_assets/image047.png" /></p>
+</li>
+</ol>
+<p>我们点击force reload，耐心等等他重新加载完。</p>
+<hr />
+<h4 id="37-x-csl">3.7 X-CSL映射</h4>
+<ol>
+<li>
+<p>如果您是用的X-CSL官方的下载器下载的，那么会显示报错。</p>
+<p><img alt="image049" src=".././Connected_Flight_Tutorial_assets/image049.png" /></p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>此时我们关掉该报错窗口，然后在任意一个模型上右键：</p>
+<p>-&gt;simulator</p>
+<p>-&gt;Xplane:run CSL2XSB on all models</p>
+<p><img alt="image051" src=".././Connected_Flight_Tutorial_assets/image051.png" /></p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>此时会打开一个黑窗口。</p>
+<p>我们键入y并且回车，等他输出完成后，关掉该窗口。</p>
+<p><img alt="image053" src=".././Connected_Flight_Tutorial_assets/image053.png" /></p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>我们重新force reload一遍。</p>
+<p><img alt="image055" src=".././Connected_Flight_Tutorial_assets/image055.png" /></p>
+</li>
+</ol>
+<p>若一切正常，则您可以看到如上窗口</p>
+<hr />
+<ol>
+<li>
+<p>此时我们关闭最上面的两个窗口，点击create按钮</p>
+<p><img alt="image058" src=".././Connected_Flight_Tutorial_assets/image058.png" /></p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>对于第一个跳出来的窗口，选择Yes</p>
+<p><img alt="image059" src=".././Connected_Flight_Tutorial_assets/image059.png" /></p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>如果之前有创建过模型库，会有第二个窗口，我们同样选择yes</p>
+<p>如果之前没有创建过模型库，则不会有第二个窗口弹出</p>
+<p><img alt="image061" src=".././Connected_Flight_Tutorial_assets/image061.png" /></p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>在最后弹出的窗口中，我们点击右下角的save ‘XPlane’</p>
+<p><img alt="image063" src=".././Connected_Flight_Tutorial_assets/image063.png" /></p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>出现左图的窗口时，说明swift正在保存模型库，需要耐心等待</p>
+<p><img alt="image065" src=".././Connected_Flight_Tutorial_assets/image065.png" /></p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>当该窗口自主消失的时候，说明模型库创建成功，我们可以关掉最上层的窗口</p>
+<p>随后检查一下模型数量，一般来说这个数字是越大越好</p>
+<p><img alt="image067" src=".././Connected_Flight_Tutorial_assets/image067.png" /></p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>对所有模拟器平台都完成上述操作并创建完模型库后，我们进入下一步</p>
+<p><img alt="image069" src=".././Connected_Flight_Tutorial_assets/image069.png" /></p>
+</li>
+</ol>
+<hr />
+<h4 id="37-xswifbusx-plane">3.7 安装xswifbus（仅X-Plane玩家）</h4>
+<p>由于我们在准备阶段就已经安装完成，所以这里不需要动任何东西，直接进行下一步</p>
+<p>如果没有安装，可以点击<a href="#11-swift">这里</a>再次阅读</p>
+<hr />
+<h4 id="38">3.8 配置快捷键</h4>
+<p>这里用来配置swift的快捷键，包括PTT等，但由于本平台不使用swift内置的语音，所以该页面可以直接跳过</p>
+<p><img alt="image073" src=".././Connected_Flight_Tutorial_assets/image073.png" /></p>
+<p>至此我们的swift模型库就配置完成了</p>
+<hr />
+<h3 id="4">4. 服务器配置</h3>
+<ol>
+<li>
+<p>点击GUI按钮；或者双击安装目录下swiftguistd.exe ，打开swiftgui页面；</p>
+<p><img alt="image075" src=".././Connected_Flight_Tutorial_assets/image075.png" /></p>
+<p><img alt="image077" src=".././Connected_Flight_Tutorial_assets/image077.png" /></p>
+<p>下图所示是swift的主页面：</p>
+<p><img alt="image079" src=".././Connected_Flight_Tutorial_assets/image079.png" /></p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>我们点击Settings-&gt;Server</p>
+<p><img alt="image081" src=".././Connected_Flight_Tutorial_assets/image081.png" /></p>
+<p><img alt="image083" src=".././Connected_Flight_Tutorial_assets/image083.png" /></p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>在下方填写如下信息：</p>
+<p><img alt="image085" src=".././Connected_Flight_Tutorial_assets/image085.png" /></p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>左填空栏</th>
+<th>右填空栏</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name/desc.</td>
+<td>该服务器显示的名字，可以任意填写</td>
+<td>服务器的描述</td>
+</tr>
+<tr>
+<td>Eco./type</td>
+<td>FSD (private)</td>
+<td>FSD (legacy)</td>
+</tr>
+<tr>
+<td>Addr./port</td>
+<td>fsd.apocfly.com</td>
+<td>6809</td>
+</tr>
+<tr>
+<td>Real name</td>
+<td>自己的昵称</td>
+<td></td>
+</tr>
+<tr>
+<td>Id/password</td>
+<td>登录飞控的呼号</td>
+<td>登录飞控的密码</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>根据<a href="../../../General/OPDOC-General-202502-R2-SC/?h=%E5%90%88%E7%90%86%E7%9A%84%E5%90%8D%E7%A7%B0#_5">CoC 2.9</a>有关规定您必须在Real name，填写以下中一项：</p>
+<ul>
+<li>
+<p>注册CID</p>
+</li>
+<li>
+<p>注册昵称</p>
+</li>
+<li>
+<p>注册邮箱</p>
+</li>
+</ul>
+</div>
+<hr />
+<ol>
+<li>
+<p>全部填写完成后，点击右下角save</p>
+<p><img alt="image087" src=".././Connected_Flight_Tutorial_assets/image087.png" /></p>
+</li>
+</ol>
+<h3 id="5-swift">5. swift使用说明</h3>
+<p>下面为swift的主界面，我们仅对几个经常用到的功能做详细说明</p>
+<p><img alt="image089" src=".././Connected_Flight_Tutorial_assets/image089.png" /></p>
+<h4 id="51-connect">5.1 Connect页面</h4>
+<p>该页面是用于连接服务器的页面
+Swift 版本不同该页面可能会有些许不同，但操作逻辑相同</p>
+<p><img alt="image084" src=".././Connected_Flight_Tutorial_assets/image084.png" /></p>
+<p><img alt="image091" src=".././Connected_Flight_Tutorial_assets/image091.png" /></p>
+<ul>
+<li>
+<p>检查上方Network 选项框，选择Other Servers</p>
+</li>
+<li>
+<p>下面选择APOC服务器</p>
+</li>
+<li>
+<p>Login这里需要检查是否是Normal位置，如果不是，检查模拟器启动是否正常</p>
+</li>
+</ul>
+<hr />
+<ul>
+<li>
+<p>下方的Pilot Info，检查无误即可</p>
+</li>
+<li>
+<p>Home这里可以填你的基地机场，选一个自己喜欢的机场ICAO码填进去就行</p>
+</li>
+</ul>
+<hr />
+<ul>
+<li>
+<p>最后一个区域，需要检查Callsign 是否正确</p>
+</li>
+<li>
+<p>Aircraft 是否是自己执飞的机型</p>
+</li>
+<li>
+<p>Airline 是否是自己执飞的航司</p>
+</li>
+<li>
+<p>全部检查无误以后点击Connect 连接</p>
+</li>
+</ul>
+<hr />
+<p><img alt="image093" src=".././Connected_Flight_Tutorial_assets/image093.png" /></p>
+<p>当显示该页面的并且左下角变成绿色，代表你已经连接成功</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>警告：请不要在跑道/滑行道上出生，这是违反<a href="../../../General/OPDOC-General-202502-R2-SC/?h=%E4%B8%8D%E5%BE%97%E5%9C%A8%E7%83%AD%E5%8C%BA%E8%BF%9B%E8%A1%8C%E8%BF%9E%E7%BA%BF#_6">CoC 3.6</a>的违规行为</p>
+</div>
+<h4 id="52">5.2 飞行计划页面</h4>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>注：如果您对此部分感到困惑，不妨试试我们的网页提交计划功能，<a href="https://www.apocfly.com/flight-plan">点此进入</a></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>此功能仅限<a href="https://www.apocfly.com">APOC模拟飞行平台</a>使用</p>
+</div>
+</div>
+<p><img alt="image095" src=".././Connected_Flight_Tutorial_assets/image095.png" /></p>
+<p>点击Flight pl. 进入飞行计划页面，界面如下：</p>
+<p><img alt="image097" src=".././Connected_Flight_Tutorial_assets/image097.png" /></p>
+<hr />
+<p>飞行计划填写的顺序是，自左向右，自上而下填写，如下图所示：</p>
+<p><img alt="image099" src=".././Connected_Flight_Tutorial_assets/image099.png" /></p>
+<p>解析如下：</p>
+<ol>
+<li>Type：飞行类型，一般我们航线飞行选择IFR即可</li>
+<li>Callsign：航班呼号，在上面连接的时候填写，这里无法修改</li>
+<li>Aircraft：飞机的ICAO 识别码，swift自动填写，一般不用动</li>
+<li>Wake Turbulence Category：尾流类型，swift自动填写，一般不用动</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>NAV/COM Equipment：导航和通讯设备代码，表明飞机的导航和通讯能力，如果不知道填什么，可以不用动</p>
+</li>
+<li>
+<p>SSR Equipment：二次雷达代码，表明飞机的二次雷达设备能力，如果不知道填什么，可以不用动</p>
+</li>
+<li>
+<p>TAS：计划飞行的真空速，如果不知道数值，可以不填，也可以填一个经验值（400-450）</p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>Departure airport：离场机场，填写离场机场的ICAO码</p>
+</li>
+<li>
+<p>Departure time：计划离场时间，UTC时间，不了解可以不用管</p>
+</li>
+<li>
+<p>Cruising altitude：计划巡航高度，以英尺作为单位，如果飞国内航线需注意米制转换</p>
+</li>
+</ol>
+<hr />
+<ol>
+<li>Route：计划航路</li>
+</ol>
+<hr />
+<ol>
+<li>
+<p>Destination airport：到达机场，填写到达机场的ICAO码</p>
+</li>
+<li>
+<p>Est.time enroute：计划航路时间，计划的飞行时间，不清楚可以不填</p>
+</li>
+<li>
+<p>Fuel on board：机载燃油的飞行时间，不清楚可以不填</p>
+</li>
+<li>
+<p>Alternate Airport：备降机场，填写备降机场的ICAO码，没有备降场可以不填</p>
+</li>
+<li>
+<p>remarks：备注信息，备注信息右侧的下拉框表示交流类型；</p>
+<p>Full voice 表示可以接受双向语音管制；</p>
+<p>Receive vioce 表示只能单向接受语音管制；</p>
+<p>Text only 表示只能接受双向文字管制</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>注：在管制空域内，此处提交的内容只需要提交一次，若您认为飞行计划有问题或管制员告知您的飞行计划有误时，您仅需要在您的飞机上进行更改，而您的计划，管制员会帮忙进行更改。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>此功能仅限<a href="https://www.apocfly.com">APOC模拟飞行平台</a>使用</p>
+</div>
+</div>
+<hr />
+<p>确认所有内容填写正确后，点击Send 按钮发送飞行计划到服务器（若不放心您也可以多点几下）</p>
+<p><img alt="image101" src=".././Connected_Flight_Tutorial_assets/image101.png" /></p>
+<p>出现下方窗口代表发送成功</p>
+<p><img alt="image103" src=".././Connected_Flight_Tutorial_assets/image103.png" /></p>
+<h4 id="53">5.3 消息界面</h4>
+<p><img alt="image105" src=".././Connected_Flight_Tutorial_assets/image105.png" /></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>如果您收到了此消息：</p>
+<p><img alt="image106" src=".././Connected_Flight_Tutorial_assets/image106.png" /></p>
+<p>那么证明您的计划已经在网页提交了，但是本次飞行的航班呼号和网页提交的不同，请您回至<a href="#51-connect">connect页面</a>重新检查</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>此功能仅限<a href="https://www.apocfly.com">APOC模拟飞行平台</a>使用</p>
+</div>
+</div>
+<hr />
+<p>这里主要用于与管制员的文字交流</p>
+<p>先点击Message to，在选择要发送到的管制席位</p>
+<p>最后在下面Message 中输入内容，随后按下回车，即可发送消息</p>
+<p>如果要在频道内发送消息，则点击上方COM1 或者COM2</p>
+<p>在下方输入框中输入消息，回车发送即可</p>
+<p><img alt="image107" src=".././Connected_Flight_Tutorial_assets/image107.png" /></p>
+<hr />
+<h4 id="54-atc">5.4 ATC页面</h4>
+<p>用于查看周围在线的管制员</p>
+<p><img alt="image109" src=".././Connected_Flight_Tutorial_assets/image109.png" /></p>
+<h4 id="55-radar">5.5 Radar页面</h4>
+<p>用于查看周围的机组</p>
+<p><img alt="image111" src=".././Connected_Flight_Tutorial_assets/image111.png" /></p>
+<h4 id="56-aircraft">5.6 Aircraft页面</h4>
+<p>同样可以查看周围的机组，不过是以列表形式展现</p>
+<p><img alt="image113" src=".././Connected_Flight_Tutorial_assets/image113.png" /></p>
+<h3 id="6">6. 联飞说明</h3>
+<p><strong>不要使用</strong>不熟悉的机模进行连飞活动！</p>
+<p><strong>不要使用</strong>不熟悉的机模进行连飞活动！！</p>
+<p><strong>不要使用</strong>不熟悉的机模进行连飞活动！！！</p>
+<ul>
+<li>不熟悉指：无法熟练使用自动驾驶或其他机载设备，准确无误的完成管制员的指令，并在管制员询问飞机状态时准确无误的回答</li>
+</ul>
+<p>所以，参加连飞活动请务必、一定、必须使用自己熟悉的机模</p>
+<p>这<strong>不仅仅</strong>保障了你有一个良好的活动体验，也同时保障了其他活动参与者和管制员的活动体验</p>
+<h2 id="_4">后记</h2>
+<p>连飞从来不仅是一场飞行模拟，更是一段人与人之间的协作与交流体验。</p>
+<p>无论您是第一次踏入虚拟蓝天的新飞行员，还是已在各大网络飞行平台积累了丰富经验的资深机长，我们都希望本指南能为您带来清晰的方向与可靠的参考，帮助您更加顺利地融入联飞环境。</p>
+<p>航空是一门严谨的学科，联飞亦然。规范、沟通、尊重与默契，是让每一次联飞变得愉快而富有成就感的关键。请记住：您的每一份准备、每一次遵守流程、每一次与他人的有效协作，都是让天空更加有序与和谐的重要力量。</p>
+<p>若您在阅读本教程的过程中遇到疑问、发现疏漏、或愿意贡献改进内容，我们诚挚欢迎您提出建议。您的反馈将使本教程不断完善，也能帮助更多飞行员收获更好的联飞体验。</p>
+<p>愿我们在无线电中相遇，在航迹上并肩，在虚拟的天空里，共同飞得更高、更远。</p>
+<p>期待在下一次的联飞活动中，与您在空中相见。</p>
+<h2 id="_5">参考资料</h2>
+<p>[1] <a href="https://swift-project.org/">Swift.文档站</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../Radiotelephony_Communications_for_Air_Traffic_Services/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 空中交通无线电通话用语">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                空中交通无线电通话用语
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../../Programming/" class="md-footer__link md-footer__link--next" aria-label="下一页: 附录 技术专题">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                附录 技术专题
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      本项目的全部文字在 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh-hans" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0(知识共享 署名-相同方式共享 4.0协议)</a> 之条款下提供，附加条款亦可能应用。<br> Yiheng Master Gui 保留所有未明示授予的权利。
+    </div>
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/Flyleague-Collection/Operating-document" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://space.bilibili.com/3494374067407653" target="_blank" rel="noopener" title="space.bilibili.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M488.6 104.1c16.7 18.1 24.4 39.7 23.3 65.7v202.4c-.4 26.4-9.2 48.1-26.5 65.1-17.2 17-39.1 25.9-65.5 26.7H92c-26.4-.8-48.2-9.8-65.3-27.2S.7 396.5 0 368.2V169.8c.8-26 9.7-47.6 26.7-65.7C43.8 87.8 65.5 78.8 92 78h29.4L96 52.2c-5.7-5.7-8.6-13-8.6-21.8S90.3 14.3 96 8.6 109 0 117.9 0s16.1 2.9 21.9 8.6L213.1 78h88l74.5-69.4C381.7 2.9 389.2 0 398 0s16.1 2.9 21.9 8.6c5.7 5.7 8.6 13 8.6 21.8s-2.9 16.1-8.6 21.8L394.6 78h29.3c26.4.8 48 9.8 64.7 26.1m-38.8 69.7c-.4-9.6-3.7-17.4-10.7-23.5-5.2-6.1-14-9.4-22.7-9.8H96c-9.6.4-17.4 3.7-23.6 9.8-6.1 6.1-9.4 13.9-9.8 23.5v194.4c0 9.2 3.3 17 9.8 23.5s14.4 9.8 23.6 9.8h320.4c9.2 0 17-3.3 23.3-9.8s9.7-14.3 10.1-23.5zm-264.3 42.7c6.3 6.3 9.7 14.1 10.1 23.2V273c-.4 9.2-3.7 16.9-9.8 23.2-6.2 6.3-14 9.5-23.6 9.5s-17.5-3.2-23.6-9.5-9.4-14-9.8-23.2v-33.3c.4-9.1 3.8-16.9 10.1-23.2s13.2-9.6 23.3-10c9.2.4 17 3.7 23.3 10m191.5 0c6.3 6.3 9.7 14.1 10.1 23.2V273c-.4 9.2-3.7 16.9-9.8 23.2s-14 9.5-23.6 9.5-17.4-3.2-23.6-9.5c-7-6.3-9.4-14-9.7-23.2v-33.3c.3-9.1 3.7-16.9 10-23.2s14.1-9.6 23.3-10c9.2.4 17 3.7 23.3 10"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://v.douyin.com/97uoxOsUrcA" target="_blank" rel="noopener" title="v.douyin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M448.5 209.9c-44 .1-87-13.6-122.8-39.2v178.7c0 33.1-10.1 65.4-29 92.6s-45.6 48-76.6 59.6-64.8 13.5-96.9 5.3-60.9-25.9-82.7-50.8-35.3-56-39-88.9 2.9-66.1 18.6-95.2 40-52.7 69.6-67.7 62.9-20.5 95.7-16v89.9c-15-4.7-31.1-4.6-46 .4s-27.9 14.6-37 27.3-14 28.1-13.9 43.9 5.2 31 14.5 43.7 22.4 22.1 37.4 26.9 31.1 4.8 46-.1 28-14.4 37.2-27.1 14.2-28.1 14.2-43.8V0h88c-.1 7.4.6 14.9 1.9 22.2 3.1 16.3 9.4 31.9 18.7 45.7s21.3 25.6 35.2 34.6c19.9 13.1 43.2 20.1 67 20.1V210z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://qm.qq.com/q/5qyq2c4n9m" target="_blank" rel="noopener" title="qm.qq.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M434.1 420.4c-11.5 1.4-44.9-52.7-44.9-52.7 0 31.3-16.1 72.2-51 101.8 16.8 5.2 54.8 19.2 45.8 34.4-7.3 12.3-125.5 7.9-159.6 4-34.1 3.8-152.3 8.3-159.6-4-9-15.2 28.9-29.2 45.8-34.4-34.9-29.5-51.1-70.4-51.1-101.8 0 0-33.3 54.1-44.9 52.7-5.4-.6-12.4-29.6 9.3-99.7 10.3-33 22-60.5 40.1-105.8C60.9 98 109.2-.1 224.3-.1 338-.1 387.5 96 384.6 214.9c18.1 45.2 29.9 72.9 40.1 105.8 21.8 70.1 14.7 99.1 9.3 99.7z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+  
+
+
+<h4>Cookie 许可</h4>
+<p>    我们使用Cookie来识别您的重复访问和偏好，并衡量我们文档的有效性以及用户是否能找到他们正在搜索的内容。在您同意的情况下，您正在帮助我们改进我们的文档。
+</p>
+<input class="md-toggle" type="checkbox" id="__settings" >
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+    
+      
+    
+    
+      
+        
+  
+  
+    
+    
+  
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="github" checked>
+      <span class="task-list-indicator"></span>
+      GitHub
+    </label>
+  </li>
+
+      
+    
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">同意</button>
+    
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">管理设定</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout((function(){document.querySelector("[data-md-component=consent]").hidden=!1}),250);var form=document.forms.consent;for(var action of["submit","reset"])form.addEventListener(action,(function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map((function(e){return[e,!0]})))),location.hash="",location.reload()}))</script>
+    
+    
+      
+      
+      
+      <script id="__config" type="application/json">{"annotate":null,"base":"../../..","features":["search.highlight","content.action.edit","navigation.path","navigation.instant","navigation.instant.prefetch","navigation.instant.progress","navigation.tracking","navigation.sections","navigation.expand","navigation.prune","navigation.top","search.suggest","search.highlight","search.share","navigation.footer","content.action.edit","content.code.copy","content.code.select","content.code.annotate"],"search":"../../../assets/javascripts/workers/search.5e1f2129.min.js","tags":null,"translations":{"clipboard.copied":"已复制","clipboard.copy":"复制","search.result.more.one":"在该页上还有 1 个符合条件的结果","search.result.more.other":"在该页上还有 # 个符合条件的结果","search.result.none":"没有找到符合条件的结果","search.result.one":"找到 1 个符合条件的结果","search.result.other":"# 个符合条件的结果","search.result.placeholder":"键入以开始搜索","search.result.term.missing":"缺少","select.version":"选择当前版本"},"version":null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.21aa498e.min.js"></script>
+      
+        <script src="../../../javascripts/feedback.js"></script>
+      
+    
+  </body>
+</html>
