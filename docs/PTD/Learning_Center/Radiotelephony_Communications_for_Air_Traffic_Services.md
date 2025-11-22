@@ -485,18 +485,102 @@ B738，读作：B738 或 B737 - 800。
 
 ### 基本通话用语：
 
-!!! Info
-    
-    注：
-    
-    在以下内容中，一句话同样含义的话通常有多种表达句式。在此，我们受限于篇幅限制，我们没有办法一一列举出来。如果在本章节以外的用语，需判断正确时，请翻阅以下链接中的文件：
+以下文本中的所有内容，将会以示例的形式，而非单出拆分
 
-    1. [CAAC.空中交通无线电通话用语（第四次征求意见版V79）](./References/空中交通无线电通话用语（第四次征求意见版V79）.pdf)；<br>
-    2. [CAAC.MH/T 4014-2003.空中交通无线电通话用语](https://www.caac.gov.cn/XXGK/XXGK/BZGF/HYBZ/201511/P020170804579259214829.pdf)；
+在以下内容中，一句话同样含义的话通常有多种表达句式。在此，我们受限于篇幅限制，我们没有办法一一列举出来。如果在本章节以外的用语，需判断正确时，请翻阅以下链接中的文件：
 
+1. [CAAC.空中交通无线电通话用语（第四次征求意见版V79）](./References/空中交通无线电通话用语（第四次征求意见版V79）.pdf)；
+
+2. [CAAC.MH/T 4014-2003.空中交通无线电通话用语](https://www.caac.gov.cn/XXGK/XXGK/BZGF/HYBZ/201511/P020170804579259214829.pdf)；
+
+这里以ZSPD（上海浦东）-ZBAA（北京首都）的东方航空（CES）5101航班为例，巡航高度：34100ft，航路：
+
+```
+(ZSPD-ZBAA-01)  POMOK G330 PIMOL A593 DALIM W157 AVBOX
+```
+
+!!! Note
+
+    注：如果您不知道如何查询航路，可以[点此](./Airlines_flight_route.md)查阅教程。
+
+#### 放行
+
+频道选择：DEL、RMP(A_GND)、GND、TWR、APP、CTR（低位席位优先）
+
+!!! Notse
+
+    注：机坪席位（即RMP/A_GND，例如ZSPD_A_RMP/ZSPD_A_GND）不提供放行服务；
+
+---
+
+##### 申请放行
+
+P: 浦东放行，上午好，东方5155，停机位114，通波Alpha抄收，申请放行至北京首都。
+
+> Pudong Delivery, good morning, China Eastern 5155, Gate/Stand 114, with information Alpha, request IFR clearance to Beijing Capital.
+
+A: 东方5155，放行(排)第一个，稍等
+
+> CES5155, Your are number one, please STBY(STAND BY).
+
+A: 东方5155，浦东放行，可以沿飞行计划航路放行到北京首都，[通波A有效]，沿PIKAS-95D（PIK95D）（标准程序）离场，使用跑道35R，[巡航高度层10400m(FL341)]，起始高度900米，[(终端区)修正海压1013（ATIS存在后，可不念）]，应答机5033，离地后联系进近126.650。
+
+> CES5155, Pudong Delivery, cleared to Beijing Capital via flight planned route, [information Alpha is available], (follow) PIKAS-95D departure, runway in use 35R, [cruising level 10,400m], initial climb to 900m [on (terminal) QNH1013], squawk 5033, departure frequency 126.650.
+
+P: 可以沿飞行计划航路放行到北京首都，沿PIKAS-95D（PIK95D）（标准程序）离场，使用跑道35R，[巡航高度层10400m(FL341)]，起始高度900米，[(终端区)修正海压1013（ATIS存在后，可不念）]，应答机5033，离地后联系进近126.650，东方5155。
+
+> Cleared to Beijing Capital via flight planned route, (follow) PIKAS-95D departure, runway in use 35R, [cruising level 10,400m], initial climb to 900m [on (terminal) QNH1013], squawk 5033, departure frequency 126.650, CES5155.
+
+---
+
+##### 复述错误
+
+A: 东方5155，不正确，应答机5033（假设应答机复述错误）。
+
+> CES5155, negative, squawk 5033.
+
+P: 应答机5033，东方5155。
+
+> Squawk 5033, CES5155.
+
+---
+
+##### 复述正确
+
+A: 东方5155，复述正确，准备好报。
+
+> CES5155, readback correct, call/report when ready [for push(back) and start(up)].
+
+---
+
+##### 申请推出、开车
+
+P: 虹桥放行，东方5155，准备好推出开车。
+
+> Hongqiao Delivery, CES5155, ready for push(back) and start (up).
+
+A: 东方5155，联系浦东地面121.700。
+
+> CES5155, contact Pudong Ground on 121.700.
+
+P: 联系浦东地面121.700，再见，东方5155。
+
+> Contact Pudong Ground on 121.700, goodbay, CES5155.
+
+P: 浦东地面，上午好，东方5155，停机位114，申请推出开车。
+
+> Pudong Ground, good morning, CES5155, Gate 114, request push(back) and start(up).
+
+
+
+---
 
 
 ## 未完待续
+
+---
+
+
 
 ## 参考资料
 
