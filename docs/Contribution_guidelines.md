@@ -11,8 +11,8 @@ Contribution Guidelines
 #### 基础库
 
 | Package  | Version |
-| -------- |---------|
-| zensical | 0.0.8   |
+| -------- | ------- |
+| zensical | 0.0.9   |
 
 #### 依赖库
 
